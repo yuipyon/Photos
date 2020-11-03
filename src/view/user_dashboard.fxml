@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.gluonhq.charm.glisten.control.AutoCompleteTextField?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="581.0" prefWidth="798.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="581.0" prefWidth="798.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.UserController">
    <children>
       <Label layoutX="18.0" layoutY="11.0" text="User Dashboard">
          <font>
@@ -23,22 +22,12 @@
             <DropShadow color="#807e7e" offsetX="1.0" offsetY="3.0" />
          </effect>
       </Rectangle>
-      <Text layoutX="470.0" layoutY="207.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Sample" wrappingWidth="52.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cafbff" height="80.0" layoutX="454.0" layoutY="106.0" stroke="BLACK" strokeType="INSIDE" width="80.0" />
-      <Line endX="-107.29290771484375" endY="-132.70709228515625" layoutX="640.0" layoutY="239.0" startX="-186.0" startY="-53.0" />
-      <Line endX="-47.0" endY="-3.0" layoutX="579.0" layoutY="189.0" startX="-123.0" startY="-82.0" />
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#cafbff" height="80.0" layoutX="567.0" layoutY="106.0" stroke="BLACK" strokeType="INSIDE" width="80.0" />
-      <Line endX="-107.29290771484375" endY="-132.70709228515625" layoutX="753.0" layoutY="239.0" startX="-186.0" startY="-53.0" />
-      <Line endX="-47.0" endY="-3.0" layoutX="692.0" layoutY="189.0" startX="-123.0" startY="-82.0" />
-      <Text layoutX="581.0" layoutY="207.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NY Trip" wrappingWidth="52.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eaf5ff" height="179.0" layoutX="73.0" layoutY="146.0" stroke="BLACK" strokeType="INSIDE" width="240.0" />
       <TextField layoutX="156.0" layoutY="167.0" prefHeight="26.0" prefWidth="136.0" />
       <Label layoutX="161.0" layoutY="117.0" text="Album Info">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font></Label>
-      <AutoCompleteTextField layoutX="157.0" layoutY="218.0" prefHeight="26.0" prefWidth="136.0" />
-      <AutoCompleteTextField layoutX="157.0" layoutY="266.0" prefHeight="26.0" prefWidth="136.0" />
       <Text layoutX="91.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
       <Text layoutX="84.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" text="# photos" />
       <Text layoutX="83.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date range" />
@@ -48,5 +37,8 @@
       <Button layoutX="141.0" layoutY="421.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="104.0" text="Open Album" />
       <Button layoutX="141.0" layoutY="373.0" mnemonicParsing="false" text="Rename Album" />
       <Button layoutX="715.0" layoutY="17.0" mnemonicParsing="false" style="-fx-background-color: c4cacf;" text="Logout" textFill="WHITE" />
+      <ListView layoutX="429.0" layoutY="96.0" prefHeight="443.0" prefWidth="324.0" />
+      <TextField layoutX="156.0" layoutY="218.0" prefHeight="26.0" prefWidth="136.0" />
+      <TextField layoutX="156.0" layoutY="265.0" prefHeight="26.0" prefWidth="136.0" />
    </children>
 </AnchorPane>
