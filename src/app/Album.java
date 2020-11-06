@@ -1,12 +1,13 @@
 package app;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class Album {
 	
-	String name; int numPhotos; String dateRange;
+	String name; int numPhotos; Date dateRange;
 	
-	public Album(String name, int numPhotos, String dateRange) {
+	public Album(String name, int numPhotos, Date dateRange) {
 		this.name = name;
 		this.numPhotos = numPhotos;
 		this.dateRange = dateRange;
@@ -20,7 +21,7 @@ public class Album {
 		return numPhotos;
 	}
 	
-	public String getDateRange() {
+	public Date getDateRange() {
 		return dateRange;
 	}
 }

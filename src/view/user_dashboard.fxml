@@ -23,22 +23,22 @@
          </effect>
       </Rectangle>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eaf5ff" height="179.0" layoutX="73.0" layoutY="146.0" stroke="BLACK" strokeType="INSIDE" width="240.0" />
-      <TextField layoutX="156.0" layoutY="167.0" prefHeight="26.0" prefWidth="136.0" />
+      <TextField layoutX="156.0" layoutY="167.0" prefHeight="26.0" prefWidth="136.0" fx:id="name"/>
       <Label layoutX="161.0" layoutY="117.0" text="Album Info">
          <font>
             <Font name="System Bold Italic" size="12.0" />
          </font></Label>
-      <Text layoutX="91.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name" />
-      <Text layoutX="84.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" text="# photos" />
-      <Text layoutX="83.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date range" />
-      <Button layoutX="265.0" layoutY="373.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="107.0" text="Search Photos" />
-      <Button layoutX="21.0" layoutY="421.0" mnemonicParsing="false" prefWidth="103.0" text="Delete Album" />
-      <Button layoutX="21.0" layoutY="373.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="104.0" text="Create Album" />
-      <Button layoutX="141.0" layoutY="421.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="104.0" text="Open Album" />
+      <Text layoutX="91.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name"/>
+      <Text layoutX="84.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" text="# photos"/>
+      <Text layoutX="83.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date range"/>
+      <Button layoutX="265.0" layoutY="373.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="107.0" text="Search Photos" fx:id="searchButton" onAction="#search"/>
+      <Button layoutX="21.0" layoutY="421.0" mnemonicParsing="false" prefWidth="103.0" text="Delete Album" fx:id="deleteButton" onAction="#delete"/>
+      <Button layoutX="21.0" layoutY="373.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="104.0" text="Create Album" fx:id="createButton" onAction="#create"/>
+      <Button layoutX="141.0" layoutY="421.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="104.0" text="Open Album" fx:id="openButton" onAction="#open"/>
       <Button layoutX="141.0" layoutY="373.0" mnemonicParsing="false" text="Rename Album" />
-      <Button layoutX="715.0" layoutY="17.0" mnemonicParsing="false" style="-fx-background-color: c4cacf;" text="Logout" textFill="WHITE" />
-      <ListView layoutX="429.0" layoutY="96.0" prefHeight="443.0" prefWidth="324.0" />
-      <TextField layoutX="156.0" layoutY="218.0" prefHeight="26.0" prefWidth="136.0" />
-      <TextField layoutX="156.0" layoutY="265.0" prefHeight="26.0" prefWidth="136.0" />
+      <Button layoutX="715.0" layoutY="17.0" mnemonicParsing="false" style="-fx-background-color: c4cacf;" text="Logout" textFill="WHITE" fx:id="logoutButton" onAction="#logout"/>
+      <ListView layoutX="429.0" layoutY="96.0" prefHeight="443.0" prefWidth="324.0" fx:id="albumList"/>
+      <TextField layoutX="156.0" layoutY="218.0" prefHeight="26.0" prefWidth="136.0" fx:id="numPhotos"/>
+      <TextField layoutX="156.0" layoutY="265.0" prefHeight="26.0" prefWidth="136.0" fx:id="date"/>
    </children>
 </AnchorPane>
