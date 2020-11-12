@@ -1,9 +1,11 @@
 package view;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -19,6 +21,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import model.Serialization;
 
 public class AdminController {
 
@@ -33,6 +36,7 @@ public class AdminController {
 	
 	private ObservableList<User> usernameList = FXCollections.observableArrayList();
 	private ArrayList<User> users = new ArrayList<User>();
+	Serialization serialController = new Serialization();
 	
 	// 1 problem encounters -> stage doesn't close
 	public void logoutAction(ActionEvent event) throws IOException {
@@ -46,15 +50,8 @@ public class AdminController {
 		s.show();
 	}
 	
-	public void listAction(ActionEvent event) throws FileNotFoundException {
-		File file = new File("user_data/usernames.txt");
-		Scanner scan = new Scanner(file);
-		while(scan.hasNextLine()) {
-			String username = scan.nextLine();
-			User loadUserName = new User(username);
-			users.add(loadUserName);
-		}
-		
+	public void listAction(ActionEvent event) throws ClassNotFoundException, IOException {
+		users = serialController.readUserList();
 		usernameList = FXCollections.observableList(users);
 		UserList.setItems(usernameList);
 	}
@@ -62,14 +59,8 @@ public class AdminController {
 	public void createAction(ActionEvent event) throws IOException {
 		String username = usernameBox.getText();
 		User user = new User(username);
-		try {
-			FileWriter wr = new FileWriter("user_data/usernames.txt");
-			wr.write(user + "\n");
-			wr.flush();
-			wr.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		users.add(user);
+		serialController.storeUserList(users);
 	}
 	
 	public void deleteAction(ActionEvent event) {
