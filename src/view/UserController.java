@@ -120,13 +120,8 @@ public class UserController implements Serializable {
 	/**
 	 * ArrayList<User> users holds the list of Users stored in usernames.ser
 	 */
-<<<<<<< HEAD
-	private ArrayList<User> userList = new ArrayList<User>();
-
-=======
 	public static ArrayList<User> userList = new ArrayList<User>();
-	
->>>>>>> 7f1afaa2ed53201c9cfe2daa3b0501128677aa3f
+
 	/**
 	 * ArrayList<Album> albumLists holds the albums for the user.
 	 */
@@ -148,7 +143,6 @@ public class UserController implements Serializable {
 	 */
 	Stage mainStage;
 
-	
 	/**
 	 * logout enables the behavior to logout of the user's current session.
 	 * 
@@ -164,7 +158,7 @@ public class UserController implements Serializable {
 		AnchorPane root = (AnchorPane) loader.load();
 
 		mainStage.close();
-	
+
 		LoginController lg = loader.getController();
 		Stage ns = new Stage();
 
@@ -220,7 +214,8 @@ public class UserController implements Serializable {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public void create(ActionEvent e) throws ParseException, FileNotFoundException, IOException, ClassNotFoundException {
+	public void create(ActionEvent e)
+			throws ParseException, FileNotFoundException, IOException, ClassNotFoundException {
 
 		System.out.println("Current User: " + curr_user);
 
@@ -229,10 +224,10 @@ public class UserController implements Serializable {
 		Date date1 = null;
 		try {
 			date1 = dateFormat.parse(date.getText());
-        } catch (ParseException e1) {
-        	date1 = null;
-        }
-		
+		} catch (ParseException e1) {
+			date1 = null;
+		}
+
 		int numPhotos1 = 0;
 		try {
 			numPhotos1 = Integer.parseInt(numPhotos.getText());
@@ -258,8 +253,7 @@ public class UserController implements Serializable {
 				alert.setHeaderText("No album name was given");
 				alert.setContentText("Please include a valid album name");
 				alert.showAndWait();
-			} 
-			else {
+			} else {
 				albumLists.add(newAlbum);
 				curr_user.albums = albumLists;
 				albums = FXCollections.observableList(albumLists);
@@ -321,7 +315,7 @@ public class UserController implements Serializable {
 					: selectedIndex;
 			TextInputDialog dialog = new TextInputDialog(albumToRename.toString());
 			dialog.initOwner(mainStage);
-			dialog.initOwner(stage); 
+			dialog.initOwner(mainStage);
 			dialog.setTitle("Album Information");
 			dialog.setHeaderText("Selected Album: " + albumToRename.toString());
 			dialog.setContentText("Enter album name: ");
@@ -364,14 +358,12 @@ public class UserController implements Serializable {
 			mainStage.show();
 
 		}
-			
-			Parent albumDisplayParent = FXMLLoader.load(getClass().getResource("Album_Display.fxml"));
-			Scene albumDisplayScene = new Scene(albumDisplayParent);
-			stage.setScene(albumDisplayScene);
-			stage.setTitle("Album View");
-			stage.show();
-			
-		}	
+
+		Parent albumDisplayParent = FXMLLoader.load(getClass().getResource("Album_Display.fxml"));
+		Scene albumDisplayScene = new Scene(albumDisplayParent);
+		mainStage.setScene(albumDisplayScene);
+		mainStage.setTitle("Album View");
+		mainStage.show();
 
 	}
 
@@ -384,10 +376,10 @@ public class UserController implements Serializable {
 	 * @throws ClassNotFoundException
 	 */
 
-	public void start(Stage primaryStage) throws FileNotFoundException, IOException, ClassNotFoundException{
-		
-		stage = primaryStage;
-		
+	public void start(Stage primaryStage) throws FileNotFoundException, IOException, ClassNotFoundException {
+
+		mainStage = primaryStage;
+
 		File file = new File("user_data/usernames.ser");
 		if (file.length() == 0) {
 			// do nothing
@@ -413,8 +405,7 @@ public class UserController implements Serializable {
 		}
 
 		System.out.println(albumLists);
-		
-	}
 
 	}
 
+}

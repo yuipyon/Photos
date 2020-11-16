@@ -11,6 +11,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -83,34 +85,31 @@ public class LoginController extends ActionEvent implements Serializable {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-public void login(ActionEvent event) throws IOException, ClassNotFoundException {
-		
+	public void login(ActionEvent event) throws IOException, ClassNotFoundException {
+
 		boolean userExist;
 		User username = new User(UsernameBox.getText());
-		
-		if(username.toString().equals(" ")) {
+
+		if (username.toString().equals(" ")) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Invalid Input");
 			alert.setHeaderText("Invalid input for username");
 			alert.setContentText("Please include a valid username");
 			alert.showAndWait();
-		}
-		else if(!UsernameBox.getText().equals("admin")) {
+		} else if (!UsernameBox.getText().equals("admin")) {
 			userExist = userExists(username, userList);
 			System.out.println(userExist);
-			
-			if(userExist == true) {
+
+			if (userExist == true) {
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("user_dashboard.fxml"));
-				AnchorPane root = (AnchorPane)loader.load();
+				AnchorPane root = (AnchorPane) loader.load();
 				serialController.storeCurrentUser(username);
-				//System.out.println((User)serialController.readCurrentUser());
-				
-				
+				// System.out.println((User)serialController.readCurrentUser());
+
 				UserController userController = loader.getController();
 				userController.start(stage);
-				
-				
+
 				stage.setTitle("User Dashboard");
 				stage.setScene(new Scene(root, 800, 600));
 				stage.setResizable(true);
@@ -119,30 +118,29 @@ public void login(ActionEvent event) throws IOException, ClassNotFoundException 
 				userList.add(username);
 				serialController.storeUserList(userList);
 				serialController.storeCurrentUser(username);
-				System.out.println((User)serialController.readCurrentUser());
-				
+				System.out.println((User) serialController.readCurrentUser());
+
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("user_dashboard.fxml"));
-				AnchorPane root = (AnchorPane)loader.load();
-				
+				AnchorPane root = (AnchorPane) loader.load();
+
 				UserController userController = loader.getController();
 				userController.start(stage);
-				
+
 				stage.setTitle("User Dashboard");
 				stage.setScene(new Scene(root, 800, 600));
 				stage.setResizable(true);
 				stage.show();
 			}
-			
+
 		} else {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("admin_dashboard.fxml"));
-			AnchorPane root = (AnchorPane)loader.load();
-			
-			
+			AnchorPane root = (AnchorPane) loader.load();
+
 			AdminController adminController = loader.getController();
 			adminController.start(stage);
-			
+
 			stage.setTitle("Admin Dashboard");
 			stage.setScene(new Scene(root, 621, 424));
 			stage.setResizable(false);
