@@ -33,7 +33,7 @@ public class Photos extends Application{
 		controller.start(primaryStage);
 		
 		primaryStage.setTitle("Photos");
-		primaryStage.setScene(new Scene(root, 621, 424));
+		primaryStage.setScene(new Scene(root, 449, 365));
 		primaryStage.setResizable(false);
 		primaryStage.show();
 		
