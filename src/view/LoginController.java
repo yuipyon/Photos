@@ -63,7 +63,7 @@ public class LoginController implements Serializable{
 				loader.setLocation(getClass().getResource("user_dashboard.fxml"));
 				AnchorPane root = (AnchorPane)loader.load();
 				serialController.storeCurrentUser(username);
-				System.out.println((User)serialController.readCurrentUser());
+				//System.out.println((User)serialController.readCurrentUser());
 				
 				Stage s = new Stage();
 				

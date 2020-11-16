@@ -63,7 +63,7 @@ public class AdminController {
 		serialController.storeUserList(users);
 	}
 	
-	public void deleteAction(ActionEvent event) {
+	public void deleteAction(ActionEvent event) throws FileNotFoundException, IOException {
 		int selectedIndex = UserList.getSelectionModel().getSelectedIndex();
 		if(selectedIndex != -1) {
 			User userToRemove = (User) UserList.getSelectionModel().getSelectedItem();
@@ -72,6 +72,7 @@ public class AdminController {
 			users.remove(selectedIndex);
 			usernameList = FXCollections.observableList(users);
 			UserList.setItems(usernameList);
+			serialController.storeUserList(users);
 		}
 	}
 	

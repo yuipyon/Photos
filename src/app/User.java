@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class User implements Serializable{
 	
-	private static final long serialVersionUID = 5310952031916728350L;
+	static final long serialVersionUID = 5310952031916728350L;
 	
 	private String username; 
 	public ArrayList<Album> albums; 

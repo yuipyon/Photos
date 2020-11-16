@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Serialization;
@@ -26,13 +27,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 
 import app.Album;
 import app.Tag;
 import app.User;
 
-
-@SuppressWarnings("serial")
 public class UserController implements Serializable{
 	
 	@FXML TextField name;
@@ -42,13 +42,17 @@ public class UserController implements Serializable{
 	@FXML Button deleteButton;
 	@FXML Button createButton;
 	@FXML Button openButton;
+	@FXML Button renameButton;
 	@FXML Button logoutButton;
 	@FXML ListView albumList;
+	
 	
 	private ObservableList<Album> albums = FXCollections.observableArrayList();
 	private ArrayList<User> userList = new ArrayList<User>();
 	private ArrayList<Album> albumLists = new ArrayList<Album>();
 	Serialization serialController = new Serialization();
+	User curr_user;
+	Stage mainStage;
 	
 	public void logout(ActionEvent e) throws IOException {
 		FXMLLoader loader = new FXMLLoader();
@@ -85,7 +89,6 @@ public class UserController implements Serializable{
 	
 	public void create(ActionEvent e) throws ParseException, FileNotFoundException, IOException, ClassNotFoundException {
 		
-		User curr_user = serialController.readCurrentUser();
 		System.out.println("Current User: " + curr_user);
 		
 		String albumName = name.getText();
@@ -94,14 +97,15 @@ public class UserController implements Serializable{
 		int numPhotos1 = Integer.parseInt(numPhotos.getText());
 		Tag newTag = new Tag("", "");
 		Album newAlbum = new Album(albumName, numPhotos1, date1, newTag);
+		
 		boolean albumExists = albumExist(newAlbum, albumLists);
+		System.out.println(albumExists);
 		
 		if(albumExists == true) {
 			throw new IllegalArgumentException("This album exists");
 		} else {
 			albumLists.add(newAlbum);
 			curr_user.albums = albumLists;
-			serialController.storeCurrentUser(curr_user);
 			albums = FXCollections.observableList(albumLists);
 			albumList.setItems(albums);
 			
@@ -123,13 +127,43 @@ public class UserController implements Serializable{
 			albums = FXCollections.observableList(albumLists);
 			albumList.setItems(albums);
 			
-			User curr_user = serialController.readCurrentUser();
-			serialController.storeCurrentUser(curr_user);
 		}
+		curr_user.albums = albumLists;
+		userList = updateAlbum(curr_user, userList);
+		serialController.storeUserList(userList);
 	}
+	
+	public void rename(ActionEvent e) throws FileNotFoundException, IOException {
+		int selectedIndex = albumList.getSelectionModel().getSelectedIndex();
+		if(selectedIndex != -1) {
+			Album albumToRename = (Album) albumList.getSelectionModel().getSelectedItem();
+			System.out.println(albumToRename);
+			int newSelectedIndex = (selectedIndex == albumList.getItems().size() - 1) ? selectedIndex - 1 : selectedIndex;
+			TextInputDialog dialog = new TextInputDialog(albumToRename.toString());
+			dialog.initOwner(mainStage); 
+			dialog.setTitle("Album Information");
+			dialog.setHeaderText("Selected Album: " + albumToRename.toString());
+			dialog.setContentText("Enter album name: ");
+			
+			Optional<String> result = dialog.showAndWait();
+			if(result.isPresent()) { 
+				albumToRename.setName(result.get());
+				albumLists.set(selectedIndex, albumToRename);
+				albums = FXCollections.observableList(albumLists);
+				albumList.setItems(albums);
+			}
+			
+		}
+		curr_user.albums = albumLists;
+		userList = updateAlbum(curr_user, userList);
+		serialController.storeUserList(userList);
+	}
+	
 	public void open(ActionEvent e) {}
 	
 	public void start(Stage primaryStage) throws FileNotFoundException, IOException, ClassNotFoundException{
+		
+		mainStage = primaryStage;
 		
 		File file = new File("user_data/usernames.ser");
 		if(file.length() == 0) {
@@ -138,10 +172,15 @@ public class UserController implements Serializable{
 			userList = serialController.readUserList();
 		} 
 		
-		User curr_user = serialController.readCurrentUser();
-		if(curr_user.albums.isEmpty()) {
-			throw new IllegalArgumentException("NOOOOOOOOOOOO");
-		} else {
+		curr_user = serialController.readCurrentUser();
+		
+		for(int i = 0; i <= userList.size() - 1; i++) {
+			if(userList.get(i).equals(curr_user)) {
+				curr_user = userList.get(i);
+			}
+		}
+		
+		if(!curr_user.albums.isEmpty()) {
 			albumLists = curr_user.albums;
 			albums = FXCollections.observableList(albumLists);
 			albumList.setItems(albums);
