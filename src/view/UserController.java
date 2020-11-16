@@ -6,7 +6,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
@@ -33,37 +35,129 @@ import app.Album;
 import app.Tag;
 import app.User;
 
+/**
+ * @author Karun Kanda
+ * @author Yulin Ni
+ */
+
+/**
+ * The UserController controls all the behaviors of the screen and button in the User Dashboard. 
+ */
 public class UserController implements Serializable{
 	
+	/**
+	 * TextField name enables the user to input a name for the album they are creating.
+	 */
 	@FXML TextField name;
+	
+	/**
+	 * TextField date enables the user to input the date of the album (MM-dd-yyyy)
+	 */
 	@FXML TextField date;
+	
+	/**
+	 * TextField numPhotos enables the user to input the number of photos in the album.
+	 */
 	@FXML TextField numPhotos;
+	
+	/**
+	 * Button searchButton enables the user to search for the photos in an album.
+	 */
 	@FXML Button searchButton;
+	
+	/**
+	 * Button deleteButton enables the user to delete an album.
+	 */
 	@FXML Button deleteButton;
+	
+	/**
+	 * Button createButton enables the user to create an album.
+	 */
 	@FXML Button createButton;
+	
+	/**
+	 * Button openButton enables the user to open an album.
+	 */
 	@FXML Button openButton;
+	
+	/**
+	 * Button renameButton enables the user to rename an Album that is present in their list.
+	 */
 	@FXML Button renameButton;
+	
+	/**
+	 * Button logoutButton enables the user to logout of their session. 
+	 */
 	@FXML Button logoutButton;
+	
+	/**
+	 * ListView albumList displays the albums for the current user logged in.
+	 */
 	@FXML ListView albumList;
 	
 	
+	/**
+	 * OberservableList<Album> albums create a list that can be displayed in the ListView.
+	 */
 	private ObservableList<Album> albums = FXCollections.observableArrayList();
+	
+	/**
+	 * ArrayList<User> users holds the list of Users stored in usernames.ser 
+	 */
 	private ArrayList<User> userList = new ArrayList<User>();
+	
+	/**
+	 * ArrayList<Album> albumLists holds the albums for the user.
+	 */
 	private ArrayList<Album> albumLists = new ArrayList<Album>();
+	
+	/**
+	 * Creates a instance of the Serialization model to create serializable data to use between controllers.
+	 */
 	Serialization serialController = new Serialization();
+	
+	/**
+	 * User curr_user holds the information of the current user.
+	 */
 	User curr_user;
+	
+	/**
+	 * Stage mainStage is used to switch between scenes in one stage.
+	 */
 	Stage mainStage;
 	
-	public void logout(ActionEvent e) throws IOException {
+	/**
+	 * logout enables the behavior to logout of the user's current session.
+	 * @param e
+	 * @throws IOException
+	 * @throws ClassNotFoundException 
+	 */
+	public void logout(ActionEvent e) throws IOException, ClassNotFoundException {
+		
+		serialController.storeUserList(userList);
+	
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("Login.fxml"));
 		AnchorPane root = (AnchorPane)loader.load();
-		mainStage.setTitle("Login");
-		mainStage.setScene(new Scene(root, 621, 424));
-		mainStage.setResizable(true);
-		mainStage.show();
+		
+		mainStage.close();
+		
+		LoginController lg = loader.getController();
+		Stage ns = new Stage();
+		
+		lg.start(ns);
+		ns.setTitle("Login");
+		ns.setScene(new Scene(root, 621, 424));
+		ns.setResizable(true);
+		ns.show();
 	}
 	
+	/**
+	 * albumExists finds if an album exists in the album array list.
+	 * @param album
+	 * @param albumList
+	 * @return boolean
+	 */
 	private boolean albumExist(Album album, ArrayList<Album> albumList) {
 		if(albumList.isEmpty()) {
 			return false;
@@ -76,6 +170,12 @@ public class UserController implements Serializable{
 		return false;
 	}
 	
+	/**
+	 * updateAlbum updates the album list when its modified of the user.
+	 * @param user
+	 * @param userList
+	 * @return ArrayList<User>
+	 */
 	private ArrayList<User> updateAlbum(User user, ArrayList<User> userList){
 		for(int i = 0; i <= userList.size() - 1; i++) {
 			if(userList.get(i).equals(user)) {
@@ -86,6 +186,14 @@ public class UserController implements Serializable{
 		return userList;
 	}
 	
+	/**
+	 * create enables the behavior to create a new album.
+	 * @param e
+	 * @throws ParseException
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public void create(ActionEvent e) throws ParseException, FileNotFoundException, IOException, ClassNotFoundException {
 		
 		System.out.println("Current User: " + curr_user);
@@ -94,8 +202,7 @@ public class UserController implements Serializable{
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
 		Date date1 = dateFormat.parse(date.getText());
 		int numPhotos1 = Integer.parseInt(numPhotos.getText());
-		Tag newTag = new Tag("", "");
-		Album newAlbum = new Album(albumName, numPhotos1, date1, newTag);
+		Album newAlbum = new Album(albumName, numPhotos1, date1);
 		
 		boolean albumExists = albumExist(newAlbum, albumLists);
 		System.out.println(albumExists);
@@ -114,8 +221,20 @@ public class UserController implements Serializable{
 				
 	}
 	
+	/**
+	 * search enables the behavior to search for a photo.
+	 * @param e
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
 	public void search(ActionEvent e) {}
 	
+	/**
+	 * delete enables the behavior to delete an album.
+	 * @param e
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
 	public void delete(ActionEvent e) throws ClassNotFoundException, IOException {
 		int selectedIndex = albumList.getSelectionModel().getSelectedIndex();
 		if(selectedIndex != -1) {
@@ -132,6 +251,12 @@ public class UserController implements Serializable{
 		serialController.storeUserList(userList);
 	}
 	
+	/**
+	 * rename enables the behavior to rename an album (just the name).
+	 * @param e
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
 	public void rename(ActionEvent e) throws FileNotFoundException, IOException {
 		int selectedIndex = albumList.getSelectionModel().getSelectedIndex();
 		if(selectedIndex != -1) {
@@ -158,6 +283,12 @@ public class UserController implements Serializable{
 		serialController.storeUserList(userList);
 	}
 	
+	/**
+	 * open enables the behavior to open the contents of an album.
+	 * @param e
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public void open(ActionEvent e) throws IOException, ClassNotFoundException {
 		int selectedIndex = albumList.getSelectionModel().getSelectedIndex();
 		if(selectedIndex != -1) {
@@ -176,6 +307,13 @@ public class UserController implements Serializable{
 		}	
 	}
 	
+	/**
+	 * start is what will occur upon starting the user dashboard scene.
+	 * @param primaryStage
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public void start(Stage primaryStage) throws FileNotFoundException, IOException, ClassNotFoundException{
 		
 		mainStage = primaryStage;
@@ -195,13 +333,17 @@ public class UserController implements Serializable{
 			}
 		}
 		
-		if(!curr_user.albums.isEmpty()) {
+		if(curr_user.albums == null) {
+			albums = FXCollections.observableList(albumLists);
+			albumList.setItems(albums);
+		} else {
 			albumLists = curr_user.albums;
 			albums = FXCollections.observableList(albumLists);
 			albumList.setItems(albums);
 		}
 		
 		System.out.println(albumLists);
+		
 	}
 	
 	

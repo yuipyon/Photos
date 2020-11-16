@@ -9,6 +9,13 @@
 <?import javafx.scene.text.Text?>
 
 
+<!--
+
+Karun Kanda
+Yulin Ni
+
+-->
+
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="463.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Text layoutX="245.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search photos">

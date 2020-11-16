@@ -18,38 +18,83 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import model.Serialization;
 
-public class LoginController implements Serializable{
-	
-	@FXML TextField UsernameBox;
-	
-	@FXML Button SubmitBox;
-	
+/**
+ * @author Karun Kanda
+ * @author Yulin Ni
+ */
+
+/**
+ * LoginController controls all the behavior of the screen and buttons in the
+ * login screen.
+ */
+public class LoginController implements Serializable {
+
+	/**
+	 * TextField enables the user or admin to enter their login credentials.
+	 */
+	@FXML
+	TextField UsernameBox;
+
+	/**
+	 * Button submitBox enables the user or admin to login.
+	 */
+	@FXML
+	Button SubmitBox;
+
+	/**
+	 * Stage stage is used to switch between scenes in one stage.
+	 */
 	Stage stage;
-	
+
+	/**
+	 * ArrayList<User> users holds the list of Users stored in usernames.ser
+	 */
 	ArrayList<User> userList = new ArrayList<User>();
+
+	/**
+	 * Creates a instance of the Serialization model to create serializable data to
+	 * use between controllers.
+	 */
 	Serialization serialController = new Serialization();
-	
+
+	/**
+	 * userExists finds if the user exists in the list of users.
+	 * 
+	 * @param username
+	 * @param userList
+	 * @return
+	 */
 	private boolean userExists(User username, ArrayList<User> userList) {
-		if(userList.isEmpty()) {
+		if (userList.isEmpty()) {
 			return false;
 		}
-		for(int i = 0; i <= userList.size() - 1; i++) {
-			if(userList.get(i).equals(username)) {
+		for (int i = 0; i <= userList.size() - 1; i++) {
+			if (userList.get(i).equals(username)) {
 				return true;
 			}
 		}
 		return false;
 	}
-	
-	public void login(ActionEvent event) throws IOException, ClassNotFoundException {
+
+	/**
+	 * login enables the behavior for the user to login according to if their
+	 * username credentials.
+	 * 
+	 * @param event
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
+public void login(ActionEvent event) throws IOException, ClassNotFoundException {
 		
 		boolean userExist;
 		
@@ -108,16 +153,26 @@ public class LoginController implements Serializable{
 			stage.show();
 		}
 	}
-	
-	public void start(Stage primaryStage) throws FileNotFoundException, ClassNotFoundException, IOException{
-		stage = primaryStage;
+
+	/**
+	 * start is what will occur upon starting the user dashboard scene.
+	 * 
+	 * @param primaryStage
+	 * @throws FileNotFoundException
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
+	public void start(Stage primaryStage) throws FileNotFoundException, ClassNotFoundException, IOException {
+		this.stage = primaryStage;
+		System.out.println(stage);
 		File file = new File("user_data/usernames.ser");
-		if(file.length() == 0) {
-			
+		if (userList == null) {
+
 		} else {
 			userList = serialController.readUserList();
 		}
-			
+
 		System.out.println(userList);
+
 	}
 }
