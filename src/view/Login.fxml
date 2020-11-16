@@ -7,6 +7,13 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
+<!--
+
+Karun Kanda
+Yulin Ni
+
+-->
+
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="365.0" prefWidth="449.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.LoginController">
    <children>
       <Label layoutX="109.0" layoutY="273.0" prefHeight="17.0" prefWidth="70.0" text="Username"/>
