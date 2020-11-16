@@ -195,11 +195,14 @@ public class UserController implements Serializable{
 			}
 		}
 		
-		if(!curr_user.albums.isEmpty()) {
-			albumLists = curr_user.albums;
-			albums = FXCollections.observableList(albumLists);
-			albumList.setItems(albums);
-		}
+		if(curr_user.albums == null) {
+            albums = FXCollections.observableList(albumLists);
+            albumList.setItems(albums);
+        } else {
+            albumLists = curr_user.albums;
+            albums = FXCollections.observableList(albumLists);
+            albumList.setItems(albums);
+        }
 		
 		System.out.println(albumLists);
 	}
