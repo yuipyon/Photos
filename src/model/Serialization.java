@@ -8,12 +8,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+import app.Album;
 import app.User;
 
 public class Serialization {
 	
 	static String curr_user_filepath = "user_data/curr_user.txt";
 	static String usernames_filepath = "user_data/usernames.ser";
+	static String curr_album_filepath = "user_data/curr_album.txt";
 	
 
 	public static void storeCurrentUser(User curr_user) throws FileNotFoundException, IOException, ClassNotFoundException {
@@ -26,6 +28,18 @@ public class Serialization {
 		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(curr_user_filepath));
 		User curr_user = (User)ois.readObject(); 
 		return curr_user;
+	}
+	
+	public static void storeCurrentAlbum(Album curr_album) throws FileNotFoundException, IOException, ClassNotFoundException {
+		ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(curr_album_filepath));
+		oos.writeObject(curr_album);
+		oos.close();
+	}
+	
+	public static Album readCurrentAlbum() throws FileNotFoundException, IOException, ClassNotFoundException {
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(curr_user_filepath));
+		Album curr_album = (Album)ois.readObject(); 
+		return curr_album;
 	}
 	
 	public static void storeUserList(ArrayList<User>userList) throws FileNotFoundException, IOException {
