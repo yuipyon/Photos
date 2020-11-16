@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -119,8 +120,13 @@ public class UserController implements Serializable {
 	/**
 	 * ArrayList<User> users holds the list of Users stored in usernames.ser
 	 */
+<<<<<<< HEAD
 	private ArrayList<User> userList = new ArrayList<User>();
 
+=======
+	public static ArrayList<User> userList = new ArrayList<User>();
+	
+>>>>>>> 7f1afaa2ed53201c9cfe2daa3b0501128677aa3f
 	/**
 	 * ArrayList<Album> albumLists holds the albums for the user.
 	 */
@@ -142,6 +148,7 @@ public class UserController implements Serializable {
 	 */
 	Stage mainStage;
 
+	
 	/**
 	 * logout enables the behavior to logout of the user's current session.
 	 * 
@@ -150,7 +157,6 @@ public class UserController implements Serializable {
 	 * @throws ClassNotFoundException
 	 */
 	public void logout(ActionEvent e) throws IOException, ClassNotFoundException {
-
 		serialController.storeUserList(userList);
 
 		FXMLLoader loader = new FXMLLoader();
@@ -158,7 +164,7 @@ public class UserController implements Serializable {
 		AnchorPane root = (AnchorPane) loader.load();
 
 		mainStage.close();
-
+	
 		LoginController lg = loader.getController();
 		Stage ns = new Stage();
 
@@ -315,6 +321,7 @@ public class UserController implements Serializable {
 					: selectedIndex;
 			TextInputDialog dialog = new TextInputDialog(albumToRename.toString());
 			dialog.initOwner(mainStage);
+			dialog.initOwner(stage); 
 			dialog.setTitle("Album Information");
 			dialog.setHeaderText("Selected Album: " + albumToRename.toString());
 			dialog.setContentText("Enter album name: ");
@@ -357,6 +364,15 @@ public class UserController implements Serializable {
 			mainStage.show();
 
 		}
+			
+			Parent albumDisplayParent = FXMLLoader.load(getClass().getResource("Album_Display.fxml"));
+			Scene albumDisplayScene = new Scene(albumDisplayParent);
+			stage.setScene(albumDisplayScene);
+			stage.setTitle("Album View");
+			stage.show();
+			
+		}	
+
 	}
 
 	/**
@@ -367,10 +383,11 @@ public class UserController implements Serializable {
 	 * @throws IOException
 	 * @throws ClassNotFoundException
 	 */
-	public void start(Stage primaryStage) throws FileNotFoundException, IOException, ClassNotFoundException {
 
-		mainStage = primaryStage;
-
+	public void start(Stage primaryStage) throws FileNotFoundException, IOException, ClassNotFoundException{
+		
+		stage = primaryStage;
+		
 		File file = new File("user_data/usernames.ser");
 		if (file.length() == 0) {
 			// do nothing
@@ -396,7 +413,8 @@ public class UserController implements Serializable {
 		}
 
 		System.out.println(albumLists);
+		
+	}
 
 	}
 
-}

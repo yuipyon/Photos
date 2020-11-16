@@ -1,13 +1,8 @@
 package view;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -15,17 +10,11 @@ import app.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import model.Serialization;
 
 /**
@@ -37,7 +26,7 @@ import model.Serialization;
  * LoginController controls all the behavior of the screen and buttons in the
  * login screen.
  */
-public class LoginController implements Serializable {
+public class LoginController extends ActionEvent implements Serializable {
 
 	/**
 	 * TextField enables the user or admin to enter their login credentials.
