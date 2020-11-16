@@ -58,11 +58,10 @@ public class UserController implements Serializable{
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("Login.fxml"));
 		AnchorPane root = (AnchorPane)loader.load();
-		Stage s = new Stage();
-		s.setTitle("Login");
-		s.setScene(new Scene(root, 621, 424));
-		s.setResizable(true);
-		s.show();
+		mainStage.setTitle("Login");
+		mainStage.setScene(new Scene(root, 621, 424));
+		mainStage.setResizable(true);
+		mainStage.show();
 	}
 	
 	private boolean albumExist(Album album, ArrayList<Album> albumList) {

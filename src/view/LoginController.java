@@ -65,16 +65,15 @@ public class LoginController implements Serializable{
 				serialController.storeCurrentUser(username);
 				//System.out.println((User)serialController.readCurrentUser());
 				
-				Stage s = new Stage();
 				
 				UserController userController = loader.getController();
-				userController.start(s);
+				userController.start(stage);
 				
 				
-				s.setTitle("User Dashboard");
-				s.setScene(new Scene(root, 800, 600));
-				s.setResizable(true);
-				s.show();
+				stage.setTitle("User Dashboard");
+				stage.setScene(new Scene(root, 800, 600));
+				stage.setResizable(true);
+				stage.show();
 			} else {
 				userList.add(username);
 				serialController.storeUserList(userList);
@@ -85,15 +84,13 @@ public class LoginController implements Serializable{
 				loader.setLocation(getClass().getResource("user_dashboard.fxml"));
 				AnchorPane root = (AnchorPane)loader.load();
 				
-				Stage s = new Stage();
-				
 				UserController userController = loader.getController();
-				userController.start(s);
+				userController.start(stage);
 				
-				s.setTitle("User Dashboard");
-				s.setScene(new Scene(root, 800, 600));
-				s.setResizable(true);
-				s.show();
+				stage.setTitle("User Dashboard");
+				stage.setScene(new Scene(root, 800, 600));
+				stage.setResizable(true);
+				stage.show();
 			}
 			
 		} else {
@@ -101,15 +98,14 @@ public class LoginController implements Serializable{
 			loader.setLocation(getClass().getResource("admin_dashboard.fxml"));
 			AnchorPane root = (AnchorPane)loader.load();
 			
-			Stage s = new Stage();
 			
 			AdminController adminController = loader.getController();
-			adminController.start(s);
+			adminController.start(stage);
 			
-			s.setTitle("Admin Dashboard");
-			s.setScene(new Scene(root, 621, 424));
-			s.setResizable(false);
-			s.show();
+			stage.setTitle("Admin Dashboard");
+			stage.setScene(new Scene(root, 621, 424));
+			stage.setResizable(false);
+			stage.show();
 		}
 	}
 	

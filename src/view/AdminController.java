@@ -43,11 +43,11 @@ public class AdminController {
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("Login.fxml"));
 		AnchorPane root = (AnchorPane)loader.load();
-		Stage s = new Stage();
-		s.setTitle("Login");
-		s.setScene(new Scene(root, 621, 424));
-		s.setResizable(true);
-		s.show();
+		
+		stage.setTitle("Login");
+		stage.setScene(new Scene(root, 621, 424));
+		stage.setResizable(true);
+		stage.show();
 	}
 	
 	public void listAction(ActionEvent event) throws ClassNotFoundException, IOException {
