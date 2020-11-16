@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import app.Album;
 import app.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -96,7 +97,7 @@ public class LoginController extends ActionEvent implements Serializable {
 			alert.setHeaderText("Invalid input for username");
 			alert.setContentText("Please include a valid username");
 			alert.showAndWait();
-		} else if (!UsernameBox.getText().equals("admin")) {
+		} else if (!UsernameBox.getText().equals("admin") && !UsernameBox.getText().equals("stock")) {
 			userExist = userExists(username, userList);
 			System.out.println(userExist);
 
@@ -133,6 +134,45 @@ public class LoginController extends ActionEvent implements Serializable {
 				stage.show();
 			}
 
+		} else if (!UsernameBox.getText().equals("admin") && UsernameBox.getText().equals("stock")) {
+			userExist = userExists(username, userList);
+			System.out.println(userExist);
+
+			if (userExist == true) {
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("user_dashboard.fxml"));
+				AnchorPane root = (AnchorPane) loader.load();
+				serialController.storeCurrentUser(username);
+				// System.out.println((User)serialController.readCurrentUser());
+
+				UserController userController = loader.getController();
+				userController.start(stage);
+
+				stage.setTitle("User Dashboard");
+				stage.setScene(new Scene(root, 800, 600));
+				stage.setResizable(true);
+				stage.show();
+			} else {
+				ArrayList<Album> a = new ArrayList<Album>();
+				a.add(new Album("stock", 0, null));
+				username.albums = a;
+				userList.add(username);
+				serialController.storeUserList(userList);
+				serialController.storeCurrentUser(username);
+				System.out.println((User) serialController.readCurrentUser());
+
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(getClass().getResource("user_dashboard.fxml"));
+				AnchorPane root = (AnchorPane) loader.load();
+
+				UserController userController = loader.getController();
+				userController.start(stage);
+
+				stage.setTitle("User Dashboard");
+				stage.setScene(new Scene(root, 800, 600));
+				stage.setResizable(true);
+				stage.show();
+			}
 		} else {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("admin_dashboard.fxml"));
