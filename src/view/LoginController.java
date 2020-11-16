@@ -97,9 +97,16 @@ public class LoginController implements Serializable {
 public void login(ActionEvent event) throws IOException, ClassNotFoundException {
 		
 		boolean userExist;
+		User username = new User(UsernameBox.getText());
 		
-		if(!UsernameBox.getText().equals("admin")) {
-			User username = new User(UsernameBox.getText());
+		if(username.toString().equals(" ")) {
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Invalid Input");
+			alert.setHeaderText("Invalid input for username");
+			alert.setContentText("Please include a valid username");
+			alert.showAndWait();
+		}
+		else if(!UsernameBox.getText().equals("admin")) {
 			userExist = userExists(username, userList);
 			System.out.println(userExist);
 			
