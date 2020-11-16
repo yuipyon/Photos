@@ -1,6 +1,7 @@
 package app;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -35,6 +36,8 @@ public class Album implements Serializable{
 	 * Date dateRange stores the date range that the album is based around.
 	 */
 	Date dateRange; 
+	
+	ArrayList<Photo> photos; 
 	
 	/**
 	 * Album creates a new instance of Album. 

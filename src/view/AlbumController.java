@@ -1,9 +1,12 @@
 package view;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 
+import app.User;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -31,12 +34,23 @@ public class AlbumController implements Serializable {
 	@FXML Button back;
 	@FXML Button logout;
 	
+	User curr_user;
+	
+	
 	public void add(ActionEvent e) {
 		
 	}
+	
 	public void delete(ActionEvent e) {}
 	public void moveCopy(ActionEvent e) {}
 	public void recaption(ActionEvent e) {}
+	
+	/**
+	 * logout enables the user to logout from the session.
+	 * @param event
+	 * @throws IOException
+	 * @throws ClassNotFoundException 
+	 */
 	public void logout(ActionEvent e) throws ClassNotFoundException, IOException {
 		Serialization.storeUserList(UserController.userList);
 		
@@ -55,6 +69,7 @@ public class AlbumController implements Serializable {
 		ns.setResizable(true);
 		ns.show();
 	}
+	
 	public void back(ActionEvent e) throws IOException, ClassNotFoundException {
 		FXMLLoader loader = new FXMLLoader();
 		Parent parent = FXMLLoader.load(getClass().getResource("user_dashboard.fxml"));
@@ -67,5 +82,29 @@ public class AlbumController implements Serializable {
 		stage.setScene(scene);
 		stage.setTitle("User Dashboard");
 		stage.show();
+	}
+	
+	/**
+	 * start is what will occur upon starting the admin dashboard scene.
+	 * @param primaryStage
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
+	 * @throws FileNotFoundException 
+	 */
+	public void start(Stage primaryStage) throws FileNotFoundException, ClassNotFoundException, IOException{
+		this.stage = primaryStage;
+
+		curr_user = Serialization.readCurrentUser();
+
+		for (int i = 0; i <= UserController.userList.size() - 1; i++) {
+			if (UserController.userList.get(i).equals(curr_user)) {
+				curr_user = UserController.userList.get(i);
+			}
+		}
+
+		if(curr_user.getUserName().equals("stock")) {
+			
+		}
+
 	}
 }
