@@ -2,6 +2,7 @@ package app;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javafx.scene.image.Image;
 
@@ -39,6 +40,12 @@ public class Photo implements Serializable{
 	 * ArrayList<Tag> tags contains the tags pertaining to the photo.
 	 */
 	public ArrayList<Tag> tags;
+	
+	/**
+	 * Calendar date records the time in which the photo was taken - in other words, the last modification date. 
+	 */
+	
+	public Calendar date; 
 	
 	public Photo() {
 		this.photo = null;

@@ -33,9 +33,10 @@ public class Album implements Serializable{
 	int numPhotos; 
 	
 	/**
-	 * Date dateRange stores the date range that the album is based around.
+	 * These Calendar date range attributes store the date range that the album is based around.
 	 */
-	Date dateRange; 
+	Calendar startingDateRange;
+	Calendar endingDateRange; 
 	
 	
 	public ArrayList<Photo> photos;
@@ -46,10 +47,9 @@ public class Album implements Serializable{
 	 * @param numPhotos
 	 * @param dateRange
 	 */
-	public Album(String name, int numPhotos, Date dateRange) {
+	public Album(String name, int numPhotos) {
 		this.name = name;
 		this.numPhotos = numPhotos;
-		this.dateRange = dateRange;
 	}
 	
 	/**
@@ -88,16 +88,8 @@ public class Album implements Serializable{
 	 * getDateRange returns the date range of the album.
 	 * @return Date
 	 */
-	public Date getDateRange() {
-		return dateRange;
-	}
-	
-	/**
-	 * setDateRange sets the date range of an album.
-	 * @param dateRange
-	 */
-	public void setDateRange(Date dateRange) {
-		this.dateRange = dateRange;
+	public String getDateRange() {
+		return startingDateRange + " - " + endingDateRange;
 	}
 	
 	/**
@@ -125,7 +117,7 @@ public class Album implements Serializable{
 		}
 		
 		Album a = (Album)o;
-		return name.equals(a.name) && numPhotos == (a.numPhotos) && dateRange.equals(a.dateRange);
+		return name.equals(a.name);
 	}
 	
 }

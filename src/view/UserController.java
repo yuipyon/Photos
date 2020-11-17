@@ -227,9 +227,8 @@ public class UserController implements Serializable {
 		Optional<String> result = dialog.showAndWait();
 		if (result.isPresent()) {
 			String albumName = result.get();
-			Date date1 = null;
 			int numPhotos1 = 0;
-			Album newAlbum = new Album(albumName, numPhotos1, date1);
+			Album newAlbum = new Album(albumName, numPhotos1);
 			boolean albumExists = albumExist(newAlbum, albumLists);
 			System.out.println(albumExists);
 
