@@ -85,7 +85,7 @@ public class Serialization {
 	 * @throws ClassNotFoundException
 	 */
 	public static Album readCurrentAlbum() throws FileNotFoundException, IOException, ClassNotFoundException {
-		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(curr_user_filepath));
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream(curr_album_filepath));
 		Album curr_album = (Album)ois.readObject(); 
 		return curr_album;
 	}

@@ -195,7 +195,7 @@ public class UserController implements Serializable {
 	 * @param userList
 	 * @return ArrayList<User>
 	 */
-	private ArrayList<User> updateAlbum(User user, ArrayList<User> userList) {
+	public static ArrayList<User> updateAlbum(User user, ArrayList<User> userList) {
 		for (int i = 0; i <= userList.size() - 1; i++) {
 			if (userList.get(i).equals(user)) {
 				userList.remove(i);
@@ -231,7 +231,7 @@ public class UserController implements Serializable {
 			int numPhotos1 = 0;
 			Album newAlbum = new Album(albumName, numPhotos1, date1);
 			boolean albumExists = albumExist(newAlbum, albumLists);
-			System.out.println(albumExists);
+			//System.out.println(albumExists);
 
 			if (albumExists == true) {
 				Alert alert = new Alert(AlertType.INFORMATION);
@@ -257,7 +257,7 @@ public class UserController implements Serializable {
 			}
 		}
 		
-		/*System.out.println("Current User: " + curr_user);
+		/*//System.out.println("Current User: " + curr_user);
 
 		String albumName = name.getText();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
@@ -278,7 +278,7 @@ public class UserController implements Serializable {
 		Album newAlbum = new Album(albumName, numPhotos1, date1);
 
 		boolean albumExists = albumExist(newAlbum, albumLists);
-		System.out.println(albumExists);
+		//System.out.println(albumExists);
 
 		if (albumExists == true) {
 			Alert alert = new Alert(AlertType.INFORMATION);
@@ -317,7 +317,7 @@ public class UserController implements Serializable {
 		int selectedIndex = albumList.getSelectionModel().getSelectedIndex();
 		if (selectedIndex != -1) {
 			Album curr_album = (Album) albumList.getSelectionModel().getSelectedItem();
-			System.out.println(curr_album);
+			//System.out.println(curr_album);
 			int newSelectedIndex = (selectedIndex == albumList.getItems().size() - 1) ? selectedIndex - 1
 					: selectedIndex;
 			serialController.storeCurrentAlbum(curr_album);
@@ -348,7 +348,7 @@ public class UserController implements Serializable {
 		int selectedIndex = albumList.getSelectionModel().getSelectedIndex();
 		if (selectedIndex != -1) {
 			Album albumToRemove = (Album) albumList.getSelectionModel().getSelectedItem();
-			System.out.println(albumToRemove);
+			//System.out.println(albumToRemove);
 			int newSelectedIndex = (selectedIndex == albumList.getItems().size() - 1) ? selectedIndex - 1
 					: selectedIndex;
 			albumLists.remove(selectedIndex);
@@ -372,7 +372,7 @@ public class UserController implements Serializable {
 		int selectedIndex = albumList.getSelectionModel().getSelectedIndex();
 		if (selectedIndex != -1) {
 			Album albumToRename = (Album) albumList.getSelectionModel().getSelectedItem();
-			System.out.println(albumToRename);
+			//System.out.println(albumToRename);
 			int newSelectedIndex = (selectedIndex == albumList.getItems().size() - 1) ? selectedIndex - 1
 					: selectedIndex;
 			TextInputDialog dialog = new TextInputDialog(albumToRename.toString());
@@ -407,7 +407,7 @@ public class UserController implements Serializable {
 		int selectedIndex = albumList.getSelectionModel().getSelectedIndex();
 		if (selectedIndex != -1) {
 			Album curr_album = (Album) albumList.getSelectionModel().getSelectedItem();
-			System.out.println(curr_album);
+			//System.out.println(curr_album);
 			int newSelectedIndex = (selectedIndex == albumList.getItems().size() - 1) ? selectedIndex - 1
 					: selectedIndex;
 			serialController.storeCurrentAlbum(curr_album);
@@ -465,7 +465,7 @@ public class UserController implements Serializable {
 			albumList.setItems(albums);
 		}
 
-		System.out.println(albumLists);
+		//System.out.println(albumLists);
 
 	}
 
