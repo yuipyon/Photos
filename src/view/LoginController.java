@@ -157,28 +157,28 @@ public class LoginController extends ActionEvent implements Serializable {
 			} else {
 				ArrayList<Photo> photos = new ArrayList<Photo>();
 				Photo one = new Photo();
-				one.photo = new Image("soccerball.jpg");
-				one.filepath = "soccerball.jpg";
+				one.photo = new Image("file:data/soccerball.jpg");
+				one.filepath = "file:data/soccerball.jpg";
 				one.photoName = "Soccer Ball";
 				
 				Photo two = new Photo();
-				two.photo = new Image("basketball.png");
-				two.filepath = "basketball.png";
+				two.photo = new Image("file:data/basketball.png");
+				two.filepath = "file:data/basketball.png";
 				two.photoName = "Basketball";
 				
 				Photo three = new Photo();
-				three.photo = new Image("tennisball.jpeg");
-				three.filepath = "tennisball.jpeg";
+				three.photo = new Image("file:data/tennisball.jpeg");
+				three.filepath = "file:data/tennisball.jpeg";
 				three.photoName = "Tennis Ball";
 				
 				Photo four = new Photo();
-				four.photo = new Image("cricketball.jpg");
-				four.filepath = "cricketball.jpg";
+				four.photo = new Image("file:data/cricketball.jpg");
+				four.filepath = "file:data/cricketball.jpg";
 				four.photoName = "Cricketball";
 				
 				Photo five = new Photo();
-				five.photo = new Image("ship.jpg");
-				five.filepath = "ship.jpg";
+				five.photo = new Image("file:data/ship.jpg");
+				five.filepath = "file:data/ship.jpg";
 				five.photoName = "Rocketship";
 				
 				photos.add(one);
