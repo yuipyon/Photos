@@ -403,8 +403,6 @@ public class UserController implements Serializable {
 			mainStage.show();
 
 		}
-
-
 	}
 
 	/**
