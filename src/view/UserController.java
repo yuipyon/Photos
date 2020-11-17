@@ -269,10 +269,32 @@ public class UserController implements Serializable {
 	 * search enables the behavior to search for a photo.
 	 * 
 	 * @param e
+	 * @throws FileNotFoundException 
 	 * @throws ClassNotFoundException
 	 * @throws IOException
 	 */
-	public void search(ActionEvent e) {
+	public void search(ActionEvent e) throws FileNotFoundException, ClassNotFoundException, IOException {
+		int selectedIndex = albumList.getSelectionModel().getSelectedIndex();
+		if (selectedIndex != -1) {
+			Album curr_album = (Album) albumList.getSelectionModel().getSelectedItem();
+			System.out.println(curr_album);
+			int newSelectedIndex = (selectedIndex == albumList.getItems().size() - 1) ? selectedIndex - 1
+					: selectedIndex;
+			serialController.storeCurrentAlbum(curr_album);
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(getClass().getResource("photo view.fxml"));
+			AnchorPane root = (AnchorPane) loader.load();
+			
+			PhotoController pc = loader.getController();
+			pc.start(mainStage);
+			
+			mainStage.setTitle("Photos View");
+			mainStage.setScene(new Scene(root, 700, 600));
+			mainStage.setResizable(true);
+			mainStage.show();
+
+		}
+
 	}
 
 	/**
@@ -377,7 +399,7 @@ public class UserController implements Serializable {
 
 	public void start(Stage primaryStage) throws FileNotFoundException, IOException, ClassNotFoundException {
 
-		mainStage = primaryStage;
+		this.mainStage = primaryStage;
 
 		File file = new File("user_data/usernames.ser");
 		if (file.length() == 0) {
