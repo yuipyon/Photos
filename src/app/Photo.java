@@ -28,6 +28,8 @@ public class Photo implements Serializable{
 	 */
 	public String photoName;
 	
+	public String filepath;
+	
 	/**
 	 * String caption is the caption of the photo.
 	 */
@@ -38,9 +40,13 @@ public class Photo implements Serializable{
 	 */
 	public ArrayList<Tag> tags;
 	
-	public Photo(Image photo) {
-		this.photo = photo;
+	public Photo() {
+		this.photo = null;
 		this.tags = new ArrayList<Tag>();
+	}
+	
+	public void setImage(Image image) {
+		this.photo = image;
 	}
 	
 	public String toString() {
