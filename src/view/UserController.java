@@ -164,7 +164,7 @@ public class UserController implements Serializable {
 
 		lg.start(ns);
 		ns.setTitle("Login");
-		ns.setScene(new Scene(root, 621, 424));
+		ns.setScene(new Scene(root, 449, 365));
 		ns.setResizable(true);
 		ns.show();
 	}

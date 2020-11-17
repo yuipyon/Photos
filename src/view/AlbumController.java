@@ -1,12 +1,14 @@
 package view;
 
+import java.awt.Desktop;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import app.Album;
 import app.Photo;
 import app.User;
 import javafx.collections.FXCollections;
@@ -14,16 +16,11 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -33,10 +30,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Serialization;
@@ -71,8 +67,40 @@ public class AlbumController implements Serializable {
 	ObservableList<Photo> photos = FXCollections.observableArrayList();
 	ArrayList<Photo> photoList = new ArrayList<Photo>();
 
-	public void add(ActionEvent e) {
-
+	public void add(ActionEvent e) throws FileNotFoundException, IOException {
+		Desktop desktop = Desktop.getDesktop();
+		FileChooser fc = new FileChooser();
+		fc.setTitle("Add photo");
+		fc.setInitialDirectory(new File(System.getProperty("user.home")));
+		fc.getExtensionFilters().addAll(new ExtensionFilter("All Images", "*.*"));
+		File file = fc.showOpenDialog(stage);
+        if (file != null) {
+        	Photo newPhoto = new Photo();
+        	newPhoto.filepath = file.getAbsolutePath();
+        	newPhoto.photoName = file.getName();
+        	photoList.add(newPhoto);
+        	photos = FXCollections.observableList(photoList);
+			albumsView.setItems(photos);
+			albumsView.setCellFactory(param -> new ListCell<Photo>() {
+	            private ImageView imageView = new ImageView();
+	            @Override
+	            public void updateItem(Photo name, boolean empty) {
+	                super.updateItem(name, empty);
+	                if (empty) {
+	                    setText(null);
+	                    setGraphic(null);
+	                } else {
+	                    for (Photo photo:photoList) {
+	                    	imageView.setImage(new Image("file:" + name.filepath));
+		                    imageView.setFitWidth(100);
+		            	    imageView.setFitHeight(100);
+	                    }
+	                    setText(name.photoName);
+	                    setGraphic(imageView);
+	                }
+	            }
+	        });
+        }
 	}
 
 	protected Alert displayImage(Photo p) {
@@ -116,6 +144,7 @@ public class AlbumController implements Serializable {
 	}
 
 	public void delete(ActionEvent e) {
+		
 	}
 
 	public void moveCopy(ActionEvent e) {
@@ -145,24 +174,22 @@ public class AlbumController implements Serializable {
 
 		lg.start(ns);
 		ns.setTitle("Login");
-		ns.setScene(new Scene(root, 621, 424));
+		ns.setScene(new Scene(root, 449, 365));
 		ns.setResizable(true);
 		ns.show();
 	}
 
 	public void back(ActionEvent e) throws IOException, ClassNotFoundException {
-		FXMLLoader loader = new FXMLLoader();
-		Parent parent = FXMLLoader.load(getClass().getResource("user_dashboard.fxml"));
-		Scene scene = new Scene(parent);
-		loader.setLocation(getClass().getResource("user_dashboard.fxml"));
-		AnchorPane root = (AnchorPane) loader.load();
-		stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
-		UserController controller = loader.getController();
-		controller.start(stage);
-		stage.setScene(scene);
-		stage.setTitle("User Dashboard");
-		stage.show();
-	}
+        Serialization.storeUserList(UserController.userList);
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("user_dashboard.fxml"));
+        AnchorPane root = (AnchorPane) loader.load();
+        UserController controller = loader.getController();
+        controller.start(stage);
+        stage.setScene(new Scene(root, 800, 600));
+        stage.setTitle("User Dashboard");
+        stage.show();
+    }
 
 	/**
 	 * start is what will occur upon starting the admin dashboard scene.
