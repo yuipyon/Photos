@@ -67,6 +67,7 @@ public class AlbumController implements Serializable {
 	User curr_user;
 	ObservableList<Photo> photos = FXCollections.observableArrayList();
 	ArrayList<Photo> photoList = new ArrayList<Photo>();
+	Serialization serialController = new Serialization();
 	
 	private ArrayList<Album> updateAlbumPt1(Album curr_album, ArrayList<Album> albumList) {
 		for (int i = 0; i <= albumList.size() - 1; i++) {
@@ -190,15 +191,14 @@ public class AlbumController implements Serializable {
 	 * @throws ClassNotFoundException
 	 */
 	public void logout(ActionEvent e) throws ClassNotFoundException, IOException {
-		Serialization.storeUserList(UserController.userList);
-
 		FXMLLoader loader = new FXMLLoader();
+		LoginController lg = loader.getController();
+		serialController.storeUserList(UserController.userList);
+
 		loader.setLocation(getClass().getResource("Login.fxml"));
 		AnchorPane root = (AnchorPane) loader.load();
-		stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		stage.close();
 
-		LoginController lg = loader.getController();
 		Stage ns = new Stage();
 
 		lg.start(ns);
@@ -209,8 +209,8 @@ public class AlbumController implements Serializable {
 	}
 
 	public void back(ActionEvent e) throws IOException, ClassNotFoundException {
-        Serialization.storeUserList(UserController.userList);
         FXMLLoader loader = new FXMLLoader();
+		serialController.storeUserList(UserController.userList);
         loader.setLocation(getClass().getResource("user_dashboard.fxml"));
         AnchorPane root = (AnchorPane) loader.load();
         UserController controller = loader.getController();

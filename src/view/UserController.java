@@ -125,7 +125,7 @@ public class UserController implements Serializable {
 	/**
 	 * ArrayList<Album> albumLists holds the albums for the user.
 	 */
-	private ArrayList<Album> albumLists = new ArrayList<Album>();
+	public ArrayList<Album> albumLists = new ArrayList<Album>();
 
 	/**
 	 * Creates a instance of the Serialization model to create serializable data to
