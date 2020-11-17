@@ -18,14 +18,20 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DialogPane;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -34,6 +40,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.TilePane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
@@ -180,9 +189,43 @@ public class AlbumController implements Serializable {
 	}
 
 	public void moveCopy(ActionEvent e) {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Move/Copy Action");
+
+		alert.initModality(Modality.APPLICATION_MODAL);
+		alert.initOwner(stage);
+
+		DialogPane dialogPane = alert.getDialogPane();
+		GridPane grid = new GridPane();
+		ColumnConstraints graphicColumn = new ColumnConstraints();
+		ColumnConstraints textColumn = new ColumnConstraints();
+		grid.getColumnConstraints().setAll(graphicColumn, textColumn);
+		
+		Label l = new Label("Move/Copy to which album?");
+		Button move = new Button("move");
+		Button copy = new Button("copy");
+		
+		grid.add(l, 0, 0);
+		grid.add(move, 0, 0);
+		grid.add(copy, 0, 0);
+		grid.setAlignment(Pos.BASELINE_CENTER);
+
+		/*Image ni = new Image(p.filepath);
+		ImageView imageView = new ImageView(ni);
+		imageView.setFitWidth(400);
+		imageView.setFitHeight(400);
+		StackPane stackPane = new StackPane(imageView);
+		grid.add(stackPane, 0, 0);*/
+
+		dialogPane.setHeader(grid);
+
+		alert.showAndWait();
+
+  
 	}
 
 	public void recaption(ActionEvent e) {
+	
 	}
 
 	/**
