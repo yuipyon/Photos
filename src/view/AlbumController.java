@@ -241,14 +241,15 @@ public class AlbumController implements Serializable {
 	 * @throws ClassNotFoundException
 	 */
 	public void logout(ActionEvent e) throws ClassNotFoundException, IOException {
-		FXMLLoader loader = new FXMLLoader();
-		LoginController lg = loader.getController();
 		serialController.storeUserList(UserController.userList);
 
+		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("Login.fxml"));
 		AnchorPane root = (AnchorPane) loader.load();
+
 		stage.close();
 
+		LoginController lg = loader.getController();
 		Stage ns = new Stage();
 
 		lg.start(ns);
@@ -352,9 +353,14 @@ public class AlbumController implements Serializable {
 			    }
 			});
 		} else {
-			photoList = curr_album.photos;
-			photos = FXCollections.observableList(photoList);
-			albumsView.setItems(photos);
+			if (curr_album.photos == null) {
+				photos = FXCollections.observableList(photoList);
+				albumsView.setItems(photos);
+			} else {
+				photoList = curr_album.photos;
+				photos = FXCollections.observableList(photoList);
+				albumsView.setItems(photos);
+			}
 			albumsView.setCellFactory(param -> new ListCell<Photo>() {
 	            private ImageView imageView = new ImageView();
 	            @Override
