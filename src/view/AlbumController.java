@@ -153,16 +153,27 @@ public class AlbumController implements Serializable {
 		int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
 		if (selectedIndex != -1) {
 			Photo photoToView = (Photo) albumsView.getSelectionModel().getSelectedItem();
-			System.out.println(photoToView.photo);
-			System.out.println(new Image("soccerball.jpg"));
 			int newSelectedIndex = (selectedIndex == albumsView.getItems().size() - 1) ? selectedIndex - 1
 					: selectedIndex;
 			displayImage(photoToView);
 		}
 	}
 
-	public void delete(ActionEvent e) {
-		
+	public void delete(ActionEvent e) throws FileNotFoundException, ClassNotFoundException, IOException {
+		int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
+		if (selectedIndex != -1) {
+			Photo photoToView = (Photo) albumsView.getSelectionModel().getSelectedItem();
+			int newSelectedIndex = (selectedIndex == albumsView.getItems().size() - 1) ? selectedIndex - 1
+					: selectedIndex;
+			photoList.remove(selectedIndex);
+			photos = FXCollections.observableList(photoList);
+			albumsView.setItems(photos);
+		}
+		Album curr_album = Serialization.readCurrentAlbum();
+		curr_album.photos = photoList;
+		curr_user.albums = updateAlbumPt1(curr_album, curr_user.albums);
+		UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
+		Serialization.storeUserList(UserController.userList);
 	}
 
 	public void moveCopy(ActionEvent e) {
