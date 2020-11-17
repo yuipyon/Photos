@@ -42,12 +42,12 @@ public class PhotoController {
 	
 	public void goBack(ActionEvent e) {
 		forwardCounter--;
-		PhotoView.setImage(new Image("file:"+curr_user.albums.get(0).photos.get(forwardCounter).filepath));
+		PhotoView.setImage(new Image(curr_user.albums.get(0).photos.get(forwardCounter).filepath));
 	}
 	
 	public void goForward(ActionEvent e) {
 		forwardCounter++;
-		PhotoView.setImage(new Image("file:"+curr_user.albums.get(0).photos.get(forwardCounter).filepath));
+		PhotoView.setImage(new Image(curr_user.albums.get(0).photos.get(forwardCounter).filepath));
 	}
 	
 	public void backScreen(ActionEvent e) throws FileNotFoundException, ClassNotFoundException, IOException {
@@ -86,9 +86,7 @@ public class PhotoController {
 		
 		photos = curr_user.albums.get(0).photos;
 		
-		if(curr_user.getUserName().equals("stock")) {
-			PhotoView.setImage(new Image("file:"+curr_user.albums.get(0).photos.get(0).filepath));
-		}
+		PhotoView.setImage(new Image(curr_user.albums.get(0).photos.get(0).filepath));
 		
 	}
 
