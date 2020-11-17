@@ -68,6 +68,18 @@ public class AlbumController implements Serializable {
 	ObservableList<Photo> photos = FXCollections.observableArrayList();
 	ArrayList<Photo> photoList = new ArrayList<Photo>();
 	Serialization serialController = new Serialization();
+	
+	private ArrayList<Album> updateAlbumPt1(Album curr_album, ArrayList<Album> albumList) {
+		for (int i = 0; i <= albumList.size() - 1; i++) {
+			System.out.println(albumList.get(i));
+			if (albumList.get(i).getName().equals(curr_album.getName())) {
+				albumList.remove(i);
+				break;
+			}
+		}
+		albumList.add(curr_album);
+		return albumList;
+	}
 
 	public void add(ActionEvent e) throws FileNotFoundException, IOException, ClassNotFoundException {
 		Desktop desktop = Desktop.getDesktop();
@@ -102,6 +114,11 @@ public class AlbumController implements Serializable {
 	                }
 	            }
 	        });
+			Album curr_album = Serialization.readCurrentAlbum();
+			curr_album.photos = photoList;
+			curr_user.albums = updateAlbumPt1(curr_album, curr_user.albums);
+			UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
+			Serialization.storeUserList(UserController.userList);
         }
     	FXMLLoader loader = new FXMLLoader();
   		UserController ug = loader.getController();
@@ -231,28 +248,32 @@ public class AlbumController implements Serializable {
 	                    setText(null);
 	                    setGraphic(null);
 	                } else {
-	                    if(name.photoName.equals("Soccer Ball")) {
-	                        imageView.setImage(new Image(name.filepath));
+	                	for (Photo photo:photoList) {
+	                    	imageView.setImage(new Image("file:"+name.filepath));
 		                    imageView.setFitWidth(100);
 		            	    imageView.setFitHeight(100);
 	                    }
-	                    else if(name.photoName.equals("Basketball")) {
-	                        imageView.setImage(new Image(name.filepath));
-		                    imageView.setFitWidth(100);
-		            	    imageView.setFitHeight(100);
-	                	}
-		            	else if(name.photoName.equals("Tennis Ball")) {
-	                        imageView.setImage(new Image(name.filepath));
-		                    imageView.setFitWidth(100);
-		            	    imageView.setFitHeight(100);
-		            	}
-	                    else if(name.photoName.equals("Cricketball")) {
-	                        imageView.setImage(new Image(name.filepath));
-		                    imageView.setFitWidth(100);
-		            	    imageView.setFitHeight(100);
-	                    }
-	                    else if(name.photoName.equals("Rocketship")) {
-	                    	imageView.setImage(new Image(name.filepath));
+	                    setText(name.photoName);
+	                    setGraphic(imageView);
+	                }
+	            }
+	        });
+		} else {
+			Album curr_album = Serialization.readCurrentAlbum();
+			photoList = curr_album.photos;
+			photos = FXCollections.observableList(photoList);
+			albumsView.setItems(photos);
+			albumsView.setCellFactory(param -> new ListCell<Photo>() {
+	            private ImageView imageView = new ImageView();
+	            @Override
+	            public void updateItem(Photo name, boolean empty) {
+	                super.updateItem(name, empty);
+	                if (empty) {
+	                    setText(null);
+	                    setGraphic(null);
+	                } else {
+	                	for (Photo photo:photoList) {
+	                    	imageView.setImage(new Image("file:"+name.filepath));
 		                    imageView.setFitWidth(100);
 		            	    imageView.setFitHeight(100);
 	                    }
