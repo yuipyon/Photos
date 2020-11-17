@@ -168,7 +168,7 @@ public class LoginController extends ActionEvent implements Serializable {
 				
 				Photo three = new Photo();
 				three.photo = new Image("file:data/tennisball.jpeg");
-				three.filepath = "file:data/tennisball.jpeg";
+				three.filepath = "data/tennisball.jpeg";
 				three.photoName = "Tennis Ball";
 				
 				Photo four = new Photo();

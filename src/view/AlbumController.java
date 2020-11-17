@@ -101,7 +101,7 @@ public class AlbumController implements Serializable {
 		File file = fc.showOpenDialog(stage);
         if (file != null) {
         	Photo newPhoto = new Photo();
-        	newPhoto.filepath = file.getAbsolutePath();
+        	newPhoto.filepath = "file:" + file.getAbsolutePath();
         	newPhoto.photoName = file.getName();
         	photoList.add(newPhoto);
         	photos = FXCollections.observableList(photoList);
@@ -116,7 +116,7 @@ public class AlbumController implements Serializable {
 	                    setGraphic(null);
 	                } else {
 	                    for (Photo photo:photoList) {
-	                    	imageView.setImage(new Image("file:" + name.filepath));
+	                    	imageView.setImage(new Image(name.filepath));
 		                    imageView.setFitWidth(100);
 		            	    imageView.setFitHeight(100);
 	                    }
@@ -206,8 +206,8 @@ public class AlbumController implements Serializable {
 		Button copy = new Button("copy");
 		
 		grid.add(l, 0, 0);
-		grid.add(move, 0, 0);
-		grid.add(copy, 0, 0);
+		grid.add(move, 1, 0);
+		grid.add(copy, 2, 0);
 		grid.setAlignment(Pos.BASELINE_CENTER);
 
 		/*Image ni = new Image(p.filepath);
@@ -347,67 +347,72 @@ public class AlbumController implements Serializable {
 			    }
 			});
 		} else {
-			photoList = curr_album.photos;
-			photos = FXCollections.observableList(photoList);
-			albumsView.setItems(photos);
-			albumsView.setCellFactory(param -> new ListCell<Photo>() {
-	            private ImageView imageView = new ImageView();
-	            @Override
-	            public void updateItem(Photo name, boolean empty) {
-	                super.updateItem(name, empty);
-	                if (empty) {
-	                    setText(null);
-	                    setGraphic(null);
-	                } else {
-	                	for (Photo photo:photoList) {
-	                    	imageView.setImage(new Image("file:"+name.filepath));
-		                    imageView.setFitWidth(100);
-		            	    imageView.setFitHeight(100);
-	                    }
-	                    setText(name.photoName);
-	                    setGraphic(imageView);
-	                }
-	            }
-	        });
-			albumsView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			if(curr_album.photos == null) {
+				photos = FXCollections.observableList(photoList);
+				albumsView.setItems(photos);
+			} else {
+				photoList = curr_album.photos;
+				photos = FXCollections.observableList(photoList);
+				albumsView.setItems(photos);
+				albumsView.setCellFactory(param -> new ListCell<Photo>() {
+		            private ImageView imageView = new ImageView();
+		            @Override
+		            public void updateItem(Photo name, boolean empty) {
+		                super.updateItem(name, empty);
+		                if (empty) {
+		                    setText(null);
+		                    setGraphic(null);
+		                } else {
+		                	for (Photo photo:photoList) {
+		                    	imageView.setImage(new Image(name.filepath));
+			                    imageView.setFitWidth(100);
+			            	    imageView.setFitHeight(100);
+		                    }
+		                    setText(name.photoName);
+		                    setGraphic(imageView);
+		                }
+		            }
+		        });
+				albumsView.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
-			    @Override
-			    public void handle(MouseEvent click) {
+				    @Override
+				    public void handle(MouseEvent click) {
 
-			        if (click.getClickCount() == 2) {
-			        	int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
-			    		if (selectedIndex != -1) {
-			    			Photo curr_album = (Photo) albumsView.getSelectionModel().getSelectedItem();
-			    			//System.out.println(curr_album);
-			    			int newSelectedIndex = (selectedIndex == albumsView.getItems().size() - 1) ? selectedIndex - 1
-			    					: selectedIndex;
-			    			FXMLLoader loader = new FXMLLoader();
-			    			loader.setLocation(getClass().getResource("photo view.fxml"));
-			    			AnchorPane root = null;
-							try {
-								root = (AnchorPane) loader.load();
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-			    			
-			    			PhotoController pc = loader.getController();
-			    			try {
-								pc.start(stage);
-							} catch (ClassNotFoundException | IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
-			    			
-			    			stage.setTitle("Photos View");
-			    			stage.setScene(new Scene(root, 700, 600));
-			    			stage.setResizable(true);
-			    			stage.show();
+				        if (click.getClickCount() == 2) {
+				        	int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
+				    		if (selectedIndex != -1) {
+				    			Photo curr_album = (Photo) albumsView.getSelectionModel().getSelectedItem();
+				    			//System.out.println(curr_album);
+				    			int newSelectedIndex = (selectedIndex == albumsView.getItems().size() - 1) ? selectedIndex - 1
+				    					: selectedIndex;
+				    			FXMLLoader loader = new FXMLLoader();
+				    			loader.setLocation(getClass().getResource("photo view.fxml"));
+				    			AnchorPane root = null;
+								try {
+									root = (AnchorPane) loader.load();
+								} catch (IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+				    			
+				    			PhotoController pc = loader.getController();
+				    			try {
+									pc.start(stage);
+								} catch (ClassNotFoundException | IOException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+				    			
+				    			stage.setTitle("Photos View");
+				    			stage.setScene(new Scene(root, 700, 600));
+				    			stage.setResizable(true);
+				    			stage.show();
 
-			    		}
-			        }
-			    }
-			});
+				    		}
+				        }
+				    }
+				});
+			}
 		}
 
 	}
