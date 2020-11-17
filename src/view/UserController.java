@@ -217,7 +217,47 @@ public class UserController implements Serializable {
 	public void create(ActionEvent e)
 			throws ParseException, FileNotFoundException, IOException, ClassNotFoundException {
 
-		System.out.println("Current User: " + curr_user);
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.initOwner(mainStage);
+		dialog.initOwner(mainStage);
+		dialog.setTitle("Create Album");
+		dialog.setHeaderText("Make a new Album.");
+		dialog.setContentText("Enter album name: ");
+
+		Optional<String> result = dialog.showAndWait();
+		if (result.isPresent()) {
+			String albumName = result.get();
+			Date date1 = null;
+			int numPhotos1 = 0;
+			Album newAlbum = new Album(albumName, numPhotos1, date1);
+			boolean albumExists = albumExist(newAlbum, albumLists);
+			System.out.println(albumExists);
+
+			if (albumExists == true) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Duplicate album");
+				alert.setHeaderText("A duplicate album entry was entered");
+				alert.setContentText("Please include another non-duplicate album");
+				alert.showAndWait();
+			} else {
+				if (albumName.length() == 0) {
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setTitle("Invalid Input");
+					alert.setHeaderText("No album name was given");
+					alert.setContentText("Please include a valid album name");
+					alert.showAndWait();
+				} else {
+					albumLists.add(newAlbum);
+					curr_user.albums = albumLists;
+					albums = FXCollections.observableList(albumLists);
+					albumList.setItems(albums);
+					userList = updateAlbum(curr_user, userList);
+					serialController.storeUserList(userList);
+				}
+			}
+		}
+		
+		/*System.out.println("Current User: " + curr_user);
 
 		String albumName = name.getText();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd-yyyy");
@@ -261,7 +301,7 @@ public class UserController implements Serializable {
 				userList = updateAlbum(curr_user, userList);
 				serialController.storeUserList(userList);
 			}
-		}
+		}*/
 
 	}
 
