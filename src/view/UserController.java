@@ -314,27 +314,7 @@ public class UserController implements Serializable {
 	 * @throws IOException
 	 */
 	public void search(ActionEvent e) throws FileNotFoundException, ClassNotFoundException, IOException {
-		int selectedIndex = albumList.getSelectionModel().getSelectedIndex();
-		if (selectedIndex != -1) {
-			Album curr_album = (Album) albumList.getSelectionModel().getSelectedItem();
-			//System.out.println(curr_album);
-			int newSelectedIndex = (selectedIndex == albumList.getItems().size() - 1) ? selectedIndex - 1
-					: selectedIndex;
-			serialController.storeCurrentAlbum(curr_album);
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("photo view.fxml"));
-			AnchorPane root = (AnchorPane) loader.load();
-			
-			PhotoController pc = loader.getController();
-			pc.start(mainStage);
-			
-			mainStage.setTitle("Photos View");
-			mainStage.setScene(new Scene(root, 700, 600));
-			mainStage.setResizable(true);
-			mainStage.show();
-
-		}
-
+	
 	}
 
 	/**
