@@ -195,7 +195,7 @@ public class UserController implements Serializable {
 	 * @param userList
 	 * @return ArrayList<User>
 	 */
-	public ArrayList<User> updateAlbum(User user, ArrayList<User> userList) {
+	public static ArrayList<User> updateAlbum(User user, ArrayList<User> userList) {
 		for (int i = 0; i <= userList.size() - 1; i++) {
 			if (userList.get(i).equals(user)) {
 				userList.remove(i);

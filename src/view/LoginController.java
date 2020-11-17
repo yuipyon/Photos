@@ -93,7 +93,7 @@ public class LoginController extends ActionEvent implements Serializable {
 		boolean userExist;
 		User username = new User(UsernameBox.getText());
 
-		if (username.toString().equals(" ")) {
+		if (username.toString().isBlank()) {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Invalid Input");
 			alert.setHeaderText("Invalid input for username");

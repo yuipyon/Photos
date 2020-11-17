@@ -120,14 +120,6 @@ public class AlbumController implements Serializable {
 			UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
 			Serialization.storeUserList(UserController.userList);
         }
-    	FXMLLoader loader = new FXMLLoader();
-  		UserController ug = loader.getController();
-  		
-  		Album curr_album = serialController.readCurrentAlbum();
-  		curr_album.photos = photoList;
-  		curr_user.albums = ug.albumLists;
-  		UserController.userList = ug.updateAlbum(curr_user, UserController.userList);
-  		serialController.storeUserList(UserController.userList);
 	}
 
 	protected Alert displayImage(Photo p) {
