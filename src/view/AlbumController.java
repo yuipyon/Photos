@@ -151,15 +151,13 @@ public class AlbumController implements Serializable {
 	}
 
 	public void back(ActionEvent e) throws IOException, ClassNotFoundException {
+		Serialization.storeUserList(UserController.userList);
 		FXMLLoader loader = new FXMLLoader();
-		Parent parent = FXMLLoader.load(getClass().getResource("user_dashboard.fxml"));
-		Scene scene = new Scene(parent);
 		loader.setLocation(getClass().getResource("user_dashboard.fxml"));
 		AnchorPane root = (AnchorPane) loader.load();
-		stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		UserController controller = loader.getController();
 		controller.start(stage);
-		stage.setScene(scene);
+		stage.setScene(new Scene(root, 621, 424));
 		stage.setTitle("User Dashboard");
 		stage.show();
 	}
