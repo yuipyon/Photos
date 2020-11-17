@@ -1,6 +1,8 @@
 package app;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,10 +35,15 @@ public class Album implements Serializable{
 	int numPhotos; 
 	
 	/**
-	 * Date dateRange stores the date range that the album is based around.
+	 * These LocalDate date range attributes store the date range that the album is based around.
 	 */
-	Date dateRange; 
+	LocalDate startingDateRange;
+	LocalDate endingDateRange; 
 	
+	/**
+	 * DateTimeFormatter dateFormatter formats the date ranges from LocalDate format to MM/dd/yyyy format.
+	 */
+	private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 	
 	public ArrayList<Photo> photos;
 	
@@ -46,10 +53,9 @@ public class Album implements Serializable{
 	 * @param numPhotos
 	 * @param dateRange
 	 */
-	public Album(String name, int numPhotos, Date dateRange) {
+	public Album(String name, int numPhotos) {
 		this.name = name;
 		this.numPhotos = numPhotos;
-		this.dateRange = dateRange;
 	}
 	
 	/**
@@ -88,16 +94,28 @@ public class Album implements Serializable{
 	 * getDateRange returns the date range of the album.
 	 * @return Date
 	 */
-	public Date getDateRange() {
-		return dateRange;
+	public String getDateRange() {
+		return startingDateRange.format(dateFormatter) + " - " + endingDateRange.format(dateFormatter);
 	}
 	
-	/**
-	 * setDateRange sets the date range of an album.
-	 * @param dateRange
-	 */
-	public void setDateRange(Date dateRange) {
-		this.dateRange = dateRange;
+	public LocalDate getStartingDateRange() {
+		LocalDate earliestDate = photos.get(0).date;
+		for (int i = 1; i < photos.size(); i++) {
+			LocalDate temp = photos.get(i).date;
+			if (temp.compareTo(earliestDate) < 0) 
+				earliestDate = temp;
+		}
+		return earliestDate;
+	}
+	
+	public LocalDate getEndingDateRange() {
+		LocalDate latestDate = photos.get(0).date;
+		for (int i = 1; i < photos.size(); i++) {
+			LocalDate temp = photos.get(i).date;
+			if (temp.compareTo(latestDate) > 0) 
+				latestDate = temp;
+		}
+		return latestDate;
 	}
 	
 	/**
@@ -125,7 +143,7 @@ public class Album implements Serializable{
 		}
 		
 		Album a = (Album)o;
-		return name.equals(a.name) && numPhotos == (a.numPhotos) && dateRange.equals(a.dateRange);
+		return name.equals(a.name);
 	}
 	
 }

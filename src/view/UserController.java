@@ -233,9 +233,8 @@ public class UserController implements Serializable {
 		Optional<String> result = dialog.showAndWait();
 		if (result.isPresent()) {
 			String albumName = result.get();
-			Date date1 = null;
 			int numPhotos1 = 0;
-			Album newAlbum = new Album(albumName, numPhotos1, date1);
+			Album newAlbum = new Album(albumName, numPhotos1);
 			boolean albumExists = albumExist(newAlbum, albumLists);
 			//System.out.println(albumExists);
 
@@ -390,29 +389,29 @@ public class UserController implements Serializable {
 	 * @throws ClassNotFoundException
 	 */
 	public void open(ActionEvent e) throws IOException, ClassNotFoundException {
-		int selectedIndex = albumList.getSelectionModel().getSelectedIndex();
-		if (selectedIndex != -1) {
-			Album curr_album = (Album) albumList.getSelectionModel().getSelectedItem();
-			//System.out.println(curr_album);
-			int newSelectedIndex = (selectedIndex == albumList.getItems().size() - 1) ? selectedIndex - 1
-					: selectedIndex;
-			serialController.storeCurrentAlbum(curr_album);
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(getClass().getResource("Album_Display.fxml"));
-			AnchorPane root = (AnchorPane) loader.load();
-			
-			AlbumController ac = loader.getController();
-			ac.start(mainStage);
-			
-			mainStage.setTitle("Album Display");
-			mainStage.setScene(new Scene(root, 621, 424));
-			mainStage.setResizable(true);
-			mainStage.show();
+        int selectedIndex = albumList.getSelectionModel().getSelectedIndex();
+        if (selectedIndex != -1) {
+            Album curr_album = (Album) albumList.getSelectionModel().getSelectedItem();
+            //System.out.println(curr_album);
+            int newSelectedIndex = (selectedIndex == albumList.getItems().size() - 1) ? selectedIndex - 1
+                    : selectedIndex;
+            serialController.storeCurrentAlbum(curr_album);
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(getClass().getResource("Album_Display.fxml"));
+            AnchorPane root = (AnchorPane) loader.load();
+            
+            AlbumController ac = loader.getController();
+            ac.start(mainStage);
+            
+            mainStage.setTitle("Album Display");
+            mainStage.setScene(new Scene(root, 621, 424));
+            mainStage.setResizable(true);
+            mainStage.show();
 
-		}
+        }
 
 
-	}
+    }
 
 	/**
 	 * start is what will occur upon starting the user dashboard scene.

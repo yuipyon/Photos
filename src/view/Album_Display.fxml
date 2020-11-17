@@ -30,7 +30,6 @@ Yulin Ni
       <Button fx:id="logout" layoutX="529.0" layoutY="9.0" mnemonicParsing="false" onAction="#logout" style="-fx-background-color: c4cacf;" text="Logout" textFill="WHITE" />
       <HBox layoutX="174.0" layoutY="56.0" prefHeight="83.0" prefWidth="417.0" spacing="10.0">
          <children>
-            <Button fx:id="openButton" mnemonicParsing="false" onAction="#openImage" prefHeight="25.0" prefWidth="68.0" text="Open" />
             <Button fx:id="add" mnemonicParsing="false" onAction="#add" prefHeight="33.0" prefWidth="54.0" style="-fx-background-color: #0390fc;" text="Add" textFill="WHITE" />
             <Button fx:id="delete" mnemonicParsing="false" onAction="#delete" prefHeight="32.0" prefWidth="54.0" style="-fx-background-color: #0390fc;" text="Delete" textFill="WHITE" />
             <Button fx:id="moveCopy" mnemonicParsing="false" onAction="#moveCopy" prefHeight="31.0" prefWidth="87.0" style="-fx-background-color: #0390fc;" text="Move/Copy" textFill="WHITE" />

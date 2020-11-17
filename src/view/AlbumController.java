@@ -103,6 +103,7 @@ public class AlbumController implements Serializable {
         	Photo newPhoto = new Photo();
         	newPhoto.filepath = "file:" + file.getAbsolutePath();
         	newPhoto.photoName = file.getName();
+        	newPhoto.date = newPhoto.setDate(file);
         	photoList.add(newPhoto);
         	photos = FXCollections.observableList(photoList);
 			albumsView.setItems(photos);
@@ -127,6 +128,8 @@ public class AlbumController implements Serializable {
 	        });
 			Album curr_album = Serialization.readCurrentAlbum();
 			curr_album.photos = photoList;
+			curr_album.getStartingDateRange();
+			curr_album.getEndingDateRange();
 			curr_user.albums = updateAlbumPt1(curr_album, curr_user.albums);
 			UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
 			Serialization.storeUserList(UserController.userList);
@@ -161,16 +164,6 @@ public class AlbumController implements Serializable {
 		return alert;
 	}
 
-	public void openImage(ActionEvent e) {
-		int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
-		if (selectedIndex != -1) {
-			Photo photoToView = (Photo) albumsView.getSelectionModel().getSelectedItem();
-			int newSelectedIndex = (selectedIndex == albumsView.getItems().size() - 1) ? selectedIndex - 1
-					: selectedIndex;
-			displayImage(photoToView);
-		}
-	}
-
 	public void delete(ActionEvent e) throws FileNotFoundException, ClassNotFoundException, IOException {
 		int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
 		if (selectedIndex != -1) {
@@ -183,6 +176,8 @@ public class AlbumController implements Serializable {
 		}
 		Album curr_album = Serialization.readCurrentAlbum();
 		curr_album.photos = photoList;
+		curr_album.getStartingDateRange();
+		curr_album.getEndingDateRange();
 		curr_user.albums = updateAlbumPt1(curr_album, curr_user.albums);
 		UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
 		Serialization.storeUserList(UserController.userList);
@@ -236,14 +231,15 @@ public class AlbumController implements Serializable {
 	 * @throws ClassNotFoundException
 	 */
 	public void logout(ActionEvent e) throws ClassNotFoundException, IOException {
-		FXMLLoader loader = new FXMLLoader();
-		LoginController lg = loader.getController();
 		serialController.storeUserList(UserController.userList);
 
+		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("Login.fxml"));
 		AnchorPane root = (AnchorPane) loader.load();
+
 		stage.close();
 
+		LoginController lg = loader.getController();
 		Stage ns = new Stage();
 
 		lg.start(ns);
@@ -347,7 +343,7 @@ public class AlbumController implements Serializable {
 			    }
 			});
 		} else {
-			if(curr_album.photos == null) {
+			if (curr_album.photos == null) {
 				photos = FXCollections.observableList(photoList);
 				albumsView.setItems(photos);
 			} else {
@@ -358,7 +354,7 @@ public class AlbumController implements Serializable {
 		            private ImageView imageView = new ImageView();
 		            @Override
 		            public void updateItem(Photo name, boolean empty) {
-		                super.updateItem(name, empty);
+		            	super.updateItem(name, empty);
 		                if (empty) {
 		                    setText(null);
 		                    setGraphic(null);
@@ -413,7 +409,5 @@ public class AlbumController implements Serializable {
 				    }
 				});
 			}
-		}
-
 	}
-}
+			
