@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <!--
 
@@ -17,18 +18,11 @@ Yulin Ni
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="520.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.AlbumController">
    <children>
-      <Label layoutX="206.0" layoutY="5.0" prefHeight="45.0" prefWidth="213.0" text="Album Details" textAlignment="CENTER">
-         <font>
-            <Font size="30.0" />
-         </font>
-      </Label>
       <ListView fx:id="albumsView" layoutX="8.0" layoutY="150.0" prefHeight="365.0" prefWidth="586.0" style="-fx-background-color: f0eded;" />
-      <TextField fx:id="photoName" layoutX="13.0" layoutY="54.0" prefHeight="26.0" prefWidth="142.0" promptText="Photo Name" />
-      <TextField fx:id="albumName" layoutX="13.0" layoutY="86.0" prefHeight="26.0" prefWidth="143.0" promptText="Album Name" />
-      <TextField fx:id="caption" layoutX="13.0" layoutY="117.0" prefHeight="26.0" prefWidth="143.0" promptText="Caption" />
+      <TextField fx:id="albumName" layoutX="14.0" layoutY="117.0" prefHeight="26.0" prefWidth="143.0" promptText="Album Name" />
       <Button fx:id="back" layoutX="14.0" layoutY="10.0" mnemonicParsing="false" onAction="#back" text="Back" />
       <Button fx:id="logout" layoutX="529.0" layoutY="9.0" mnemonicParsing="false" onAction="#logout" style="-fx-background-color: c4cacf;" text="Logout" textFill="WHITE" />
-      <HBox layoutX="174.0" layoutY="56.0" prefHeight="83.0" prefWidth="417.0" spacing="10.0">
+      <HBox layoutX="133.0" layoutY="64.0" prefHeight="37.0" prefWidth="309.0" spacing="10.0">
          <children>
             <Button fx:id="add" mnemonicParsing="false" onAction="#add" prefHeight="33.0" prefWidth="54.0" style="-fx-background-color: #0390fc;" text="Add" textFill="WHITE" />
             <Button fx:id="delete" mnemonicParsing="false" onAction="#delete" prefHeight="32.0" prefWidth="54.0" style="-fx-background-color: #0390fc;" text="Delete" textFill="WHITE" />
@@ -36,5 +30,14 @@ Yulin Ni
             <Button fx:id="recaption" mnemonicParsing="false" onAction="#recaption" prefHeight="32.0" prefWidth="80.0" style="-fx-background-color: #0390fc;" text="Recaption" textFill="WHITE" />
          </children>
       </HBox>
+      <StackPane layoutX="221.0" layoutY="9.0" prefHeight="51.0" prefWidth="120.0">
+         <children>
+            <Text fx:id="albumTitle" strokeType="OUTSIDE" strokeWidth="0.0" text="asfasdfsdf" textAlignment="CENTER">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Text>
+         </children>
+      </StackPane>
    </children>
 </AnchorPane>

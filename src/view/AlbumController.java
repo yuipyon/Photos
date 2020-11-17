@@ -6,9 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import app.Album;
 import app.Photo;
 import app.User;
@@ -18,10 +15,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -29,9 +23,7 @@ import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-import javafx.scene.control.MenuButton;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -39,10 +31,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.TilePane;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Modality;
@@ -63,11 +52,7 @@ public class AlbumController implements Serializable {
 	@FXML
 	ListView albumsView;
 	@FXML
-	TextField photoName;
-	@FXML
-	TextField albumName;
-	@FXML
-	TextField caption;
+	Text albumTitle;
 	@FXML
 	Button back;
 	@FXML
@@ -134,34 +119,6 @@ public class AlbumController implements Serializable {
 			UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
 			Serialization.storeUserList(UserController.userList);
         }
-	}
-
-	protected Alert displayImage(Photo p) {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle(p.photoName);
-
-		alert.initModality(Modality.APPLICATION_MODAL);
-		alert.initOwner(stage);
-
-		DialogPane dialogPane = alert.getDialogPane();
-		GridPane grid = new GridPane();
-		ColumnConstraints graphicColumn = new ColumnConstraints();
-		ColumnConstraints textColumn = new ColumnConstraints();
-		grid.getColumnConstraints().setAll(graphicColumn, textColumn);
-
-		Image ni = new Image(p.filepath);
-		ImageView imageView = new ImageView(ni);
-		imageView.setFitWidth(400);
-		imageView.setFitHeight(400);
-		StackPane stackPane = new StackPane(imageView);
-		grid.add(stackPane, 0, 0);
-
-		dialogPane.setHeader(grid);
-		dialogPane.setGraphic(imageView);
-
-		alert.showAndWait();
-
-		return alert;
 	}
 
 	public void delete(ActionEvent e) throws FileNotFoundException, ClassNotFoundException, IOException {
@@ -274,6 +231,8 @@ public class AlbumController implements Serializable {
 		curr_user = Serialization.readCurrentUser();
 		Album curr_album = Serialization.readCurrentAlbum();
 
+		albumTitle.setText("Album View - " + curr_album.getName());
+		
 		for (int i = 0; i <= UserController.userList.size() - 1; i++) {
 			if (UserController.userList.get(i).equals(curr_user)) {
 				curr_user = UserController.userList.get(i);
