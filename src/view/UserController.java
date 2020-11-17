@@ -352,6 +352,10 @@ public class UserController implements Serializable {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(getClass().getResource("Album_Display.fxml"));
 			AnchorPane root = (AnchorPane) loader.load();
+			
+			AlbumController ac = loader.getController();
+			ac.start(mainStage);
+			
 			mainStage.setTitle("Album Display");
 			mainStage.setScene(new Scene(root, 621, 424));
 			mainStage.setResizable(true);
@@ -359,11 +363,6 @@ public class UserController implements Serializable {
 
 		}
 
-		Parent albumDisplayParent = FXMLLoader.load(getClass().getResource("Album_Display.fxml"));
-		Scene albumDisplayScene = new Scene(albumDisplayParent);
-		mainStage.setScene(albumDisplayScene);
-		mainStage.setTitle("Album View");
-		mainStage.show();
 
 	}
 

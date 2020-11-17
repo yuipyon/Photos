@@ -103,7 +103,7 @@ public class AlbumController implements Serializable {
 		}
 
 		if(curr_user.getUserName().equals("stock")) {
-			
+			System.out.println("True");
 		}
 
 	}
