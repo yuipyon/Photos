@@ -21,7 +21,7 @@ Yulin Ni
       <Button fx:id="SubmitBox" layoutX="187.0" layoutY="319.0" mnemonicParsing="false" onAction="#login" prefHeight="25.0" prefWidth="70.0" style="-fx-background-color: #0390fc; -fx-background-radius: 0;" text="Login" textFill="WHITE" />
       <ImageView fitHeight="163.0" fitWidth="200.0" layoutX="102.0" layoutY="58.0">
          <image>
-            <Image url="https://lh3.googleusercontent.com/proxy/uIMLBjEhVf18abmvSxIdmvnKuWiQeDXKwJKy9hrCCyhUCs04tQnRowpv8yXUmDtQHHTIe3qMRLJ15-alQy23UMgqnqi1EN-z8g" />
+            <Image url="http://clipart-library.com/data_images/168048.jpg" />
          </image>
       </ImageView>
    </children>

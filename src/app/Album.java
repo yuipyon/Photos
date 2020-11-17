@@ -37,7 +37,6 @@ public class Album implements Serializable{
 	 */
 	Date dateRange; 
 	
-	ArrayList<Photo> photos; 
 	
 	/**
 	 * Album creates a new instance of Album. 
