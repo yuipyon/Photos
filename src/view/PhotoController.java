@@ -42,20 +42,20 @@ public class PhotoController {
 	
 	public void goBack(ActionEvent e) {
 		forwardCounter--;
-		PhotoView.setImage(new Image(curr_user.albums.get(0).photos.get(forwardCounter).filepath));
+		PhotoView.setImage(new Image("file:"+curr_user.albums.get(0).photos.get(forwardCounter).filepath));
 	}
 	
 	public void goForward(ActionEvent e) {
 		forwardCounter++;
-		PhotoView.setImage(new Image(curr_user.albums.get(0).photos.get(forwardCounter).filepath));
+		PhotoView.setImage(new Image("file:"+curr_user.albums.get(0).photos.get(forwardCounter).filepath));
 	}
 	
 	public void backScreen(ActionEvent e) throws FileNotFoundException, ClassNotFoundException, IOException {
 		Serialization.storeUserList(UserController.userList);
 		FXMLLoader loader = new FXMLLoader();
-		loader.setLocation(getClass().getResource("user_dashboard.fxml"));
+		loader.setLocation(getClass().getResource("Album_Display.fxml"));
 		AnchorPane root = (AnchorPane) loader.load();
-		UserController controller = loader.getController();
+		AlbumController controller = loader.getController();
 		controller.start(mainStage);
 		mainStage.setScene(new Scene(root, 621, 424));
 		mainStage.setTitle("User Dashboard");
@@ -87,7 +87,7 @@ public class PhotoController {
 		photos = curr_user.albums.get(0).photos;
 		
 		if(curr_user.getUserName().equals("stock")) {
-			PhotoView.setImage(new Image(curr_user.albums.get(0).photos.get(0).filepath));
+			PhotoView.setImage(new Image("file:"+curr_user.albums.get(0).photos.get(0).filepath));
 		}
 		
 	}

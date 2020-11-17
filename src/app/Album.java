@@ -1,6 +1,8 @@
 package app;
 
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -33,11 +35,15 @@ public class Album implements Serializable{
 	int numPhotos; 
 	
 	/**
-	 * These Calendar date range attributes store the date range that the album is based around.
+	 * These LocalDate date range attributes store the date range that the album is based around.
 	 */
-	Calendar startingDateRange;
-	Calendar endingDateRange; 
+	LocalDate startingDateRange;
+	LocalDate endingDateRange; 
 	
+	/**
+	 * DateTimeFormatter dateFormatter formats the date ranges from LocalDate format to MM/dd/yyyy format.
+	 */
+	private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 	
 	public ArrayList<Photo> photos;
 	
@@ -89,7 +95,27 @@ public class Album implements Serializable{
 	 * @return Date
 	 */
 	public String getDateRange() {
-		return startingDateRange + " - " + endingDateRange;
+		return startingDateRange.format(dateFormatter) + " - " + endingDateRange.format(dateFormatter);
+	}
+	
+	public LocalDate getStartingDateRange() {
+		LocalDate earliestDate = photos.get(0).date;
+		for (int i = 1; i < photos.size(); i++) {
+			LocalDate temp = photos.get(i).date;
+			if (temp.compareTo(earliestDate) < 0) 
+				earliestDate = temp;
+		}
+		return earliestDate;
+	}
+	
+	public LocalDate getEndingDateRange() {
+		LocalDate latestDate = photos.get(0).date;
+		for (int i = 1; i < photos.size(); i++) {
+			LocalDate temp = photos.get(i).date;
+			if (temp.compareTo(latestDate) > 0) 
+				latestDate = temp;
+		}
+		return latestDate;
 	}
 	
 	/**

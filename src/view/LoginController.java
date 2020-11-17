@@ -101,14 +101,14 @@ public class LoginController extends ActionEvent implements Serializable {
 			alert.showAndWait();
 		} else if (!UsernameBox.getText().equals("admin") && !UsernameBox.getText().equals("stock")) {
 			userExist = userExists(username, userList);
-			System.out.println(userExist);
+			//System.out.println(userExist);
 
 			if (userExist == true) {
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("user_dashboard.fxml"));
 				AnchorPane root = (AnchorPane) loader.load();
 				serialController.storeCurrentUser(username);
-				// System.out.println((User)serialController.readCurrentUser());
+				// //System.out.println((User)serialController.readCurrentUser());
 
 				UserController userController = loader.getController();
 				userController.start(stage);
@@ -121,7 +121,7 @@ public class LoginController extends ActionEvent implements Serializable {
 				userList.add(username);
 				serialController.storeUserList(userList);
 				serialController.storeCurrentUser(username);
-				System.out.println((User) serialController.readCurrentUser());
+				//System.out.println((User) serialController.readCurrentUser());
 
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("user_dashboard.fxml"));
@@ -138,14 +138,14 @@ public class LoginController extends ActionEvent implements Serializable {
 
 		} else if (!UsernameBox.getText().equals("admin") && UsernameBox.getText().equals("stock")) {
 			userExist = userExists(username, userList);
-			System.out.println(userExist);
+			//System.out.println(userExist);
 
 			if (userExist == true) {
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("user_dashboard.fxml"));
 				AnchorPane root = (AnchorPane) loader.load();
 				serialController.storeCurrentUser(username);
-				// System.out.println((User)serialController.readCurrentUser());
+				// //System.out.println((User)serialController.readCurrentUser());
 
 				UserController userController = loader.getController();
 				userController.start(stage);
@@ -158,12 +158,12 @@ public class LoginController extends ActionEvent implements Serializable {
 				ArrayList<Photo> photos = new ArrayList<Photo>();
 				Photo one = new Photo();
 				one.photo = new Image("file:data/soccerball.jpg");
-				one.filepath = "file:data/soccerball.jpg";
+				one.filepath = "data/soccerball.jpg";
 				one.photoName = "Soccer Ball";
 				
 				Photo two = new Photo();
 				two.photo = new Image("file:data/basketball.png");
-				two.filepath = "file:data/basketball.png";
+				two.filepath = "data/basketball.png";
 				two.photoName = "Basketball";
 				
 				Photo three = new Photo();
@@ -173,12 +173,12 @@ public class LoginController extends ActionEvent implements Serializable {
 				
 				Photo four = new Photo();
 				four.photo = new Image("file:data/cricketball.jpg");
-				four.filepath = "file:data/cricketball.jpg";
+				four.filepath = "data/cricketball.jpg";
 				four.photoName = "Cricketball";
 				
 				Photo five = new Photo();
 				five.photo = new Image("file:data/ship.jpg");
-				five.filepath = "file:data/ship.jpg";
+				five.filepath = "data/ship.jpg";
 				five.photoName = "Rocketship";
 				
 				photos.add(one);
@@ -196,7 +196,7 @@ public class LoginController extends ActionEvent implements Serializable {
 				userList.add(username);
 				serialController.storeUserList(userList);
 				serialController.storeCurrentUser(username);
-				System.out.println((User) serialController.readCurrentUser());
+				//System.out.println((User) serialController.readCurrentUser());
 
 				FXMLLoader loader = new FXMLLoader();
 				loader.setLocation(getClass().getResource("user_dashboard.fxml"));
@@ -235,7 +235,7 @@ public class LoginController extends ActionEvent implements Serializable {
 	 */
 	public void start(Stage primaryStage) throws FileNotFoundException, ClassNotFoundException, IOException {
 		this.stage = primaryStage;
-		System.out.println(stage);
+		//System.out.println(stage);
 		File file = new File("user_data/usernames.ser");
 		if (userList == null) {
 
@@ -243,7 +243,7 @@ public class LoginController extends ActionEvent implements Serializable {
 			userList = serialController.readUserList();
 		}
 
-		System.out.println(userList);
+		//System.out.println(userList);
 
 	}
 }

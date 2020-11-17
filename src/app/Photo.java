@@ -1,6 +1,17 @@
 package app;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 
@@ -42,10 +53,10 @@ public class Photo implements Serializable{
 	public ArrayList<Tag> tags;
 	
 	/**
-	 * Calendar date records the time in which the photo was taken - in other words, the last modification date. 
+	 * LocalDate date records the time in which the photo was taken - in other words, the last modification date. 
 	 */
 	
-	public Calendar date; 
+	public LocalDate date; 
 	
 	public Photo() {
 		this.photo = null;
@@ -76,7 +87,18 @@ public class Photo implements Serializable{
 		Photo p = (Photo)o;
 		return photoName.equals(p.photoName);
 	}
+
+	public LocalDate setDate(File file) throws IOException {
+		Path path = Paths.get(file.getAbsolutePath());
+		BasicFileAttributes attr = Files.readAttributes(path, BasicFileAttributes.class);
+		FileTime fileTime = attr.lastModifiedTime();
+		LocalDate localDate = fileTime.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		return localDate;
+	}
 	
+	public String getDate(LocalDate date) {
+		return date.format(DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+	}
 	
 	
 }

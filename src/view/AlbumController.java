@@ -15,6 +15,7 @@ import app.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -28,6 +29,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -92,6 +94,7 @@ public class AlbumController implements Serializable {
         	Photo newPhoto = new Photo();
         	newPhoto.filepath = file.getAbsolutePath();
         	newPhoto.photoName = file.getName();
+        	newPhoto.date = newPhoto.setDate(file);
         	photoList.add(newPhoto);
         	photos = FXCollections.observableList(photoList);
 			albumsView.setItems(photos);
@@ -116,6 +119,8 @@ public class AlbumController implements Serializable {
 	        });
 			Album curr_album = Serialization.readCurrentAlbum();
 			curr_album.photos = photoList;
+			curr_album.getStartingDateRange();
+			curr_album.getEndingDateRange();
 			curr_user.albums = updateAlbumPt1(curr_album, curr_user.albums);
 			UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
 			Serialization.storeUserList(UserController.userList);
@@ -172,6 +177,8 @@ public class AlbumController implements Serializable {
 		}
 		Album curr_album = Serialization.readCurrentAlbum();
 		curr_album.photos = photoList;
+		curr_album.getStartingDateRange();
+		curr_album.getEndingDateRange();
 		curr_user.albums = updateAlbumPt1(curr_album, curr_user.albums);
 		UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
 		Serialization.storeUserList(UserController.userList);
@@ -231,6 +238,7 @@ public class AlbumController implements Serializable {
 		this.stage = primaryStage;
 
 		curr_user = Serialization.readCurrentUser();
+		Album curr_album = Serialization.readCurrentAlbum();
 
 		for (int i = 0; i <= UserController.userList.size() - 1; i++) {
 			if (UserController.userList.get(i).equals(curr_user)) {
@@ -261,8 +269,46 @@ public class AlbumController implements Serializable {
 	                }
 	            }
 	        });
+			albumsView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			    @Override
+			    public void handle(MouseEvent click) {
+
+			        if (click.getClickCount() == 2) {
+			        	int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
+			    		if (selectedIndex != -1) {
+			    			Photo curr_album = (Photo) albumsView.getSelectionModel().getSelectedItem();
+			    			//System.out.println(curr_album);
+			    			int newSelectedIndex = (selectedIndex == albumsView.getItems().size() - 1) ? selectedIndex - 1
+			    					: selectedIndex;
+			    			FXMLLoader loader = new FXMLLoader();
+			    			loader.setLocation(getClass().getResource("photo view.fxml"));
+			    			AnchorPane root = null;
+							try {
+								root = (AnchorPane) loader.load();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+			    			
+			    			PhotoController pc = loader.getController();
+			    			try {
+								pc.start(stage);
+							} catch (ClassNotFoundException | IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+			    			
+			    			stage.setTitle("Photos View");
+			    			stage.setScene(new Scene(root, 700, 600));
+			    			stage.setResizable(true);
+			    			stage.show();
+
+			    		}
+			        }
+			    }
+			});
 		} else {
-			Album curr_album = Serialization.readCurrentAlbum();
 			photoList = curr_album.photos;
 			photos = FXCollections.observableList(photoList);
 			albumsView.setItems(photos);
@@ -285,6 +331,45 @@ public class AlbumController implements Serializable {
 	                }
 	            }
 	        });
+			albumsView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			    @Override
+			    public void handle(MouseEvent click) {
+
+			        if (click.getClickCount() == 2) {
+			        	int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
+			    		if (selectedIndex != -1) {
+			    			Photo curr_album = (Photo) albumsView.getSelectionModel().getSelectedItem();
+			    			//System.out.println(curr_album);
+			    			int newSelectedIndex = (selectedIndex == albumsView.getItems().size() - 1) ? selectedIndex - 1
+			    					: selectedIndex;
+			    			FXMLLoader loader = new FXMLLoader();
+			    			loader.setLocation(getClass().getResource("photo view.fxml"));
+			    			AnchorPane root = null;
+							try {
+								root = (AnchorPane) loader.load();
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+			    			
+			    			PhotoController pc = loader.getController();
+			    			try {
+								pc.start(stage);
+							} catch (ClassNotFoundException | IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+			    			
+			    			stage.setTitle("Photos View");
+			    			stage.setScene(new Scene(root, 700, 600));
+			    			stage.setResizable(true);
+			    			stage.show();
+
+			    		}
+			        }
+			    }
+			});
 		}
 
 	}
