@@ -164,16 +164,6 @@ public class AlbumController implements Serializable {
 		return alert;
 	}
 
-	public void openImage(ActionEvent e) {
-		int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
-		if (selectedIndex != -1) {
-			Photo photoToView = (Photo) albumsView.getSelectionModel().getSelectedItem();
-			int newSelectedIndex = (selectedIndex == albumsView.getItems().size() - 1) ? selectedIndex - 1
-					: selectedIndex;
-			displayImage(photoToView);
-		}
-	}
-
 	public void delete(ActionEvent e) throws FileNotFoundException, ClassNotFoundException, IOException {
 		int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
 		if (selectedIndex != -1) {
