@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import app.Album;
 import app.Photo;
 import app.User;
 import javafx.collections.FXCollections;
@@ -66,8 +67,9 @@ public class AlbumController implements Serializable {
 	User curr_user;
 	ObservableList<Photo> photos = FXCollections.observableArrayList();
 	ArrayList<Photo> photoList = new ArrayList<Photo>();
+	Serialization serialController = new Serialization();
 
-	public void add(ActionEvent e) throws FileNotFoundException, IOException {
+	public void add(ActionEvent e) throws FileNotFoundException, IOException, ClassNotFoundException {
 		Desktop desktop = Desktop.getDesktop();
 		FileChooser fc = new FileChooser();
 		fc.setTitle("Add photo");
@@ -101,6 +103,14 @@ public class AlbumController implements Serializable {
 	            }
 	        });
         }
+    	FXMLLoader loader = new FXMLLoader();
+  		UserController ug = loader.getController();
+  		
+  		Album curr_album = serialController.readCurrentAlbum();
+  		curr_album.photos = photoList;
+  		curr_user.albums = ug.albumLists;
+  		UserController.userList = ug.updateAlbum(curr_user, UserController.userList);
+  		serialController.storeUserList(UserController.userList);
 	}
 
 	protected Alert displayImage(Photo p) {
@@ -161,15 +171,14 @@ public class AlbumController implements Serializable {
 	 * @throws ClassNotFoundException
 	 */
 	public void logout(ActionEvent e) throws ClassNotFoundException, IOException {
-		Serialization.storeUserList(UserController.userList);
-
 		FXMLLoader loader = new FXMLLoader();
+		LoginController lg = loader.getController();
+		serialController.storeUserList(UserController.userList);
+
 		loader.setLocation(getClass().getResource("Login.fxml"));
 		AnchorPane root = (AnchorPane) loader.load();
-		stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		stage.close();
 
-		LoginController lg = loader.getController();
 		Stage ns = new Stage();
 
 		lg.start(ns);
@@ -180,8 +189,8 @@ public class AlbumController implements Serializable {
 	}
 
 	public void back(ActionEvent e) throws IOException, ClassNotFoundException {
-        Serialization.storeUserList(UserController.userList);
         FXMLLoader loader = new FXMLLoader();
+		serialController.storeUserList(UserController.userList);
         loader.setLocation(getClass().getResource("user_dashboard.fxml"));
         AnchorPane root = (AnchorPane) loader.load();
         UserController controller = loader.getController();

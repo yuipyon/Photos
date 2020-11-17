@@ -125,7 +125,7 @@ public class UserController implements Serializable {
 	/**
 	 * ArrayList<Album> albumLists holds the albums for the user.
 	 */
-	private ArrayList<Album> albumLists = new ArrayList<Album>();
+	public ArrayList<Album> albumLists = new ArrayList<Album>();
 
 	/**
 	 * Creates a instance of the Serialization model to create serializable data to
@@ -195,7 +195,7 @@ public class UserController implements Serializable {
 	 * @param userList
 	 * @return ArrayList<User>
 	 */
-	private ArrayList<User> updateAlbum(User user, ArrayList<User> userList) {
+	public ArrayList<User> updateAlbum(User user, ArrayList<User> userList) {
 		for (int i = 0; i <= userList.size() - 1; i++) {
 			if (userList.get(i).equals(user)) {
 				userList.remove(i);
