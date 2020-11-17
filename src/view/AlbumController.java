@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import app.Album;
 import app.Photo;
 import app.User;
 import javafx.collections.FXCollections;
@@ -13,86 +14,156 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Serialization;
 
 public class AlbumController implements Serializable {
-	
+
 	Stage stage;
-	@FXML Button add;
-	@FXML Button delete; 
-	@FXML Button moveCopy;
-	@FXML Button recaption;
-	@FXML ListView albumsView; 
-	@FXML TextField photoName;
-	@FXML TextField albumName;
-	@FXML TextField caption;
-	@FXML Button back;
-	@FXML Button logout;
-	
+	@FXML
+	Button add;
+	@FXML
+	Button delete;
+	@FXML
+	Button moveCopy;
+	@FXML
+	Button recaption;
+	@FXML
+	ListView albumsView;
+	@FXML
+	TextField photoName;
+	@FXML
+	TextField albumName;
+	@FXML
+	TextField caption;
+	@FXML
+	Button back;
+	@FXML
+	Button openButton;
+	@FXML
+	Button logout;
+
 	User curr_user;
 	ObservableList<Photo> photos = FXCollections.observableArrayList();
 	ArrayList<Photo> photoList = new ArrayList<Photo>();
-	
-	
-	
+
 	public void add(ActionEvent e) {
-		
+
 	}
-	
-	public void delete(ActionEvent e) {}
-	public void moveCopy(ActionEvent e) {}
-	public void recaption(ActionEvent e) {}
-	
+
+	protected Alert displayImage(Photo p) {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle(p.photoName);
+
+		alert.initModality(Modality.APPLICATION_MODAL);
+		alert.initOwner(stage);
+
+		DialogPane dialogPane = alert.getDialogPane();
+		GridPane grid = new GridPane();
+		ColumnConstraints graphicColumn = new ColumnConstraints();
+		ColumnConstraints textColumn = new ColumnConstraints();
+		grid.getColumnConstraints().setAll(graphicColumn, textColumn);
+
+		Image ni = new Image(p.filepath);
+		ImageView imageView = new ImageView(ni);
+		imageView.setFitWidth(400);
+		imageView.setFitHeight(400);
+		StackPane stackPane = new StackPane(imageView);
+		grid.add(stackPane, 0, 0);
+
+		dialogPane.setHeader(grid);
+		dialogPane.setGraphic(imageView);
+
+		alert.showAndWait();
+
+		return alert;
+	}
+
+	public void openImage(ActionEvent e) {
+		int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
+		if (selectedIndex != -1) {
+			Photo photoToView = (Photo) albumsView.getSelectionModel().getSelectedItem();
+			System.out.println(photoToView.photo);
+			System.out.println(new Image("soccerball.jpg"));
+			int newSelectedIndex = (selectedIndex == albumsView.getItems().size() - 1) ? selectedIndex - 1
+					: selectedIndex;
+			displayImage(photoToView);
+		}
+	}
+
+	public void delete(ActionEvent e) {
+	}
+
+	public void moveCopy(ActionEvent e) {
+	}
+
+	public void recaption(ActionEvent e) {
+	}
+
 	/**
 	 * logout enables the user to logout from the session.
+	 * 
 	 * @param event
 	 * @throws IOException
-	 * @throws ClassNotFoundException 
+	 * @throws ClassNotFoundException
 	 */
 	public void logout(ActionEvent e) throws ClassNotFoundException, IOException {
 		Serialization.storeUserList(UserController.userList);
-		
+
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("Login.fxml"));
-		AnchorPane root = (AnchorPane)loader.load();
-		stage = (Stage)((Node)e.getSource()).getScene().getWindow();
+		AnchorPane root = (AnchorPane) loader.load();
+		stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		stage.close();
-		
+
 		LoginController lg = loader.getController();
 		Stage ns = new Stage();
-		
+
 		lg.start(ns);
 		ns.setTitle("Login");
 		ns.setScene(new Scene(root, 621, 424));
 		ns.setResizable(true);
 		ns.show();
 	}
-	
+
 	public void back(ActionEvent e) throws IOException, ClassNotFoundException {
 		FXMLLoader loader = new FXMLLoader();
 		Parent parent = FXMLLoader.load(getClass().getResource("user_dashboard.fxml"));
 		Scene scene = new Scene(parent);
 		loader.setLocation(getClass().getResource("user_dashboard.fxml"));
-		AnchorPane root = (AnchorPane)loader.load();
-		stage = (Stage)((Node)e.getSource()).getScene().getWindow();
+		AnchorPane root = (AnchorPane) loader.load();
+		stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
 		UserController controller = loader.getController();
 		controller.start(stage);
 		stage.setScene(scene);
 		stage.setTitle("User Dashboard");
 		stage.show();
 	}
-	
+
 	/**
 	 * start is what will occur upon starting the admin dashboard scene.
 	 * @param primaryStage
@@ -115,18 +186,42 @@ public class AlbumController implements Serializable {
 			photoList = curr_user.albums.get(0).photos;
 			photos = FXCollections.observableList(photoList);
 			albumsView.setItems(photos);
-			albumsView.setCellFactory(listView -> new ListCell<Photo>() {
-	            private ImageView displayImage = new ImageView();
-
+			albumsView.setCellFactory(param -> new ListCell<Photo>() {
+	            private ImageView imageView = new ImageView();
+	            @Override
 	            public void updateItem(Photo name, boolean empty) {
 	                super.updateItem(name, empty);
 	                if (empty) {
 	                    setText(null);
 	                    setGraphic(null);
 	                } else {
-	                    displayImage.setImage(name.photo);
+	                    if(name.photoName.equals("Soccer Ball")) {
+	                        imageView.setImage(new Image(name.filepath));
+		                    imageView.setFitWidth(100);
+		            	    imageView.setFitHeight(100);
+	                    }
+	                    else if(name.photoName.equals("Basketball")) {
+	                        imageView.setImage(new Image(name.filepath));
+		                    imageView.setFitWidth(100);
+		            	    imageView.setFitHeight(100);
+	                	}
+		            	else if(name.photoName.equals("Tennis Ball")) {
+	                        imageView.setImage(new Image(name.filepath));
+		                    imageView.setFitWidth(100);
+		            	    imageView.setFitHeight(100);
+		            	}
+	                    else if(name.photoName.equals("Cricketball")) {
+	                        imageView.setImage(new Image(name.filepath));
+		                    imageView.setFitWidth(100);
+		            	    imageView.setFitHeight(100);
+	                    }
+	                    else if(name.photoName.equals("Rocketship")) {
+	                    	imageView.setImage(new Image(name.filepath));
+		                    imageView.setFitWidth(100);
+		            	    imageView.setFitHeight(100);
+	                    }
 	                    setText(name.photoName);
-	                    setGraphic(displayImage);
+	                    setGraphic(imageView);
 	                }
 	            }
 	        });

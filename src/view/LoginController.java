@@ -156,9 +156,37 @@ public class LoginController extends ActionEvent implements Serializable {
 				stage.show();
 			} else {
 				ArrayList<Photo> photos = new ArrayList<Photo>();
-				Photo p = new Photo(new Image(getClass().getResource("soccerball.jpg").toExternalForm()));
-				p.photoName = "Soccer Ball";
-				photos.add(p);
+				Photo one = new Photo();
+				one.photo = new Image("soccerball.jpg");
+				one.filepath = "soccerball.jpg";
+				one.photoName = "Soccer Ball";
+				
+				Photo two = new Photo();
+				two.photo = new Image("basketball.png");
+				two.filepath = "basketball.png";
+				two.photoName = "Basketball";
+				
+				Photo three = new Photo();
+				three.photo = new Image("tennisball.jpeg");
+				three.filepath = "tennisball.jpeg";
+				three.photoName = "Tennis Ball";
+				
+				Photo four = new Photo();
+				four.photo = new Image("cricketball.jpg");
+				four.filepath = "cricketball.jpg";
+				four.photoName = "Cricketball";
+				
+				Photo five = new Photo();
+				five.photo = new Image("ship.jpg");
+				five.filepath = "ship.jpg";
+				five.photoName = "Rocketship";
+				
+				photos.add(one);
+				photos.add(two);
+				photos.add(three);
+				photos.add(four);
+				photos.add(five);
+				
 				ArrayList<Album> a = new ArrayList<Album>();
 				Album al = new Album("stock", 0, null);
 				al.photos = photos;
