@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import app.Album;
+import app.Photo;
 import app.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +17,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Serialization;
@@ -153,8 +155,15 @@ public class LoginController extends ActionEvent implements Serializable {
 				stage.setResizable(true);
 				stage.show();
 			} else {
+				ArrayList<Photo> photos = new ArrayList<Photo>();
+				Photo p = new Photo(new Image(getClass().getResource("soccerball.jpg").toExternalForm()));
+				p.photoName = "Soccer Ball";
+				photos.add(p);
 				ArrayList<Album> a = new ArrayList<Album>();
-				a.add(new Album("stock", 0, null));
+				Album al = new Album("stock", 0, null);
+				al.photos = photos;
+				a.add(al);
+				
 				username.albums = a;
 				userList.add(username);
 				serialController.storeUserList(userList);

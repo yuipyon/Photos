@@ -38,6 +38,8 @@ public class Album implements Serializable{
 	Date dateRange; 
 	
 	
+	public ArrayList<Photo> photos;
+	
 	/**
 	 * Album creates a new instance of Album. 
 	 * @param name

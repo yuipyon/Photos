@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 
+import app.Photo;
 import app.User;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,8 +17,11 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import model.Serialization;
@@ -35,6 +41,9 @@ public class AlbumController implements Serializable {
 	@FXML Button logout;
 	
 	User curr_user;
+	ObservableList<Photo> photos = FXCollections.observableArrayList();
+	ArrayList<Photo> photoList = new ArrayList<Photo>();
+	
 	
 	
 	public void add(ActionEvent e) {
@@ -103,7 +112,24 @@ public class AlbumController implements Serializable {
 		}
 
 		if(curr_user.getUserName().equals("stock")) {
-			System.out.println("True");
+			photoList = curr_user.albums.get(0).photos;
+			photos = FXCollections.observableList(photoList);
+			albumsView.setItems(photos);
+			albumsView.setCellFactory(listView -> new ListCell<Photo>() {
+	            private ImageView displayImage = new ImageView();
+
+	            public void updateItem(Photo name, boolean empty) {
+	                super.updateItem(name, empty);
+	                if (empty) {
+	                    setText(null);
+	                    setGraphic(null);
+	                } else {
+	                    displayImage.setImage(name.photo);
+	                    setText(name.photoName);
+	                    setGraphic(displayImage);
+	                }
+	            }
+	        });
 		}
 
 	}
