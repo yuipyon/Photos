@@ -48,35 +48,112 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Serialization;
 
+/**
+ * @author Karun Kanda
+ * @author Yulin Ni
+ *
+ */
+
+/**
+ * The Album Controller class controls the behaviors of the screens and buttons in the Album Display.
+ */
 public class AlbumController implements Serializable {
 
+	/**
+	 * Stage stage is used to store the primaryStage.
+	 */
 	Stage stage;
+	
+	/**
+	 * Button add enables the user to add a new photo.
+	 */
 	@FXML
 	Button add;
+	
+	/**
+	 * Button delete enables the user to delete an photo.
+	 */
 	@FXML
 	Button delete;
+	
+	/**
+	 * Button moveCopy enables the user to move/copy a photo.
+	 */
 	@FXML
 	Button moveCopy;
+	
+	/**
+	 * Button recaption enables the user to recaption a photo.
+	 */
 	@FXML
 	Button recaption;
+	
+	/**
+	 * ListView albumsView allows the user to view their photos in an album.
+	 */
 	@FXML
 	ListView albumsView;
+	
+	/**
+	 * Text albumTitle displays the album title.
+	 */
 	@FXML
 	Text albumTitle;
+	
+	/**
+	 * Button back enables the user to go back to the user dashboard.
+	 */
 	@FXML
 	Button back;
+	
+	/**
+	 * Button openButton enables the user to the user to open a photo.
+	 */
 	@FXML
 	Button openButton;
+	
+	/**
+	 * Button logout enables the user to logout of their session.
+	 */
 	@FXML
 	Button logout;
 
+	/**
+	 * User curr_user stores the current user.
+	 */
 	User curr_user;
+	
+	/**
+	 * ObservableList<Photo> photo stores the photo list in an observable list.
+	 */
 	ObservableList<Photo> photos = FXCollections.observableArrayList();
+	
+	/**
+	 * Stores the list of photos in the choosen album.
+	 */
 	ArrayList<Photo> photoList = new ArrayList<Photo>();
+	
+	/**
+	 * Serialization serialController creates a serialization object to store data.
+	 */
 	Serialization serialController = new Serialization();
+	
+	/**
+	 * Album toAdd stores the album to add in the move/copy method.
+	 */
 	Album toAdd = null;
+	
+	/**
+	 * Album curr_album stores the current album.
+	 */
 	Album curr_album;
 	
+	/**
+	 * Updates the album information.
+	 * @param curr_album
+	 * @param albumList
+	 * @return
+	 */
 	private ArrayList<Album> updateAlbumPt1(Album curr_album, ArrayList<Album> albumList) {
 		for (int i = 0; i <= albumList.size() - 1; i++) {
 			if (albumList.get(i).getName().equals(curr_album.getName())) {
@@ -88,6 +165,13 @@ public class AlbumController implements Serializable {
 		return albumList;
 	}
 
+	/**
+	 * Adds a new photos directly from the user's computer.
+	 * @param e
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public void add(ActionEvent e) throws FileNotFoundException, IOException, ClassNotFoundException {
 		Desktop desktop = Desktop.getDesktop();
 		FileChooser fc = new FileChooser();
@@ -135,6 +219,13 @@ public class AlbumController implements Serializable {
         }
 	}
 
+	/**
+	 * Deletes a photo from the user's album.
+	 * @param e
+	 * @throws FileNotFoundException
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
 	public void delete(ActionEvent e) throws FileNotFoundException, ClassNotFoundException, IOException {
 		int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
 		if (selectedIndex != -1) {
@@ -163,6 +254,13 @@ public class AlbumController implements Serializable {
 		
 	}
 
+	/**
+	 * Moves or copies a photo into an album depending on the user's choice.
+	 * @param e
+	 * @throws FileNotFoundException
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
 	public void moveCopy(ActionEvent e) throws FileNotFoundException, ClassNotFoundException, IOException {
 		int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
 		if (selectedIndex != -1) {
@@ -244,6 +342,14 @@ public class AlbumController implements Serializable {
 
   
 	}
+	
+	/**
+	 * Recaptions a individual photo.
+	 * @param e
+	 * @throws FileNotFoundException
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
 	public void recaption(ActionEvent e) throws FileNotFoundException, ClassNotFoundException, IOException {
 		int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
 		if (selectedIndex != -1) {
@@ -270,7 +376,6 @@ public class AlbumController implements Serializable {
 
 	/**
 	 * logout enables the user to logout from the session.
-	 * 
 	 * @param event
 	 * @throws IOException
 	 * @throws ClassNotFoundException
@@ -294,6 +399,12 @@ public class AlbumController implements Serializable {
 		ns.show();
 	}
 
+	/**
+	 * Enables the behavior to go back to the previous screen.
+	 * @param e
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public void back(ActionEvent e) throws IOException, ClassNotFoundException {
         FXMLLoader loader = new FXMLLoader();
 		serialController.storeUserList(UserController.userList);
