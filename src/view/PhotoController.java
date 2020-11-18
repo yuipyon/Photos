@@ -70,7 +70,6 @@ public class PhotoController {
 		mainStage.show();
 	}
 	
-<<<<<<< HEAD
 	public void addTag(ActionEvent e) {
 		String newTag = "";
 		TextInputDialog dialog = new TextInputDialog();
@@ -86,8 +85,8 @@ public class PhotoController {
 			AlbumController.albumsView.setItems(photos);
 		}
 	}
-=======
-//	public void addTag(ActionEvent e) {
+
+	//	public void addTag(ActionEvent e) {
 //		String newTag = "";
 //		TextInputDialog dialog = new TextInputDialog();
 //		dialog.initOwner(mainStage);
@@ -102,7 +101,6 @@ public class PhotoController {
 //			albumsView.setItems(photos);
 //		}
 //	}
->>>>>>> b6573227b148b5c43fa6c47a97c6e66f617317cb
 
 	
 	/**

@@ -207,7 +207,7 @@ public class AlbumController implements Serializable {
 		
 			Optional<ButtonType> result = alert.showAndWait();
 			if(result.get() == ButtonType.OK) { //copy function
-				if(toAdd.photos == null) {
+				if(toAdd.photos.size() == 0) {
 					toAdd.photos = new ArrayList<Photo>();
 					toAdd.photos.add(movePhoto);
 				} else {
@@ -244,7 +244,7 @@ public class AlbumController implements Serializable {
 
   
 	}
-	public void recaption(ActionEvent e) {
+	public void recaption(ActionEvent e) throws FileNotFoundException, ClassNotFoundException, IOException {
 		int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
 		if (selectedIndex != -1) {
 			Photo photo = (Photo) albumsView.getSelectionModel().getSelectedItem();
@@ -259,6 +259,11 @@ public class AlbumController implements Serializable {
 				photoList.set(selectedIndex, photo);
 				photos = FXCollections.observableList(photoList);
 				albumsView.setItems(photos);
+				Album curr_album = Serialization.readCurrentAlbum();
+				curr_album.photos = photoList;
+				curr_user.albums = updateAlbumPt1(curr_album, curr_user.albums);
+				UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
+				Serialization.storeUserList(UserController.userList);
 			}
 		}
 	}
@@ -411,6 +416,14 @@ public class AlbumController implements Serializable {
 		    		}
 		        }
 		    }
+		});
+		primaryStage.setOnCloseRequest(event -> {
+			try {
+				Serialization.storeUserList(UserController.userList);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		});
 	}
 }
