@@ -37,7 +37,7 @@ public class Album implements Serializable{
 	/**
 	 * int numPhotos stores the number of photos in the album.
 	 */
-	int numPhotos = photos.size(); 
+	int numPhotos; 
 	
 	/**
 	 * These LocalDate date range attributes store the date range that the album is based around.

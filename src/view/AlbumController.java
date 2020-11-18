@@ -6,23 +6,32 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Optional;
+
 import app.Album;
 import app.Photo;
 import app.User;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DialogPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.SelectionModel;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
@@ -64,6 +73,8 @@ public class AlbumController implements Serializable {
 	ObservableList<Photo> photos = FXCollections.observableArrayList();
 	ArrayList<Photo> photoList = new ArrayList<Photo>();
 	Serialization serialController = new Serialization();
+	Album toAdd = null;
+	Album curr_album;
 	
 	private ArrayList<Album> updateAlbumPt1(Album curr_album, ArrayList<Album> albumList) {
 		for (int i = 0; i <= albumList.size() - 1; i++) {
@@ -88,7 +99,7 @@ public class AlbumController implements Serializable {
         	Photo newPhoto = new Photo();
         	newPhoto.filepath = "file:" + file.getAbsolutePath();
         	newPhoto.photoName = file.getName();
-        	newPhoto.date = newPhoto.setDate(file);
+        	newPhoto.date = newPhoto.setDate(file); 
         	photoList.add(newPhoto);
         	photos = FXCollections.observableList(photoList);
 			albumsView.setItems(photos);
@@ -125,8 +136,6 @@ public class AlbumController implements Serializable {
 		int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
 		if (selectedIndex != -1) {
 			Photo photoToView = (Photo) albumsView.getSelectionModel().getSelectedItem();
-			int newSelectedIndex = (selectedIndex == albumsView.getItems().size() - 1) ? selectedIndex - 1
-					: selectedIndex;
 			photoList.remove(selectedIndex);
 			photos = FXCollections.observableList(photoList);
 			albumsView.setItems(photos);
@@ -140,38 +149,74 @@ public class AlbumController implements Serializable {
 		Serialization.storeUserList(UserController.userList);
 	}
 
-	public void moveCopy(ActionEvent e) {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Move/Copy Action");
+	public void moveCopy(ActionEvent e) throws FileNotFoundException, ClassNotFoundException, IOException {
+		int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
+		if (selectedIndex != -1) {
+			Photo movePhoto = (Photo) albumsView.getSelectionModel().getSelectedItem();
+			
+			Alert alert = new Alert(AlertType.INFORMATION);
+			alert.setTitle("Move/Copy Action");
 
-		alert.initModality(Modality.APPLICATION_MODAL);
-		alert.initOwner(stage);
+			alert.initModality(Modality.APPLICATION_MODAL);
+			alert.initOwner(stage);
 
-		DialogPane dialogPane = alert.getDialogPane();
-		GridPane grid = new GridPane();
-		ColumnConstraints graphicColumn = new ColumnConstraints();
-		ColumnConstraints textColumn = new ColumnConstraints();
-		grid.getColumnConstraints().setAll(graphicColumn, textColumn);
+			DialogPane dialogPane = alert.getDialogPane();
+			GridPane grid = new GridPane();
+			ColumnConstraints graphicColumn = new ColumnConstraints();
+			ColumnConstraints textColumn = new ColumnConstraints();
+			grid.getColumnConstraints().setAll(graphicColumn, textColumn);
+			
+			Label l = new Label("Move/Copy to which album?");
+			ComboBox cb = new ComboBox(FXCollections.observableArrayList(curr_user.albums));
+			
+			
+			grid.add(l, 1, 0);
+			GridPane.setMargin(l, new Insets(5, 0, 5, 0));
+			grid.add(cb, 1, 1);
+			GridPane.setMargin(cb, new Insets(5, 0, 5, 0));
+			grid.setAlignment(Pos.CENTER);
+			
+			/*Image ni = new Image(p.filepath);
+			ImageView imageView = new ImageView(ni);
+			imageView.setFitWidth(400);
+			imageView.setFitHeight(400);
+			StackPane stackPane = new StackPane(imageView);
+			grid.add(stackPane, 0, 0);*/
+			dialogPane.getButtonTypes().add(ButtonType.CANCEL);
+			((Button) dialogPane.lookupButton(ButtonType.OK)).setText("Copy");
+			((Button) dialogPane.lookupButton(ButtonType.CANCEL)).setText("Move");
+			
+			
+			cb.valueProperty().addListener(new ChangeListener<Album>() {
+				@Override
+				public void changed(ObservableValue<? extends Album> arg0, Album arg1, Album arg2) {
+					// TODO Auto-generated method stub
+					toAdd = arg0.getValue();
+				}	   
+		    });
+			
+			
+			dialogPane.setHeader(grid);
 		
-		Label l = new Label("Move/Copy to which album?");
-		Button move = new Button("move");
-		Button copy = new Button("copy");
-		
-		grid.add(l, 0, 0);
-		grid.add(move, 1, 0);
-		grid.add(copy, 2, 0);
-		grid.setAlignment(Pos.BASELINE_CENTER);
-
-		/*Image ni = new Image(p.filepath);
-		ImageView imageView = new ImageView(ni);
-		imageView.setFitWidth(400);
-		imageView.setFitHeight(400);
-		StackPane stackPane = new StackPane(imageView);
-		grid.add(stackPane, 0, 0);*/
-
-		dialogPane.setHeader(grid);
-
-		alert.showAndWait();
+			Optional<ButtonType> result = alert.showAndWait();
+			if(result.get() == ButtonType.OK) {
+				toAdd.photos.add(movePhoto);
+				/*photoList.add(movePhoto);
+				photos = FXCollections.observableList(photoList);
+				albumsView.setItems(photos);
+				curr_user.albums = updateAlbumPt1(toAdd, curr_user.albums);
+				UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);*/
+			} 
+			
+			if(result.get() == ButtonType.CANCEL) {
+				toAdd.photos.add(movePhoto);
+				photoList.remove(movePhoto);
+				photos = FXCollections.observableList(photoList);
+				albumsView.setItems(photos);
+				curr_user.albums = updateAlbumPt1(toAdd, curr_user.albums);
+				UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
+			}
+		}
 
   
 	}
@@ -229,9 +274,11 @@ public class AlbumController implements Serializable {
 		this.stage = primaryStage;
 
 		curr_user = Serialization.readCurrentUser();
-		Album curr_album = Serialization.readCurrentAlbum();
+		curr_album = Serialization.readCurrentAlbum();
 
 		albumTitle.setText("Album View - " + curr_album.getName());
+		
+		
 		
 		for (int i = 0; i <= UserController.userList.size() - 1; i++) {
 			if (UserController.userList.get(i).equals(curr_user)) {
