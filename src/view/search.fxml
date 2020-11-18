@@ -17,7 +17,7 @@ Yulin Ni
 
 -->
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="463.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="463.0" prefWidth="710.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.PhotoController">
    <children>
       <Text layoutX="245.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Search photos">
          <font>
@@ -28,10 +28,10 @@ Yulin Ni
       <TextField fx:id="tValue" layoutX="217.0" layoutY="85.0" promptText="Tag value" />
       <Button fx:id="addTagButton" layoutX="394.0" layoutY="85.0" mnemonicParsing="false" onAction="#addTag" text="Add tag" />
       <Button fx:id="removeTagButton" layoutX="468.0" layoutY="85.0" mnemonicParsing="false" onAction="#removeTag" text="Remove tag" />
-      <Button fx:id="backButton" layoutX="16.0" layoutY="15.0" mnemonicParsing="false" onAction="#goBack" text="Back" />
+      <Button fx:id="backButton" layoutX="16.0" layoutY="15.0" mnemonicParsing="false" onAction="#back" text="Back" />
       <ListView fx:id="searchResults" layoutX="220.0" layoutY="132.0" prefHeight="233.0" prefWidth="425.0" />
-      <DatePicker fx:id="dateFrom" layoutX="44.0" layoutY="384.0" onAction="#dateFromAction" promptText="From" />
-      <DatePicker fx:id="dateTo" layoutX="237.0" layoutY="384.0" onAction="#ToDateAction" promptText="To" />
+      <DatePicker fx:id="dateFrom" layoutX="44.0" layoutY="384.0" promptText="From" />
+      <DatePicker fx:id="dateTo" layoutX="237.0" layoutY="384.0" promptText="To" />
       <Button fx:id="createAlbumButton" layoutX="482.0" layoutY="384.0" mnemonicParsing="false" onAction="#createAlbum" style="-fx-background-color: #1491f7;" text="Create album from results" textFill="WHITE" />
       <Button fx:id="searchButton" layoutX="559.0" layoutY="85.0" mnemonicParsing="false" onAction="#search" style="-fx-background-color: #1491f7;" text="Search" textFill="WHITE" />
       <TextArea layoutX="44.0" layoutY="132.0" prefHeight="233.0" prefWidth="154.0" />
