@@ -60,6 +60,7 @@ public class AlbumController implements Serializable {
 	@FXML
 	Button recaption;
 	@FXML
+	static
 	ListView albumsView;
 	@FXML
 	Text albumTitle;
@@ -72,7 +73,7 @@ public class AlbumController implements Serializable {
 
 	User curr_user;
 	ObservableList<Photo> photos = FXCollections.observableArrayList();
-	ArrayList<Photo> photoList = new ArrayList<Photo>();
+	static ArrayList<Photo> photoList = new ArrayList<Photo>();
 	Serialization serialController = new Serialization();
 	Album toAdd = null;
 	Album curr_album;
