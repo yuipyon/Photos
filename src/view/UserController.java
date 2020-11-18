@@ -1,5 +1,7 @@
 package view;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -210,7 +212,6 @@ public class UserController implements Serializable {
 
 		TextInputDialog dialog = new TextInputDialog();
 		dialog.initOwner(mainStage);
-		dialog.initOwner(mainStage);
 		dialog.setTitle("Create Album");
 		dialog.setHeaderText("Make a new Album.");
 		dialog.setContentText("Enter album name: ");
@@ -386,6 +387,21 @@ public class UserController implements Serializable {
 			albums = FXCollections.observableList(albumLists);
 			albumList.setItems(albums);
 		}
+		
+		albumList.getSelectionModel().selectedItemProperty().addListener(
+	            new ChangeListener<Album>() {
+	                public void changed(ObservableValue<? extends Album> observedValue, 
+	                		Album prevSelected, Album selected) {
+						if (selected != null) {
+//							try {
+								albumName.setText(selected.getName());
+								numPhotos.setText(Integer.toString(selected.getPhotoCount()));
+								dateRange.setText(selected.getDateRange());
+//							}
+//							catch(NullPointerException e) {}
+						}
+	            }
+	        });
 
 	}
 
