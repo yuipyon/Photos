@@ -38,11 +38,11 @@ public class PhotoController {
 	Album curr_album;
 	Serialization serialController = new Serialization();
 	ArrayList<Photo> photos = new ArrayList<Photo>();
-	int counter = 0;
+	int counter;
 	
 	public void goBack(ActionEvent e) {
 		counter--; 
-		if (counter > 0) {
+		if (counter >= 0) {
 			PhotoView.setImage(new Image(photos.get(counter).filepath));
 		}
 		else 
@@ -81,18 +81,19 @@ public class PhotoController {
 	 */
 
 	public void start(Stage primaryStage, int selectedIndex) throws FileNotFoundException, IOException, ClassNotFoundException {
-
 		mainStage = primaryStage;
-		
 		curr_user = serialController.readCurrentUser();
-
+		counter = selectedIndex;
+		System.out.println(counter);
 		for (int i = 0; i <= UserController.userList.size() - 1; i++) {
 			if (UserController.userList.get(i).equals(curr_user)) {
 				curr_user = UserController.userList.get(i);
 				break;
 			}
 		}
+		
 		curr_album = serialController.readCurrentAlbum();
+		
 		int index = 0;
 		for (int i = 0; i < curr_user.albums.size(); i++) {
 			if (curr_user.albums.get(i).equals(curr_album)) {
