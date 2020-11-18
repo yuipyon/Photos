@@ -41,17 +41,21 @@ public class PhotoController {
 	int counter = 0;
 	
 	public void goBack(ActionEvent e) {
+		counter--; 
 		if (counter > 0) {
-			counter--;
 			PhotoView.setImage(new Image(photos.get(counter).filepath));
 		}
+		else 
+			counter++; 
 	}
 	
 	public void goForward(ActionEvent e) {
+		counter++;
 		if (counter < photos.size()) {
-			counter++;
 			PhotoView.setImage(new Image(photos.get(counter).filepath));
 		}
+		else 
+			counter--;
 	}
 	
 	public void backScreen(ActionEvent e) throws FileNotFoundException, ClassNotFoundException, IOException {
