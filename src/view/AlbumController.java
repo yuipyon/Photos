@@ -206,7 +206,7 @@ public class AlbumController implements Serializable {
 			dialogPane.setHeader(grid);
 		
 			Optional<ButtonType> result = alert.showAndWait();
-			if(result.get() == ButtonType.OK) {
+			if(result.get() == ButtonType.OK) { //copy function
 				if(toAdd.photos == null) {
 					toAdd.photos = new ArrayList<Photo>();
 					toAdd.photos.add(movePhoto);
@@ -215,22 +215,29 @@ public class AlbumController implements Serializable {
 				}
 			} 
 			
-			if(result.get() == ButtonType.CANCEL) {
-				if(toAdd.photos == null) {
+			if(result.get() == ButtonType.CANCEL) { //move function
+				if(toAdd.photos.size() == 0) {
 					toAdd.photos = new ArrayList<Photo>();
 					toAdd.photos.add(movePhoto);
 					photoList.remove(movePhoto);
 					photos = FXCollections.observableList(photoList);
 					albumsView.setItems(photos);
-					curr_user.albums = updateAlbumPt1(toAdd, curr_user.albums);
+					Album curr_album = Serialization.readCurrentAlbum();
+					curr_album.photos = photoList;
+					curr_user.albums = updateAlbumPt1(curr_album, curr_user.albums);
 					UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
+					Serialization.storeUserList(UserController.userList);
+					
 				} else {
 					toAdd.photos.add(movePhoto);
 					photoList.remove(movePhoto);
 					photos = FXCollections.observableList(photoList);
 					albumsView.setItems(photos);
-					curr_user.albums = updateAlbumPt1(toAdd, curr_user.albums);
+					Album curr_album = Serialization.readCurrentAlbum();
+					curr_album.photos = photoList;
+					curr_user.albums = updateAlbumPt1(curr_album, curr_user.albums);
 					UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
+					Serialization.storeUserList(UserController.userList);
 				}
 			}
 		}
