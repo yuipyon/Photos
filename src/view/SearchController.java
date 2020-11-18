@@ -89,6 +89,13 @@ public class SearchController implements Serializable {
 		
 	}
 	
+	public void dateFromAction(ActionEvent e) {
+		System.out.println(dateFrom.getValue());
+	}
+	
+	public void ToDateAction(ActionEvent e) {
+		System.out.println(dateTo.getValue());
+	}	
 	
 	public void start(Stage stage) {
 		choices.add("and");
@@ -104,13 +111,6 @@ public class SearchController implements Serializable {
 	    });
 	}
 	
-	public void dateFromAction(ActionEvent e) {
-		System.out.println(dateTo.getValue());
-	}
-	
-	public void ToDateAction(ActionEvent e) {
-		
-	}	
 	
 }
 
