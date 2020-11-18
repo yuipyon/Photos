@@ -464,7 +464,7 @@ public class AlbumController implements Serializable {
 	            }
 	        });
 		} else {
-			if (photoList == null) {
+			if (curr_album.photos == null) {
 				photos = FXCollections.observableList(photoList);
 				albumsView.setItems(photos);
 			} else {

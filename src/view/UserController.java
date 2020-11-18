@@ -169,7 +169,7 @@ public class UserController implements Serializable {
 	 * @param albumList
 	 * @return boolean
 	 */
-	private boolean albumExist(Album album, ArrayList<Album> albumList) {
+	public static boolean albumExist(Album album, ArrayList<Album> albumList) {
 		if (albumList.isEmpty()) {
 			return false;
 		}

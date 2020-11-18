@@ -70,6 +70,10 @@ public class PhotoController {
 		mainStage.show();
 	}
 	
+	/**
+	 * Enables the user to add a tag.
+	 * @param e
+	 */
 	public void addTag(ActionEvent e) {
 		String newTag = "";
 		TextInputDialog dialog = new TextInputDialog();
@@ -79,10 +83,11 @@ public class PhotoController {
 		dialog.setContentText("New caption:");
 		Optional<String> result = dialog.showAndWait();
 		if (result.isPresent()) {
+			System.out.println(result.get());
+			curr_photo.caption = null;
 			curr_photo.caption = "\"" + result.get() + "\"";
-			AlbumController.photoList.set(selectedIndex, curr_photo);
-			photos = FXCollections.observableList(AlbumController.photoList);
-			AlbumController.albumsView.setItems(photos);
+			photos.add(curr_photo);
+			
 		}
 	}
 
@@ -134,9 +139,25 @@ public class PhotoController {
 			}
 		}
 		photos = curr_album.photos;
+		
+		for(int i = 0; i<= curr_album.photos.size() - 1; i++) {
+			if(curr_album.photos.get(i).equals(curr_photo)) {
+				curr_photo = curr_album.photos.get(i);
+				break;
+			}
+		}
+		
 		PhotoView.setImage(new Image(p.filepath));
 		caption.setText("\"" + p.caption + "\"");
 		date.setText(p.getDate(p.date));
 //		tags.setText(p.tags);
+		primaryStage.setOnCloseRequest(event -> {
+			try {
+				Serialization.storeUserList(UserController.userList);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
 	}
 }
