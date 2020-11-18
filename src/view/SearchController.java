@@ -24,8 +24,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -105,6 +108,27 @@ public class SearchController implements Serializable {
 			}
 			photos = FXCollections.observableList(photoList);
 			searchResults.setItems(photos);
+			searchResults.setCellFactory(param -> new ListCell<Photo>() {
+	            private ImageView imageView = new ImageView();
+	            @Override
+	            public void updateItem(Photo name, boolean empty) {
+	                super.updateItem(name, empty);
+	                if (empty) {
+	                    setText(null);
+	                    setGraphic(null);
+	                } else {
+	                    for (Photo photo:photoList) {
+	                    	imageView.setImage(new Image(name.filepath));
+		                    imageView.setFitWidth(100);
+		            	    imageView.setFitHeight(100);
+	                    }
+	                    setText(name.photoName);
+	                    setGraphic(imageView);
+	                }
+	            }
+	        });
+			dateFrom.getEditor().clear();
+			dateTo.getEditor().clear();
 		}
 	}
 	
