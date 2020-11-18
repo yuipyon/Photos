@@ -3,8 +3,14 @@ package view;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 
+import app.Album;
 import app.Tag;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,10 +27,8 @@ import javafx.stage.Stage;
 import model.Serialization;
 
 public class SearchController implements Serializable {
-
-	String[] choices = {"and", "or"};
 	
-	@FXML ComboBox andOr = new ComboBox(FXCollections.observableArrayList(choices));;
+	@FXML ComboBox andOr;
 	@FXML Text tag1;
 	@FXML Text tag2;
 	@FXML ListView searchResults;
@@ -41,8 +45,10 @@ public class SearchController implements Serializable {
 	Stage stage;
 	
 	Serialization serialController = new Serialization();
+	ArrayList<String> choices = new ArrayList<String>();
+	String item = null;
 	
-	public void goBack(ActionEvent e) throws FileNotFoundException, IOException, ClassNotFoundException {
+	public void back(ActionEvent e) throws FileNotFoundException, IOException, ClassNotFoundException {
 		FXMLLoader loader = new FXMLLoader();
 		serialController.storeUserList(UserController.userList);
         loader.setLocation(getClass().getResource("user_dashboard.fxml"));
@@ -85,11 +91,21 @@ public class SearchController implements Serializable {
 	
 	
 	public void start(Stage stage) {
+		choices.add("and");
+		choices.add("or");
 		this.stage = stage;
+		andOr.getItems().add(choices.get(0));
+		andOr.getItems().add(choices.get(1));
+		andOr.valueProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+				item = arg0.getValue();
+			}
+	    });
 	}
 	
 	public void dateFromAction(ActionEvent e) {
-	
+		System.out.println(dateTo.getValue());
 	}
 	
 	public void ToDateAction(ActionEvent e) {
