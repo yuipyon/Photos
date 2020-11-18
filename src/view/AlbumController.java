@@ -140,16 +140,27 @@ public class AlbumController implements Serializable {
 		if (selectedIndex != -1) {
 			Photo photoToView = (Photo) albumsView.getSelectionModel().getSelectedItem();
 			photoList.remove(selectedIndex);
-			photos = FXCollections.observableList(photoList);
-			albumsView.setItems(photos);
+			if(photoList.size() == 0) {
+				photos = FXCollections.observableList(photoList);
+				albumsView.setItems(photos);
+				Album curr_album = Serialization.readCurrentAlbum();
+				curr_album.photos = photoList;
+				curr_user.albums = updateAlbumPt1(curr_album, curr_user.albums);
+				UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
+				Serialization.storeUserList(UserController.userList);
+			} else {
+				photos = FXCollections.observableList(photoList);
+				albumsView.setItems(photos);
+				Album curr_album = Serialization.readCurrentAlbum();
+				curr_album.photos = photoList;
+				curr_album.getStartingDateRange();
+				curr_album.getEndingDateRange();
+				curr_user.albums = updateAlbumPt1(curr_album, curr_user.albums);
+				UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
+				Serialization.storeUserList(UserController.userList);
+			}
 		}
-		Album curr_album = Serialization.readCurrentAlbum();
-		curr_album.photos = photoList;
-		curr_album.getStartingDateRange();
-		curr_album.getEndingDateRange();
-		curr_user.albums = updateAlbumPt1(curr_album, curr_user.albums);
-		UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
-		Serialization.storeUserList(UserController.userList);
+		
 	}
 
 	public void moveCopy(ActionEvent e) throws FileNotFoundException, ClassNotFoundException, IOException {
