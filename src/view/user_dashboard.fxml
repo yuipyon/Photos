@@ -43,8 +43,8 @@ Yulin Ni
       <Button fx:id="renameButton" layoutX="141.0" layoutY="373.0" mnemonicParsing="false" onAction="#rename" text="Rename Album" />
       <Button fx:id="logoutButton" layoutX="715.0" layoutY="17.0" mnemonicParsing="false" onAction="#logout" style="-fx-background-color: c4cacf;" text="Logout" textFill="WHITE" />
       <ListView fx:id="albumList" layoutX="429.0" layoutY="96.0" prefHeight="443.0" prefWidth="324.0" />
-      <Text fx:id="albumName" layoutX="182.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-      <Text fx:id="numPhotos" layoutX="182.0" layoutY="240.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-      <Text fx:id="dateRange" layoutX="182.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text fx:id="albumName" layoutX="163.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text fx:id="numPhotos" layoutX="163.0" layoutY="240.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text fx:id="dateRange" layoutX="163.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" />
    </children>
 </AnchorPane>

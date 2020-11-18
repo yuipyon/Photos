@@ -28,7 +28,7 @@ Yulin Ni
             <Button fx:id="recaption" mnemonicParsing="false" onAction="#recaption" prefHeight="32.0" prefWidth="80.0" style="-fx-background-color: #0390fc;" text="Recaption" textFill="WHITE" />
          </children>
       </HBox>
-      <StackPane layoutY="10.0" prefHeight="51.0" prefWidth="600.0">
+      <StackPane layoutX="59.0" layoutY="10.0" prefHeight="51.0" prefWidth="465.0">
          <children>
             <Text fx:id="albumTitle" strokeType="OUTSIDE" strokeWidth="0.0" text="asfasdfsdf" textAlignment="CENTER">
                <font>

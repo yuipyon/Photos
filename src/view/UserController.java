@@ -1,49 +1,31 @@
 package view;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.TilePane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Serialization;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Optional;
 
 import app.Album;
-import app.Song;
-import app.Tag;
 import app.User;
 
 /**
@@ -58,24 +40,24 @@ import app.User;
 public class UserController implements Serializable {
 
 	/**
-	 * TextField name enables the user to input a name for the album they are
+	 * Text albumName enables the user to input a name for the album they are
 	 * creating.
 	 */
 	@FXML
-	TextField name;
+	Text albumName;
 
 	/**
-	 * TextField date enables the user to input the date of the album (MM-dd-yyyy)
+	 * Text dateRange enables the user to input the date of the album (MM-dd-yyyy)
 	 */
 	@FXML
-	TextField date;
+	Text dateRange;
 
 	/**
-	 * TextField numPhotos enables the user to input the number of photos in the
+	 * Text numPhotos enables the user to input the number of photos in the
 	 * album.
 	 */
 	@FXML
-	TextField numPhotos;
+	Text numPhotos;
 
 	/**
 	 * Button searchButton enables the user to search for the photos in an album.
