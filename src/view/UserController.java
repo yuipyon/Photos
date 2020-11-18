@@ -1,5 +1,7 @@
 package view;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -40,6 +42,7 @@ import java.util.Date;
 import java.util.Optional;
 
 import app.Album;
+import app.Song;
 import app.Tag;
 import app.User;
 
@@ -449,8 +452,6 @@ public class UserController implements Serializable {
 			albums = FXCollections.observableList(albumLists);
 			albumList.setItems(albums);
 		}
-
-		//System.out.println(albumLists);
 
 	}
 
