@@ -44,20 +44,35 @@ public class Tag extends Label implements Serializable {
 		this.tagValue = tagValue;
 	}
 	
+	/**
+	 * Creates a new instance of Tag. (w/o arguments)
+	 */
 	public Tag() {
 		super();
 		initTag();
 	}
 
+	/**
+	 * Creates a new private instance of a Tag.
+	 * @param arg0
+	 * @param arg1
+	 */
 	private Tag(String arg0, Node arg1) {
 		super(arg0, arg1);
 	}
 
+	/**
+	 * Creates an instance of Tag and initializes the tag.
+	 * @param arg0
+	 */
 	public Tag(String arg0) {
 		super(arg0);
 		initTag();
 	}
 
+	/**
+	 * initTag initializes a tag.
+	 */
 	private final void initTag(){
 		Path path = new Path();
 		/**

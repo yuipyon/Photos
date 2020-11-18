@@ -5,9 +5,20 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
 
+import app.Album;
+import app.Photo;
 import app.Tag;
+import app.User;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,34 +26,149 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Serialization;
 
-public class SearchController implements Serializable {
+/**
+ * @author Karun Kanda
+ * @author Yulin Ni
+ */
 
-	ArrayList<String> choices = new ArrayList<String>(Arrays.asList("and", "or"));
-	@FXML ComboBox andOr = new ComboBox(FXCollections.observableArrayList(choices));
+/**
+ * The Search Controller controls all the behaviors of the screen and button in the search photos screen.
+ */
+public class SearchController implements Serializable {
+	
+	/**
+	 * Stores two options: and or or.
+	 */
+	@FXML ComboBox andOr;
+	
+	/**
+	 * Displays the first tag.
+	 */
 	@FXML Text tag1;
+	
+	/**
+	 * Displays the second tag.
+	 */
 	@FXML Text tag2;
+	
+	/**
+	 * Displays the results from the date search or tag search.
+	 */
 	@FXML ListView searchResults;
+	
+	/**
+	 * Enable the user to pick a ending date.
+	 */
 	@FXML DatePicker dateTo;
+	
+	/**
+	 * Enables the user to pick a start date.
+	 */
 	@FXML DatePicker dateFrom;
+	
+	/**
+	 * Enables the user to add a tag.
+	 */
 	@FXML Button addTagButton;
+	
+	/**
+	 * Enables the user to remove a tag.
+	 */
 	@FXML Button removeTagButton;
+	
+	/**
+	 * Enables the user to search upon a tag search or date search.
+	 */
 	@FXML Button searchButton;
+	
+	/**
+	 * Enables the user to create an album based on the photo result.
+	 */
 	@FXML Button createAlbumButton;
+	
+	/**
+	 * Enables the user to input a tag type.
+	 */
 	@FXML TextField tType;
+	
+	/**
+	 * Enables the user to input a tag value.
+	 */
 	@FXML TextField tValue;
+	
+	/**
+	 * Enables the user to go back to the previous screen. 
+	 */
 	@FXML Button backButton;
 	
+	/**
+	 * Stage stage is used to store the primaryStage.
+	 */
 	Stage stage;
 	
+	/**
+	 * Serialization serialController creates a serialization object to store data.
+	 */
 	Serialization serialController = new Serialization();
 	
+	/**
+	 * Stores the choices for the ComboBox.
+	 */
+	ArrayList<String> choices = new ArrayList<String>();
+	
+	/**
+	 * Stores the value that is choosen from the combo box.
+	 */
+	String item = null;
+	
+	/**
+	 * Stores the starting date.
+	 */
+	LocalDate to = null; 
+	
+	/**
+	 * Stores the ending date.
+	 */
+	LocalDate from = null;
+	
+	/**
+	 * Formats the localdate to mm/dd/yyyy.
+	 */
+	DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+	
+	/**
+	 * Stores the current user that is in the session.
+	 */
+	User curr_user = null;
+	
+	/**
+	 * Stores the photo search result list in an observable list.
+	 */
+	ObservableList<Photo> photos = FXCollections.observableArrayList();
+	
+	/**
+	 * Stores the search result.
+	 */
+	ArrayList<Photo> photoList = new ArrayList<Photo>();
+	
+	
+	/**
+	 * Enables the behavior to go back to the previous screen.
+	 * @param e
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public void back(ActionEvent e) throws FileNotFoundException, IOException, ClassNotFoundException {
 		FXMLLoader loader = new FXMLLoader();
 		serialController.storeUserList(UserController.userList);
@@ -55,6 +181,11 @@ public class SearchController implements Serializable {
         stage.show();
 	}
 	
+	
+	/**
+	 * Adds a tag.
+	 * @param e
+	 */
 	public void addTag(ActionEvent e) {
 		String type = tType.getText();
 		String value = tValue.getText();
@@ -69,6 +200,10 @@ public class SearchController implements Serializable {
 		tValue.setText("");
 	}
 	
+	/**
+	 * Removes a tag.
+	 * @param e
+	 */
 	public void removeTag(ActionEvent e) {
 		if (tag1.getText().isBlank())
 			tag2.setText("");
@@ -76,26 +211,107 @@ public class SearchController implements Serializable {
 			tag1.setText("");
 	}
 	
+	
+	/**
+	 * Creates an album from the search results.
+	 * @param e
+	 */
 	public void createAlbum(ActionEvent e) {
 		
 	}
 	
+	/**
+	 * Creates a search result based on the date range inputted or tags.
+	 * @param e
+	 */
 	public void search(ActionEvent e) {
-		
+		//System.out.println(to.format(dateFormatter) + " - " + from.format(dateFormatter));
+		if(dateFrom.getValue() != null && dateTo.getValue() != null) {
+			for(int i = 0; i<=curr_user.albums.size() - 1; i++) {
+				if(curr_user.albums.get(i).getDateRange().equals(to.format(dateFormatter) + " - " + from.format(dateFormatter))) {
+					photoList = curr_user.albums.get(i).photos;
+				}
+			}
+			photos = FXCollections.observableList(photoList);
+			searchResults.setItems(photos);
+			searchResults.setCellFactory(param -> new ListCell<Photo>() {
+	            private ImageView imageView = new ImageView();
+	            @Override
+	            public void updateItem(Photo name, boolean empty) {
+	                super.updateItem(name, empty);
+	                if (empty) {
+	                    setText(null);
+	                    setGraphic(null);
+	                } else {
+	                    for (Photo photo:photoList) {
+	                    	imageView.setImage(new Image(name.filepath));
+		                    imageView.setFitWidth(100);
+		            	    imageView.setFitHeight(100);
+	                    }
+	                    setText(name.photoName);
+	                    setGraphic(imageView);
+	                }
+	            }
+	        });
+			dateFrom.getEditor().clear();
+			dateTo.getEditor().clear();
+		}
 	}
 	
-	
-	public void start(Stage stage) {
-		this.stage = stage;
-	}
-	
+	/**
+	 * Stores the starting date.
+	 * @param e
+	 */
 	public void dateFromAction(ActionEvent e) {
-	
+		if(dateFrom.getValue() != null) {
+			from = dateFrom.getValue();
+			System.out.println(from);
+		}
 	}
 	
+	/**
+	 * Stores the ending date.
+	 * @param e
+	 */
 	public void ToDateAction(ActionEvent e) {
-		
+		if(dateTo.getValue() != null)
+			to = dateTo.getValue();
+			System.out.println(to);
 	}	
+	
+	/**
+	 * start is what will occur upon starting the search photos scene.
+	 * @param primaryStage
+	 * @throws IOException 
+	 * @throws ClassNotFoundException 
+	 * @throws FileNotFoundException 
+	 */
+	public void start(Stage stage) throws FileNotFoundException, ClassNotFoundException, IOException {
+		
+		curr_user = Serialization.readCurrentUser();
+		
+		choices.add("and");
+		choices.add("or");
+		this.stage = stage;
+		andOr.getItems().add(choices.get(0));
+		andOr.getItems().add(choices.get(1));
+		andOr.valueProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+				item = arg0.getValue();
+			}
+	    });
+		
+		
+		for(int i = 0; i <= UserController.userList.size() - 1; i++) {
+			if(UserController.userList.get(i).equals(curr_user)) {
+				curr_user = UserController.userList.get(i);
+			}
+		}
+		
+		System.out.println(curr_user);
+	}
+	
 	
 }
 

@@ -40,9 +40,13 @@ public class Album implements Serializable{
 	int numPhotos; 
 	
 	/**
-	 * These LocalDate date range attributes store the date range that the album is based around.
+	 * LocalDate startingDateRange stores the start date of an album.
 	 */
 	LocalDate startingDateRange;
+	
+	/**
+	 * LocalDate endingDateRange stores the ending date of an album.
+	 */
 	LocalDate endingDateRange;
 	
 	/**
@@ -107,6 +111,9 @@ public class Album implements Serializable{
 		return startingDateRange.format(dateFormatter) + " - " + endingDateRange.format(dateFormatter);
 	}
 	
+	/**
+	 * getStartingDateRange gets the starting date range.
+	 */
 	public void getStartingDateRange() {
 		startingDateRange = photos.get(0).date;
 		for (int i = 1; i < photos.size(); i++) {
@@ -116,6 +123,9 @@ public class Album implements Serializable{
 		}
 	}
 	
+	/**
+	 * getEndingDateRange gets the ending date range.
+	 */
 	public void getEndingDateRange() {
 		endingDateRange = photos.get(0).date;
 		for (int i = 1; i < photos.size(); i++) {

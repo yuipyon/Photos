@@ -48,36 +48,112 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Serialization;
 
+/**
+ * @author Karun Kanda
+ * @author Yulin Ni
+ *
+ */
+
+/**
+ * The Album Controller class controls the behaviors of the screens and buttons in the Album Display.
+ */
 public class AlbumController implements Serializable {
 
+	/**
+	 * Stage stage is used to store the primaryStage.
+	 */
 	Stage stage;
+	
+	/**
+	 * Button add enables the user to add a new photo.
+	 */
 	@FXML
 	Button add;
+	
+	/**
+	 * Button delete enables the user to delete an photo.
+	 */
 	@FXML
 	Button delete;
+	
+	/**
+	 * Button moveCopy enables the user to move/copy a photo.
+	 */
 	@FXML
 	Button moveCopy;
+	
+	/**
+	 * Button recaption enables the user to recaption a photo.
+	 */
 	@FXML
 	Button recaption;
+	
+	/**
+	 * ListView albumsView allows the user to view their photos in an album.
+	 */
 	@FXML
-	static
 	ListView albumsView;
+	
+	/**
+	 * Text albumTitle displays the album title.
+	 */
 	@FXML
 	Text albumTitle;
+	
+	/**
+	 * Button back enables the user to go back to the user dashboard.
+	 */
 	@FXML
 	Button back;
+	
+	/**
+	 * Button openButton enables the user to the user to open a photo.
+	 */
 	@FXML
 	Button openButton;
+	
+	/**
+	 * Button logout enables the user to logout of their session.
+	 */
 	@FXML
 	Button logout;
 
+	/**
+	 * User curr_user stores the current user.
+	 */
 	User curr_user;
+	
+	/**
+	 * ObservableList<Photo> photo stores the photo list in an observable list.
+	 */
 	ObservableList<Photo> photos = FXCollections.observableArrayList();
-	static ArrayList<Photo> photoList = new ArrayList<Photo>();
+	
+	/**
+	 * Stores the list of photos in the choosen album.
+	 */
+	ArrayList<Photo> photoList = new ArrayList<Photo>();
+	
+	/**
+	 * Serialization serialController creates a serialization object to store data.
+	 */
 	Serialization serialController = new Serialization();
+	
+	/**
+	 * Album toAdd stores the album to add in the move/copy method.
+	 */
 	Album toAdd = null;
+	
+	/**
+	 * Album curr_album stores the current album.
+	 */
 	Album curr_album;
 	
+	/**
+	 * Updates the album information.
+	 * @param curr_album
+	 * @param albumList
+	 * @return
+	 */
 	private ArrayList<Album> updateAlbumPt1(Album curr_album, ArrayList<Album> albumList) {
 		for (int i = 0; i <= albumList.size() - 1; i++) {
 			if (albumList.get(i).getName().equals(curr_album.getName())) {
@@ -89,6 +165,13 @@ public class AlbumController implements Serializable {
 		return albumList;
 	}
 
+	/**
+	 * Adds a new photos directly from the user's computer.
+	 * @param e
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public void add(ActionEvent e) throws FileNotFoundException, IOException, ClassNotFoundException {
 		Desktop desktop = Desktop.getDesktop();
 		FileChooser fc = new FileChooser();
@@ -130,26 +213,54 @@ public class AlbumController implements Serializable {
 			curr_user.albums = updateAlbumPt1(curr_album, curr_user.albums);
 			UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
 			Serialization.storeUserList(UserController.userList);
+			
+			photos = FXCollections.observableList(photoList);
+			albumsView.setItems(photos);
         }
 	}
 
+	/**
+	 * Deletes a photo from the user's album.
+	 * @param e
+	 * @throws FileNotFoundException
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
 	public void delete(ActionEvent e) throws FileNotFoundException, ClassNotFoundException, IOException {
 		int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
 		if (selectedIndex != -1) {
 			Photo photoToView = (Photo) albumsView.getSelectionModel().getSelectedItem();
 			photoList.remove(selectedIndex);
-			photos = FXCollections.observableList(photoList);
-			albumsView.setItems(photos);
+			if(photoList.size() == 0) {
+				photos = FXCollections.observableList(photoList);
+				albumsView.setItems(photos);
+				Album curr_album = Serialization.readCurrentAlbum();
+				curr_album.photos = photoList;
+				curr_user.albums = updateAlbumPt1(curr_album, curr_user.albums);
+				UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
+				Serialization.storeUserList(UserController.userList);
+			} else {
+				photos = FXCollections.observableList(photoList);
+				albumsView.setItems(photos);
+				Album curr_album = Serialization.readCurrentAlbum();
+				curr_album.photos = photoList;
+				curr_album.getStartingDateRange();
+				curr_album.getEndingDateRange();
+				curr_user.albums = updateAlbumPt1(curr_album, curr_user.albums);
+				UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
+				Serialization.storeUserList(UserController.userList);
+			}
 		}
-		Album curr_album = Serialization.readCurrentAlbum();
-		curr_album.photos = photoList;
-		curr_album.getStartingDateRange();
-		curr_album.getEndingDateRange();
-		curr_user.albums = updateAlbumPt1(curr_album, curr_user.albums);
-		UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
-		Serialization.storeUserList(UserController.userList);
+		
 	}
 
+	/**
+	 * Moves or copies a photo into an album depending on the user's choice.
+	 * @param e
+	 * @throws FileNotFoundException
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
 	public void moveCopy(ActionEvent e) throws FileNotFoundException, ClassNotFoundException, IOException {
 		int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
 		if (selectedIndex != -1) {
@@ -177,12 +288,6 @@ public class AlbumController implements Serializable {
 			GridPane.setMargin(cb, new Insets(5, 0, 5, 0));
 			grid.setAlignment(Pos.CENTER);
 			
-			/*Image ni = new Image(p.filepath);
-			ImageView imageView = new ImageView(ni);
-			imageView.setFitWidth(400);
-			imageView.setFitHeight(400);
-			StackPane stackPane = new StackPane(imageView);
-			grid.add(stackPane, 0, 0);*/
 			dialogPane.getButtonTypes().add(ButtonType.CANCEL);
 			((Button) dialogPane.lookupButton(ButtonType.OK)).setText("Copy");
 			((Button) dialogPane.lookupButton(ButtonType.CANCEL)).setText("Move");
@@ -191,7 +296,6 @@ public class AlbumController implements Serializable {
 			cb.valueProperty().addListener(new ChangeListener<Album>() {
 				@Override
 				public void changed(ObservableValue<? extends Album> arg0, Album arg1, Album arg2) {
-					// TODO Auto-generated method stub
 					toAdd = arg0.getValue();
 				}	   
 		    });
@@ -200,29 +304,53 @@ public class AlbumController implements Serializable {
 			dialogPane.setHeader(grid);
 		
 			Optional<ButtonType> result = alert.showAndWait();
-			if(result.get() == ButtonType.OK) {
-				toAdd.photos.add(movePhoto);
-				/*photoList.add(movePhoto);
-				photos = FXCollections.observableList(photoList);
-				albumsView.setItems(photos);
-				curr_user.albums = updateAlbumPt1(toAdd, curr_user.albums);
-				UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);*/
+			if(result.get() == ButtonType.OK) { //copy function
+				if(toAdd.photos.size() == 0) {
+					toAdd.photos = new ArrayList<Photo>();
+					toAdd.photos.add(movePhoto);
+				} else {
+					toAdd.photos.add(movePhoto);
+				}
 			} 
 			
-			if(result.get() == ButtonType.CANCEL) {
-				toAdd.photos.add(movePhoto);
-				photoList.remove(movePhoto);
-				photos = FXCollections.observableList(photoList);
-				albumsView.setItems(photos);
-				curr_user.albums = updateAlbumPt1(toAdd, curr_user.albums);
-				UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
+			if(result.get() == ButtonType.CANCEL) { //move function
+				if(toAdd.photos.size() == 0) {
+					toAdd.photos = new ArrayList<Photo>();
+					toAdd.photos.add(movePhoto);
+					photoList.remove(movePhoto);
+					photos = FXCollections.observableList(photoList);
+					albumsView.setItems(photos);
+					Album curr_album = Serialization.readCurrentAlbum();
+					curr_album.photos = photoList;
+					curr_user.albums = updateAlbumPt1(curr_album, curr_user.albums);
+					UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
+					Serialization.storeUserList(UserController.userList);
+					
+				} else {
+					toAdd.photos.add(movePhoto);
+					photoList.remove(movePhoto);
+					photos = FXCollections.observableList(photoList);
+					albumsView.setItems(photos);
+					Album curr_album = Serialization.readCurrentAlbum();
+					curr_album.photos = photoList;
+					curr_user.albums = updateAlbumPt1(curr_album, curr_user.albums);
+					UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
+					Serialization.storeUserList(UserController.userList);
+				}
 			}
 		}
 
   
 	}
-
-	public void recaption(ActionEvent e) {
+	
+	/**
+	 * Recaptions a individual photo.
+	 * @param e
+	 * @throws FileNotFoundException
+	 * @throws ClassNotFoundException
+	 * @throws IOException
+	 */
+	public void recaption(ActionEvent e) throws FileNotFoundException, ClassNotFoundException, IOException {
 		int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
 		if (selectedIndex != -1) {
 			Photo photo = (Photo) albumsView.getSelectionModel().getSelectedItem();
@@ -237,13 +365,17 @@ public class AlbumController implements Serializable {
 				photoList.set(selectedIndex, photo);
 				photos = FXCollections.observableList(photoList);
 				albumsView.setItems(photos);
+				Album curr_album = Serialization.readCurrentAlbum();
+				curr_album.photos = photoList;
+				curr_user.albums = updateAlbumPt1(curr_album, curr_user.albums);
+				UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
+				Serialization.storeUserList(UserController.userList);
 			}
 		}
 	}
 
 	/**
 	 * logout enables the user to logout from the session.
-	 * 
 	 * @param event
 	 * @throws IOException
 	 * @throws ClassNotFoundException
@@ -267,6 +399,12 @@ public class AlbumController implements Serializable {
 		ns.show();
 	}
 
+	/**
+	 * Enables the behavior to go back to the previous screen.
+	 * @param e
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public void back(ActionEvent e) throws IOException, ClassNotFoundException {
         FXMLLoader loader = new FXMLLoader();
 		serialController.storeUserList(UserController.userList);
@@ -326,7 +464,7 @@ public class AlbumController implements Serializable {
 	            }
 	        });
 		} else {
-			if (curr_album.photos == null) {
+			if (photoList == null) {
 				photos = FXCollections.observableList(photoList);
 				albumsView.setItems(photos);
 			} else {
@@ -389,6 +527,14 @@ public class AlbumController implements Serializable {
 		    		}
 		        }
 		    }
+		});
+		primaryStage.setOnCloseRequest(event -> {
+			try {
+				Serialization.storeUserList(UserController.userList);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		});
 	}
 }
