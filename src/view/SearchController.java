@@ -15,6 +15,7 @@ import java.util.ResourceBundle;
 import app.Album;
 import app.Photo;
 import app.Tag;
+import app.TagType;
 import app.User;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -193,7 +194,7 @@ public class SearchController implements Serializable {
 	public void addTag(ActionEvent e) {
 		String type = tType.getText();
 		String value = tValue.getText();
-		Tag newTag = new Tag(type, value);
+		Tag newTag = new Tag(new TagType(type, false), value);
 		if (tag1.getText().isBlank()) {
 			tag1.setText(newTag.toString());
 		}
