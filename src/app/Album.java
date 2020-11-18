@@ -43,7 +43,7 @@ public class Album implements Serializable{
 	 * These LocalDate date range attributes store the date range that the album is based around.
 	 */
 	LocalDate startingDateRange;
-	LocalDate endingDateRange; 
+	LocalDate endingDateRange;
 	
 	/**
 	 * DateTimeFormatter dateFormatter formats the date ranges from LocalDate format to MM/dd/yyyy format.
@@ -81,7 +81,12 @@ public class Album implements Serializable{
 	 * @return int
 	 */
 	public int getPhotoCount() {
-		return numPhotos;
+		if (photos != null) {
+			numPhotos = photos.size();
+			return numPhotos;
+		}
+		else 
+			return 0;
 	}
 	
 	/**
@@ -97,27 +102,27 @@ public class Album implements Serializable{
 	 * @return Date
 	 */
 	public String getDateRange() {
+		if (photos == null)
+			return "";
 		return startingDateRange.format(dateFormatter) + " - " + endingDateRange.format(dateFormatter);
 	}
 	
-	public LocalDate getStartingDateRange() {
-		LocalDate earliestDate = photos.get(0).date;
+	public void getStartingDateRange() {
+		startingDateRange = photos.get(0).date;
 		for (int i = 1; i < photos.size(); i++) {
 			LocalDate temp = photos.get(i).date;
-			if (temp.compareTo(earliestDate) < 0) 
-				earliestDate = temp;
+			if (temp.compareTo(startingDateRange) < 0) 
+				startingDateRange = temp;
 		}
-		return earliestDate;
 	}
 	
-	public LocalDate getEndingDateRange() {
-		LocalDate latestDate = photos.get(0).date;
+	public void getEndingDateRange() {
+		endingDateRange = photos.get(0).date;
 		for (int i = 1; i < photos.size(); i++) {
 			LocalDate temp = photos.get(i).date;
-			if (temp.compareTo(latestDate) > 0) 
-				latestDate = temp;
+			if (temp.compareTo(endingDateRange) > 0) 
+				endingDateRange = temp;
 		}
-		return latestDate;
 	}
 	
 	/**

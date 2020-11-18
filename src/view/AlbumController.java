@@ -33,6 +33,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.SelectionModel;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -78,7 +79,6 @@ public class AlbumController implements Serializable {
 	
 	private ArrayList<Album> updateAlbumPt1(Album curr_album, ArrayList<Album> albumList) {
 		for (int i = 0; i <= albumList.size() - 1; i++) {
-			System.out.println(albumList.get(i));
 			if (albumList.get(i).getName().equals(curr_album.getName())) {
 				albumList.remove(i);
 				break;
@@ -222,7 +222,22 @@ public class AlbumController implements Serializable {
 	}
 
 	public void recaption(ActionEvent e) {
-	
+		int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
+		if (selectedIndex != -1) {
+			Photo photo = (Photo) albumsView.getSelectionModel().getSelectedItem();
+			TextInputDialog dialog = new TextInputDialog();
+			dialog.initOwner(stage);
+			dialog.setTitle("Recaption photo");
+			dialog.setHeaderText("Input your desired caption.");
+			dialog.setContentText("New caption:");
+			Optional<String> result = dialog.showAndWait();
+			if (result.isPresent()) {
+				photo.caption = "\"" + result.get() + "\"";
+				photoList.set(selectedIndex, photo);
+				photos = FXCollections.observableList(photoList);
+				albumsView.setItems(photos);
+			}
+		}
 	}
 
 	/**
@@ -331,7 +346,7 @@ public class AlbumController implements Serializable {
 			                    imageView.setFitWidth(100);
 			            	    imageView.setFitHeight(100);
 		                    }
-		                    setText(name.photoName);
+		                    setText(name.photoName + "\n" + "Caption: " + name.caption);
 		                    setGraphic(imageView);
 		                }
 		            }
@@ -346,9 +361,7 @@ public class AlbumController implements Serializable {
 		        if (click.getClickCount() == 2) {
 		        	int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
 		    		if (selectedIndex != -1) {
-		    			Photo curr_album = (Photo) albumsView.getSelectionModel().getSelectedItem();
-		    			int newSelectedIndex = (selectedIndex == albumsView.getItems().size() - 1) ? selectedIndex - 1
-		    					: selectedIndex;
+		    			Photo selectedPhoto = (Photo) albumsView.getSelectionModel().getSelectedItem();
 		    			FXMLLoader loader = new FXMLLoader();
 		    			loader.setLocation(getClass().getResource("photo view.fxml"));
 		    			AnchorPane root = null;
@@ -361,7 +374,7 @@ public class AlbumController implements Serializable {
 		    			
 		    			PhotoController pc = loader.getController();
 		    			try {
-							pc.start(stage, selectedIndex);
+							pc.start(stage, selectedIndex, selectedPhoto);
 						} catch (ClassNotFoundException | IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

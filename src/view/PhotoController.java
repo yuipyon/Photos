@@ -1,9 +1,9 @@
 package view;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import app.Album;
 import app.Photo;
@@ -12,14 +12,13 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.Serialization;
 
@@ -29,13 +28,14 @@ public class PhotoController {
 	@FXML Button backButton;
 	@FXML Button forwardButton;
 	@FXML Button GoBack;
-	@FXML TextField captionBox;
-	@FXML TextField dateBox;
-	@FXML TextField tagBox;
+	@FXML Text caption;
+	@FXML Text date;
+	@FXML Text tags;
 	
 	Stage mainStage;
 	User curr_user;
 	Album curr_album;
+	Photo curr_photo;
 	Serialization serialController = new Serialization();
 	ArrayList<Photo> photos = new ArrayList<Photo>();
 	int counter;
@@ -69,6 +69,22 @@ public class PhotoController {
 		mainStage.setTitle("User Dashboard");
 		mainStage.show();
 	}
+	
+	public void addTag(ActionEvent e) {
+		String newTag = "";
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.initOwner(mainStage);
+		dialog.setTitle("Add tag");
+		dialog.setHeaderText("Choose an existing tag or input a new tag name.");
+		dialog.setContentText("New caption:");
+		Optional<String> result = dialog.showAndWait();
+		if (result.isPresent()) {
+			photo.caption = "\"" + result.get() + "\"";
+			photoList.set(selectedIndex, photo);
+			photos = FXCollections.observableList(photoList);
+			albumsView.setItems(photos);
+		}
+	}
 
 	
 	/**
@@ -80,11 +96,10 @@ public class PhotoController {
 	 * @throws ClassNotFoundException
 	 */
 
-	public void start(Stage primaryStage, int selectedIndex) throws FileNotFoundException, IOException, ClassNotFoundException {
+	public void start(Stage primaryStage, int selectedIndex, Photo p) throws FileNotFoundException, IOException, ClassNotFoundException {
 		mainStage = primaryStage;
 		curr_user = serialController.readCurrentUser();
 		counter = selectedIndex;
-		System.out.println(counter);
 		for (int i = 0; i <= UserController.userList.size() - 1; i++) {
 			if (UserController.userList.get(i).equals(curr_user)) {
 				curr_user = UserController.userList.get(i);
@@ -103,9 +118,9 @@ public class PhotoController {
 			}
 		}
 		photos = curr_album.photos;
-		System.out.println(photos.size());
-		PhotoView.setImage(new Image(photos.get(selectedIndex).filepath));
-		
+		PhotoView.setImage(new Image(p.filepath));
+		caption.setText("\"" + p.caption + "\"");
+		date.setText(p.getDate(p.date));
+//		tags.setText(p.tags);
 	}
-
 }

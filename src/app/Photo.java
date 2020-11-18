@@ -45,7 +45,7 @@ public class Photo implements Serializable{
 	/**
 	 * String caption is the caption of the photo.
 	 */
-	public String caption;
+	public String caption = " ";
 	
 	/**
 	 * ArrayList<Tag> tags contains the tags pertaining to the photo.
