@@ -340,7 +340,6 @@ public class UserController implements Serializable {
         int selectedIndex = albumList.getSelectionModel().getSelectedIndex();
         if (selectedIndex != -1) {
             Album curr_album = (Album) albumList.getSelectionModel().getSelectedItem();
-            //System.out.println(curr_album);
             serialController.storeCurrentAlbum(curr_album);
             FXMLLoader loader = new FXMLLoader();
             loader.setLocation(getClass().getResource("Album_Display.fxml"));
