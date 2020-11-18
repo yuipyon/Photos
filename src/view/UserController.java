@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 import app.Album;
+import app.TagType;
 import app.User;
 
 /**
@@ -130,6 +131,10 @@ public class UserController implements Serializable {
 	 * User curr_user holds the information of the current user.
 	 */
 	User curr_user;
+	/**
+	 * ArrayList<TagType> tagtypes stores the default tagtypes for each user. 
+	 */
+	ArrayList<TagType> tagtypes = new ArrayList<TagType>();
 
 	/**
 	 * Stage mainStage is used to switch between scenes in one stage.
@@ -385,7 +390,12 @@ public class UserController implements Serializable {
 				curr_user = userList.get(i);
 			}
 		}
-
+		
+		tagtypes.add(new TagType("person", false));
+		tagtypes.add(new TagType("location", true));
+		
+		curr_user.tagTypes = tagtypes; 
+		
 		if (curr_user.albums == null) {
 			albums = FXCollections.observableList(albumLists);
 			albumList.setItems(albums);

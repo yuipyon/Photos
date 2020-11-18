@@ -7,18 +7,35 @@ import java.util.Optional;
 
 import app.Album;
 import app.Photo;
+import app.TagType;
 import app.User;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.DialogPane;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Serialization;
 
@@ -30,7 +47,9 @@ public class PhotoController {
 	@FXML Button GoBack;
 	@FXML Text caption;
 	@FXML Text date;
-	@FXML Text tags;
+	
+	BorderPane root = new BorderPane();
+	FlowPane fp = new FlowPane();
 	
 	Stage mainStage;
 	User curr_user;
@@ -39,6 +58,9 @@ public class PhotoController {
 	Serialization serialController = new Serialization();
 	ArrayList<Photo> photos = new ArrayList<Photo>();
 	int counter;
+	String type, value;
+	ArrayList<TagType> rawTypes;
+	ObservableList<String> types = FXCollections.observableArrayList();
 	
 	public void goBack(ActionEvent e) {
 		counter--; 
@@ -70,19 +92,54 @@ public class PhotoController {
 		mainStage.show();
 	}
 	
+	public void getTagTypeStrings(ArrayList<TagType> temp) {
+		for (TagType t : temp) {
+			types.add(t.toString());
+		}
+	}
+	
 	public void addTag(ActionEvent e) {
-		String newTag = "";
-		TextInputDialog dialog = new TextInputDialog();
-		dialog.initOwner(mainStage);
-		dialog.setTitle("Add tag");
-		dialog.setHeaderText("Choose an existing tag or input a new tag name.");
-		dialog.setContentText("New caption:");
-		Optional<String> result = dialog.showAndWait();
-		if (result.isPresent()) {
-			curr_photo.caption = "\"" + result.get() + "\"";
-			AlbumController.photoList.set(selectedIndex, curr_photo);
-			photos = FXCollections.observableList(AlbumController.photoList);
-			AlbumController.albumsView.setItems(photos);
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Add new tag");
+
+		alert.initModality(Modality.APPLICATION_MODAL);
+		alert.initOwner(mainStage);
+
+		DialogPane dialogPane = alert.getDialogPane();
+		GridPane grid = new GridPane();
+		ColumnConstraints graphicColumn = new ColumnConstraints();
+		ColumnConstraints textColumn = new ColumnConstraints();
+		grid.getColumnConstraints().setAll(graphicColumn, textColumn);
+		
+		Label l = new Label("Please select a tag type (or create your own custom tag type) and input its matching value.");
+		ComboBox cb = new ComboBox(FXCollections.observableArrayList(curr_user.tagTypes));
+		TextField tagValue = new TextField();
+		tagValue.setPromptText("Enter tag value here.");
+		grid.add(l, 1, 0);
+		GridPane.setMargin(l, new Insets(5, 0, 5, 0));
+		grid.add(cb, 1, 1);
+		GridPane.setMargin(cb, new Insets(5, 0, 5, 0));
+		grid.add(tagValue, 2, 1);
+		GridPane.setMargin(cb, new Insets(5, 0, 5, 0));
+		grid.setAlignment(Pos.CENTER);
+		dialogPane.getButtonTypes().add(ButtonType.CANCEL);
+		
+		cb.valueProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+				type = arg0.getValue();
+			}	   
+	    });
+		
+		dialogPane.setHeader(grid);
+		
+		Optional<ButtonType> result = alert.showAndWait();
+		if(result.get() == ButtonType.OK) { 
+			value = tagValue.getText();
+		}
+		else if(result.get() == ButtonType.CANCEL) {
+			type = "";
+			value = "";
 		}
 	}
 
@@ -107,6 +164,9 @@ public class PhotoController {
 			}
 		}
 		
+		rawTypes = curr_user.tagTypes;
+		getTagTypeStrings(rawTypes);
+		
 		curr_album = serialController.readCurrentAlbum();
 		
 		int index = 0;
@@ -119,8 +179,11 @@ public class PhotoController {
 		}
 		photos = curr_album.photos;
 		PhotoView.setImage(new Image(p.filepath));
-		caption.setText("\"" + p.caption + "\"");
+		caption.setText(p.caption);
 		date.setText(p.getDate(p.date));
-//		tags.setText(p.tags);
+
+		fp.setHgap(10);
+		fp.setVgap(15);
+		root.setBottom(fp);
 	}
 }

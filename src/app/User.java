@@ -2,6 +2,7 @@ package app;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * @author Karun Kanda
@@ -33,6 +34,13 @@ public class User implements Serializable{
 	 * Creates a new instance of User.
 	 * @param username
 	 */
+	
+	/**
+	 * ArrayList<TagType> tagTypes stores the initial default tag type presets that is provided for each user, 
+	 * which can be added with more custom-made tag types.
+	 */
+	public ArrayList<TagType> tagTypes = new ArrayList<TagType>();
+	
 	public User(String username) {
 		this.username = username;
 	}

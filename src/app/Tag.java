@@ -27,7 +27,7 @@ public class Tag extends Label implements Serializable {
 	/**
 	 * String tagName stores the name of the tag (e.g: location).
 	 */
-	String tagName;
+	TagType tagName;
 	
 	/**
 	 * String tagValue stores the value of the tag (e.g: New Brunswick).
@@ -35,45 +35,44 @@ public class Tag extends Label implements Serializable {
 	String tagValue;
 
 	/**
-	 * Creates a new instance of Tag.
+	 * Creates a new instance of Tag and initializes it.
 	 * @param tagName
 	 * @param tagValue
 	 */
-	public Tag(String tagName, String tagValue) {
+	public Tag(TagType tagName, String tagValue) {
+		super(tagName.toString() + ":" + tagValue);
 		this.tagName = tagName;
 		this.tagValue = tagValue;
+		initTag();
 	}
 	
 	/**
-	 * Creates a new instance of Tag. (w/o arguments)
+	 * getTagName gets the name of the tag.
+	 * @return String
 	 */
-	public Tag() {
-		super();
-		initTag();
+	public TagType getTagName() {
+		return tagName;
 	}
-
+	
 	/**
-	 * Creates a new private instance of a Tag.
-	 * @param arg0
-	 * @param arg1
+	 * getTagValue gets the value of the tag.
+	 * @return String
 	 */
-	private Tag(String arg0, Node arg1) {
-		super(arg0, arg1);
+	public String getTagValue() {
+		return tagValue;
 	}
-
+	
 	/**
-	 * Creates an instance of Tag and initializes the tag.
-	 * @param arg0
+	 * Returns the tag name and tag value.
 	 */
-	public Tag(String arg0) {
-		super(arg0);
-		initTag();
+	public String toString() {
+		return tagName.toString() + ":" + tagValue;
 	}
 
 	/**
 	 * initTag initializes a tag.
 	 */
-	private final void initTag(){
+	public final void initTag(){
 		Path path = new Path();
 		/**
 		 * you will need to increase the 5 if you want the close button to be big
@@ -109,29 +108,5 @@ public class Tag extends Label implements Serializable {
 		setStyle("-fx-background-color: gold; "
 				+ "-fx-border-radius: 3;"
 				+ "-fx-border-color: red;");
-	}
-
-	
-	/**
-	 * getTagName gets the name of the tag.
-	 * @return String
-	 */
-	public String getTagName() {
-		return tagName;
-	}
-	
-	/**
-	 * getTagValue gets the value of the tag.
-	 * @return String
-	 */
-	public String getTagValue() {
-		return tagValue;
-	}
-	
-	/**
-	 * Returns the tag name and tag value.
-	 */
-	public String toString() {
-		return tagName + ":" + tagValue;
 	}
 }
