@@ -188,7 +188,7 @@ public class LoginController extends ActionEvent implements Serializable {
 				photos.add(five);
 				
 				ArrayList<Album> a = new ArrayList<Album>();
-				Album al = new Album("stock", 0);
+				Album al = new Album("stock");
 				al.photos = photos;
 				a.add(al);
 				

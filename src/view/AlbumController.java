@@ -300,7 +300,6 @@ public class AlbumController implements Serializable {
 		        	int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
 		    		if (selectedIndex != -1) {
 		    			Photo curr_album = (Photo) albumsView.getSelectionModel().getSelectedItem();
-		    			//System.out.println(curr_album);
 		    			int newSelectedIndex = (selectedIndex == albumsView.getItems().size() - 1) ? selectedIndex - 1
 		    					: selectedIndex;
 		    			FXMLLoader loader = new FXMLLoader();
@@ -315,7 +314,7 @@ public class AlbumController implements Serializable {
 		    			
 		    			PhotoController pc = loader.getController();
 		    			try {
-							pc.start(stage);
+							pc.start(stage, selectedIndex);
 						} catch (ClassNotFoundException | IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();

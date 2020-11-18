@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import app.Album;
 import app.Photo;
 import app.User;
 import javafx.collections.FXCollections;
@@ -27,7 +28,6 @@ public class PhotoController {
 	@FXML ImageView PhotoView;
 	@FXML Button backButton;
 	@FXML Button forwardButton;
-	//This is to go back a screen
 	@FXML Button GoBack;
 	@FXML TextField captionBox;
 	@FXML TextField dateBox;
@@ -35,19 +35,23 @@ public class PhotoController {
 	
 	Stage mainStage;
 	User curr_user;
+	Album curr_album;
 	Serialization serialController = new Serialization();
 	ArrayList<Photo> photos = new ArrayList<Photo>();
-	int forwardCounter = 0;
-	int backCounter = photos.size() - 1;
+	int counter = 0;
 	
 	public void goBack(ActionEvent e) {
-		forwardCounter--;
-		PhotoView.setImage(new Image(curr_user.albums.get(0).photos.get(forwardCounter).filepath));
+		if (counter > 0) {
+			counter--;
+			PhotoView.setImage(new Image(photos.get(counter).filepath));
+		}
 	}
 	
 	public void goForward(ActionEvent e) {
-		forwardCounter++;
-		PhotoView.setImage(new Image(curr_user.albums.get(0).photos.get(forwardCounter).filepath));
+		if (counter < photos.size()) {
+			counter++;
+			PhotoView.setImage(new Image(photos.get(counter).filepath));
+		}
 	}
 	
 	public void backScreen(ActionEvent e) throws FileNotFoundException, ClassNotFoundException, IOException {
@@ -57,7 +61,7 @@ public class PhotoController {
 		AnchorPane root = (AnchorPane) loader.load();
 		AlbumController controller = loader.getController();
 		controller.start(mainStage);
-		mainStage.setScene(new Scene(root, 621, 424));
+		mainStage.setScene(new Scene(root, 600, 520));
 		mainStage.setTitle("User Dashboard");
 		mainStage.show();
 	}
@@ -72,7 +76,7 @@ public class PhotoController {
 	 * @throws ClassNotFoundException
 	 */
 
-	public void start(Stage primaryStage) throws FileNotFoundException, IOException, ClassNotFoundException {
+	public void start(Stage primaryStage, int selectedIndex) throws FileNotFoundException, IOException, ClassNotFoundException {
 
 		mainStage = primaryStage;
 		
@@ -81,12 +85,21 @@ public class PhotoController {
 		for (int i = 0; i <= UserController.userList.size() - 1; i++) {
 			if (UserController.userList.get(i).equals(curr_user)) {
 				curr_user = UserController.userList.get(i);
+				break;
 			}
 		}
-		
-		photos = curr_user.albums.get(0).photos;
-		
-		PhotoView.setImage(new Image(curr_user.albums.get(0).photos.get(0).filepath));
+		curr_album = serialController.readCurrentAlbum();
+		int index = 0;
+		for (int i = 0; i < curr_user.albums.size(); i++) {
+			if (curr_user.albums.get(i).equals(curr_album)) {
+				index = i; 
+				curr_album = curr_user.albums.get(index);
+				break;
+			}
+		}
+		photos = curr_album.photos;
+		System.out.println(photos.size());
+		PhotoView.setImage(new Image(photos.get(selectedIndex).filepath));
 		
 	}
 

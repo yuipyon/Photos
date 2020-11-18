@@ -30,9 +30,14 @@ public class Album implements Serializable{
 	String name; 
 	
 	/**
+	 * ArrayList<Photo> photos stores the album's Photo objects. 
+	 */
+	public ArrayList<Photo> photos;
+	
+	/**
 	 * int numPhotos stores the number of photos in the album.
 	 */
-	int numPhotos; 
+	int numPhotos = photos.size(); 
 	
 	/**
 	 * These LocalDate date range attributes store the date range that the album is based around.
@@ -45,17 +50,14 @@ public class Album implements Serializable{
 	 */
 	private static final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
 	
-	public ArrayList<Photo> photos;
-	
 	/**
 	 * Album creates a new instance of Album. 
 	 * @param name
 	 * @param numPhotos
 	 * @param dateRange
 	 */
-	public Album(String name, int numPhotos) {
+	public Album(String name) {
 		this.name = name;
-		this.numPhotos = numPhotos;
 	}
 	
 	/**

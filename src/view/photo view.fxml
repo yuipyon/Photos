@@ -23,12 +23,12 @@ Yulin Ni
       </Text>
       <Button fx:id="backButton" layoutX="214.0" layoutY="28.0" mnemonicParsing="false" onAction="#goBack" text="&lt;&lt;" />
       <Button fx:id="forwardButton" layoutX="464.0" layoutY="28.0" mnemonicParsing="false" onAction="#goForward" text="&gt;&gt;" />
-      <Text layoutX="54.0" layoutY="464.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Caption:" />
+      <Text layoutX="40.0" layoutY="464.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Caption:" />
       <Text layoutX="54.0" layoutY="495.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date:" />
       <Text layoutX="54.0" layoutY="524.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tags:" />
       <Button fx:id="GoBack" layoutX="13.0" layoutY="10.0" mnemonicParsing="false" onAction="#backScreen" prefHeight="25.0" prefWidth="50.0" text="Back" />
       <ImageView fx:id="PhotoView" fitHeight="374.0" fitWidth="623.0" layoutX="54.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />
-      <TextField fx:id="captionBox" layoutX="105.0" layoutY="447.0" />
+      <TextField fx:id="captionBox" layoutX="89.0" layoutY="447.0" />
       <TextField fx:id="dateBox" layoutX="89.0" layoutY="478.0" />
       <TextField fx:id="tagBox" layoutX="89.0" layoutY="507.0" />
    </children>
