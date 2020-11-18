@@ -3,6 +3,8 @@ package view;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import app.Tag;
 import javafx.collections.FXCollections;
@@ -22,8 +24,7 @@ import model.Serialization;
 
 public class SearchController implements Serializable {
 
-	String[] choices = {"and", "or"};
-	
+	ArrayList<String> choices = new ArrayList<String>(Arrays.asList("and", "or"));
 	@FXML ComboBox andOr = new ComboBox(FXCollections.observableArrayList(choices));
 	@FXML Text tag1;
 	@FXML Text tag2;
@@ -42,7 +43,7 @@ public class SearchController implements Serializable {
 	
 	Serialization serialController = new Serialization();
 	
-	public void goBack(ActionEvent e) throws FileNotFoundException, IOException, ClassNotFoundException {
+	public void back(ActionEvent e) throws FileNotFoundException, IOException, ClassNotFoundException {
 		FXMLLoader loader = new FXMLLoader();
 		serialController.storeUserList(UserController.userList);
         loader.setLocation(getClass().getResource("user_dashboard.fxml"));
@@ -58,7 +59,7 @@ public class SearchController implements Serializable {
 		String type = tType.getText();
 		String value = tValue.getText();
 		Tag newTag = new Tag(type, value);
-		if (tag1 == null) {
+		if (tag1.getText().isBlank()) {
 			tag1.setText(newTag.toString());
 		}
 		else {
