@@ -79,10 +79,10 @@ public class PhotoController {
 		dialog.setContentText("New caption:");
 		Optional<String> result = dialog.showAndWait();
 		if (result.isPresent()) {
-			photo.caption = "\"" + result.get() + "\"";
-			photoList.set(selectedIndex, photo);
-			photos = FXCollections.observableList(photoList);
-			albumsView.setItems(photos);
+			curr_photo.caption = "\"" + result.get() + "\"";
+			AlbumController.photoList.set(selectedIndex, curr_photo);
+			photos = FXCollections.observableList(AlbumController.photoList);
+			AlbumController.albumsView.setItems(photos);
 		}
 	}
 
