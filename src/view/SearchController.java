@@ -42,7 +42,7 @@ public class SearchController implements Serializable {
 	
 	Serialization serialController = new Serialization();
 	
-	public void back(ActionEvent e) throws FileNotFoundException, IOException, ClassNotFoundException {
+	public void goBack(ActionEvent e) throws FileNotFoundException, IOException, ClassNotFoundException {
 		FXMLLoader loader = new FXMLLoader();
 		serialController.storeUserList(UserController.userList);
         loader.setLocation(getClass().getResource("user_dashboard.fxml"));
@@ -83,9 +83,18 @@ public class SearchController implements Serializable {
 		
 	}
 	
+	
 	public void start(Stage stage) {
 		this.stage = stage;
 	}
+	
+	public void dateFromAction(ActionEvent e) {
+	
+	}
+	
+	public void ToDateAction(ActionEvent e) {
+		
+	}	
 	
 }
 
