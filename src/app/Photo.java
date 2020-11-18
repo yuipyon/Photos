@@ -40,6 +40,9 @@ public class Photo implements Serializable{
 	 */
 	public String photoName;
 	
+	/**
+	 * String filepath stores the filepath of the user's photo.
+	 */
 	public String filepath;
 	
 	/**
@@ -55,22 +58,34 @@ public class Photo implements Serializable{
 	/**
 	 * LocalDate date records the time in which the photo was taken - in other words, the last modification date. 
 	 */
-	
 	public LocalDate date; 
 	
+	/**
+	 * Photo creates a new instance of the Photo class.
+	 */
 	public Photo() {
 		this.photo = null;
 		this.tags = new ArrayList<Tag>();
 	}
 	
+	/**
+	 * setImage sets the user's image to the photo field.
+	 * @param image
+	 */
 	public void setImage(Image image) {
 		this.photo = image;
 	}
 	
+	/**
+	 * toString returns the name of the photo.
+	 */
 	public String toString() {
 		return photoName;
 	}
 	
+	/**
+	 * Overridden version of equals(Object o) to find if two photos are equal.
+	 */
 	public boolean equals(Object o) {
 		if(o == null) {
 	         return false;
