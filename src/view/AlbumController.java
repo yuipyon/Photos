@@ -60,7 +60,6 @@ public class AlbumController implements Serializable {
 	@FXML
 	Button recaption;
 	@FXML
-	static
 	ListView albumsView;
 	@FXML
 	Text albumTitle;
@@ -73,7 +72,7 @@ public class AlbumController implements Serializable {
 
 	User curr_user;
 	ObservableList<Photo> photos = FXCollections.observableArrayList();
-	static ArrayList<Photo> photoList = new ArrayList<Photo>();
+	ArrayList<Photo> photoList = new ArrayList<Photo>();
 	Serialization serialController = new Serialization();
 	Album toAdd = null;
 	Album curr_album;
@@ -130,6 +129,9 @@ public class AlbumController implements Serializable {
 			curr_user.albums = updateAlbumPt1(curr_album, curr_user.albums);
 			UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
 			Serialization.storeUserList(UserController.userList);
+			
+			photos = FXCollections.observableList(photoList);
+			albumsView.setItems(photos);
         }
 	}
 
@@ -177,12 +179,6 @@ public class AlbumController implements Serializable {
 			GridPane.setMargin(cb, new Insets(5, 0, 5, 0));
 			grid.setAlignment(Pos.CENTER);
 			
-			/*Image ni = new Image(p.filepath);
-			ImageView imageView = new ImageView(ni);
-			imageView.setFitWidth(400);
-			imageView.setFitHeight(400);
-			StackPane stackPane = new StackPane(imageView);
-			grid.add(stackPane, 0, 0);*/
 			dialogPane.getButtonTypes().add(ButtonType.CANCEL);
 			((Button) dialogPane.lookupButton(ButtonType.OK)).setText("Copy");
 			((Button) dialogPane.lookupButton(ButtonType.CANCEL)).setText("Move");
@@ -191,7 +187,6 @@ public class AlbumController implements Serializable {
 			cb.valueProperty().addListener(new ChangeListener<Album>() {
 				@Override
 				public void changed(ObservableValue<? extends Album> arg0, Album arg1, Album arg2) {
-					// TODO Auto-generated method stub
 					toAdd = arg0.getValue();
 				}	   
 		    });
@@ -201,27 +196,36 @@ public class AlbumController implements Serializable {
 		
 			Optional<ButtonType> result = alert.showAndWait();
 			if(result.get() == ButtonType.OK) {
-				toAdd.photos.add(movePhoto);
-				/*photoList.add(movePhoto);
-				photos = FXCollections.observableList(photoList);
-				albumsView.setItems(photos);
-				curr_user.albums = updateAlbumPt1(toAdd, curr_user.albums);
-				UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);*/
+				if(toAdd.photos == null) {
+					toAdd.photos = new ArrayList<Photo>();
+					toAdd.photos.add(movePhoto);
+				} else {
+					toAdd.photos.add(movePhoto);
+				}
 			} 
 			
 			if(result.get() == ButtonType.CANCEL) {
-				toAdd.photos.add(movePhoto);
-				photoList.remove(movePhoto);
-				photos = FXCollections.observableList(photoList);
-				albumsView.setItems(photos);
-				curr_user.albums = updateAlbumPt1(toAdd, curr_user.albums);
-				UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
+				if(toAdd.photos == null) {
+					toAdd.photos = new ArrayList<Photo>();
+					toAdd.photos.add(movePhoto);
+					photoList.remove(movePhoto);
+					photos = FXCollections.observableList(photoList);
+					albumsView.setItems(photos);
+					curr_user.albums = updateAlbumPt1(toAdd, curr_user.albums);
+					UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
+				} else {
+					toAdd.photos.add(movePhoto);
+					photoList.remove(movePhoto);
+					photos = FXCollections.observableList(photoList);
+					albumsView.setItems(photos);
+					curr_user.albums = updateAlbumPt1(toAdd, curr_user.albums);
+					UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
+				}
 			}
 		}
 
   
 	}
-
 	public void recaption(ActionEvent e) {
 		int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
 		if (selectedIndex != -1) {
@@ -326,7 +330,7 @@ public class AlbumController implements Serializable {
 	            }
 	        });
 		} else {
-			if (curr_album.photos == null) {
+			if (photoList == null) {
 				photos = FXCollections.observableList(photoList);
 				albumsView.setItems(photos);
 			} else {
