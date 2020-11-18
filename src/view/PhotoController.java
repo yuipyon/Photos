@@ -97,7 +97,10 @@ public class PhotoController {
 			types.add(t.toString());
 		}
 	}
-	
+	/**
+	 * Enables the user to add a tag.
+	 * @param e
+	 */
 	public void addTag(ActionEvent e) {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Add new tag");
@@ -178,12 +181,28 @@ public class PhotoController {
 			}
 		}
 		photos = curr_album.photos;
+		
+		for(int i = 0; i<= curr_album.photos.size() - 1; i++) {
+			if(curr_album.photos.get(i).equals(curr_photo)) {
+				curr_photo = curr_album.photos.get(i);
+				break;
+			}
+		}
+		
 		PhotoView.setImage(new Image(p.filepath));
 		caption.setText(p.caption);
 		date.setText(p.getDate(p.date));
-
 		fp.setHgap(10);
 		fp.setVgap(15);
 		root.setBottom(fp);
+		
+		primaryStage.setOnCloseRequest(event -> {
+			try {
+				Serialization.storeUserList(UserController.userList);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
 	}
 }

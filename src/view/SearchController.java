@@ -9,6 +9,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import app.Album;
@@ -23,12 +24,15 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -215,9 +219,44 @@ public class SearchController implements Serializable {
 	/**
 	 * Creates an album from the search results.
 	 * @param e
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
 	 */
-	public void createAlbum(ActionEvent e) {
-		
+	public void createAlbum(ActionEvent e) throws FileNotFoundException, IOException {
+		TextInputDialog dialog = new TextInputDialog();
+		dialog.initOwner(stage);
+		dialog.setTitle("Create Album");
+		dialog.setHeaderText("Make a new Album.");
+		dialog.setContentText("Enter album name: ");
+
+		Optional<String> result = dialog.showAndWait();
+		if (result.isPresent()) {
+			String albumName = result.get();
+			Album newAlbum = new Album(albumName);
+			boolean albumExists = UserController.albumExist(newAlbum, curr_user.albums);
+			newAlbum.photos = photoList;
+			//System.out.println(albumExists);
+
+			if (albumExists == true) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Duplicate album");
+				alert.setHeaderText("A duplicate album entry was entered");
+				alert.setContentText("Please include another non-duplicate album");
+				alert.showAndWait();
+			} else {
+				if (albumName.length() == 0) {
+					Alert alert = new Alert(AlertType.INFORMATION);
+					alert.setTitle("Invalid Input");
+					alert.setHeaderText("No album name was given");
+					alert.setContentText("Please include a valid album name");
+					alert.showAndWait();
+				} else {
+					curr_user.albums.add(newAlbum);
+					UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
+					serialController.storeUserList(UserController.userList);
+				}
+			}
+		}
 	}
 	
 	/**
