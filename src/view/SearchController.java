@@ -24,7 +24,7 @@ public class SearchController implements Serializable {
 
 	String[] choices = {"and", "or"};
 	
-	@FXML ComboBox andOr = new ComboBox(FXCollections.observableArrayList(choices));;
+	@FXML ComboBox andOr = new ComboBox(FXCollections.observableArrayList(choices));
 	@FXML Text tag1;
 	@FXML Text tag2;
 	@FXML ListView searchResults;
