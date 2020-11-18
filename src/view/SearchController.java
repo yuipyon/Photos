@@ -4,14 +4,19 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import app.Album;
+import app.Photo;
 import app.Tag;
+import app.User;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -47,6 +52,11 @@ public class SearchController implements Serializable {
 	Serialization serialController = new Serialization();
 	ArrayList<String> choices = new ArrayList<String>();
 	String item = null;
+	LocalDate to = null; LocalDate from = null;
+	DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+	User curr_user = null;
+	ObservableList<Photo> photos = FXCollections.observableArrayList();
+	ArrayList<Photo> photoList = new ArrayList<Photo>();
 	
 	public void back(ActionEvent e) throws FileNotFoundException, IOException, ClassNotFoundException {
 		FXMLLoader loader = new FXMLLoader();
@@ -86,18 +96,35 @@ public class SearchController implements Serializable {
 	}
 	
 	public void search(ActionEvent e) {
-		
+		//System.out.println(to.format(dateFormatter) + " - " + from.format(dateFormatter));
+		if(dateFrom.getValue() != null && dateTo.getValue() != null) {
+			for(int i = 0; i<=curr_user.albums.size() - 1; i++) {
+				if(curr_user.albums.get(i).getDateRange().equals(to.format(dateFormatter) + " - " + from.format(dateFormatter))) {
+					photoList = curr_user.albums.get(i).photos;
+				}
+			}
+			photos = FXCollections.observableList(photoList);
+			searchResults.setItems(photos);
+		}
 	}
 	
 	public void dateFromAction(ActionEvent e) {
-		System.out.println(dateFrom.getValue());
+		if(dateFrom.getValue() != null) {
+			to = dateFrom.getValue();
+			System.out.println(to);
+		}
 	}
 	
 	public void ToDateAction(ActionEvent e) {
-		System.out.println(dateTo.getValue());
+		if(dateTo.getValue() != null)
+			from = dateTo.getValue();
+			System.out.println(from);
 	}	
 	
-	public void start(Stage stage) {
+	public void start(Stage stage) throws FileNotFoundException, ClassNotFoundException, IOException {
+		
+		curr_user = Serialization.readCurrentUser();
+		
 		choices.add("and");
 		choices.add("or");
 		this.stage = stage;
@@ -109,6 +136,15 @@ public class SearchController implements Serializable {
 				item = arg0.getValue();
 			}
 	    });
+		
+		
+		for(int i = 0; i <= UserController.userList.size() - 1; i++) {
+			if(UserController.userList.get(i).equals(curr_user)) {
+				curr_user = UserController.userList.get(i);
+			}
+		}
+		
+		System.out.println(curr_user);
 	}
 	
 	
