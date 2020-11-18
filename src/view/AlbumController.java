@@ -328,45 +328,8 @@ public class AlbumController implements Serializable {
 		                }
 		            }
 		        });
-				albumsView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-				    @Override
-				    public void handle(MouseEvent click) {
-
-				        if (click.getClickCount() == 2) {
-				        	int selectedIndex = albumsView.getSelectionModel().getSelectedIndex();
-				    		if (selectedIndex != -1) {
-				    			Photo curr_album = (Photo) albumsView.getSelectionModel().getSelectedItem();
-				    			//System.out.println(curr_album);
-				    			int newSelectedIndex = (selectedIndex == albumsView.getItems().size() - 1) ? selectedIndex - 1
-				    					: selectedIndex;
-				    			FXMLLoader loader = new FXMLLoader();
-				    			loader.setLocation(getClass().getResource("photo view.fxml"));
-				    			AnchorPane root = null;
-								try {
-									root = (AnchorPane) loader.load();
-								} catch (IOException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-				    			
-				    			PhotoController pc = loader.getController();
-				    			try {
-									pc.start(stage);
-								} catch (ClassNotFoundException | IOException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
-				    			
-				    			stage.setTitle("Photos View");
-				    			stage.setScene(new Scene(root, 700, 600));
-				    			stage.setResizable(true);
-				    			stage.show();
-
-				    		}
-				        }
-				    }
-				});
 			}
-	}
+		} 
+	} 
+}
 			
