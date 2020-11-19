@@ -252,6 +252,8 @@ public class SearchController implements Serializable {
 					alert.setContentText("Please include a valid album name");
 					alert.showAndWait();
 				} else {
+					newAlbum.startingDateRange = LocalDate.now();
+					newAlbum.endingDateRange = LocalDate.now();
 					curr_user.albums.add(newAlbum);
 					UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
 					serialController.storeUserList(UserController.userList);
