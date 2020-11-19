@@ -118,7 +118,8 @@ public class PhotoController {
 	int counter;
 	int ind;
 	String multiplicity;
-	TagType tagtype; 
+	TagType tagtype;
+	String tagRemove = null;
 	
 	/**
 	 * Stores the tag type.
@@ -363,6 +364,49 @@ public class PhotoController {
 			return true; 
 		}
 		return false;
+	}
+	
+	public void removeTag(ActionEvent e) {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Remove a tag");
+
+		alert.initModality(Modality.APPLICATION_MODAL);
+		alert.initOwner(mainStage);
+
+		DialogPane dialogPane = alert.getDialogPane();
+		GridPane grid = new GridPane();
+		ColumnConstraints graphicColumn = new ColumnConstraints();
+		ColumnConstraints textColumn = new ColumnConstraints();
+		grid.getColumnConstraints().setAll(graphicColumn, textColumn);
+		
+		Label l = new Label("Please select a tag type (or create your own custom tag type) and input its matching value.");
+		ComboBox cb = new ComboBox(FXCollections.observableArrayList(curr_photo.printTagsString()));
+		
+		grid.add(l, 1, 0);
+		GridPane.setMargin(l, new Insets(5, 0, 5, 0));
+		
+		grid.add(cb, 1, 1);
+		GridPane.setMargin(cb, new Insets(5, 0, 5, 0));
+		dialogPane.getButtonTypes().add(ButtonType.CANCEL);
+		cb.valueProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+				tagRemove = arg0.getValue();
+			}	   
+	    });
+		dialogPane.setHeader(grid);
+		Optional<ButtonType> result = alert.showAndWait();
+		if(result.get() == ButtonType.OK) {
+			for (Tag t : curr_photo.tags) {
+				if (t.toString().equals(tagRemove)) {
+					
+				}
+			}
+		} 
+		
+		if(result.get() == ButtonType.CANCEL) {
+			
+		}
 	}
 	
 	/**

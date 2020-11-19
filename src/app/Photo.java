@@ -93,6 +93,14 @@ public class Photo implements Serializable{
 	      return str;
 	}
 	
+	public ArrayList<String> printTagsString() {
+		ArrayList<String> str = new ArrayList<String>();
+		for (Tag t : tags) {
+			str.add(t.toString());
+		}
+		return str;
+	}
+	
 	/**
 	 * Overridden version of equals(Object o) to find if two photos are equal.
 	 */
