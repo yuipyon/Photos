@@ -180,6 +180,17 @@ public class PhotoController {
 			counter--;
 	}
 	
+	  public ArrayList<Photo> updatePhoto(Photo curr_photo, ArrayList<Photo> photos) {
+	        for (int i = 0; i <= photos.size() - 1; i++) {
+	            if (photos.get(i).photoName.equals(curr_photo.photoName)) {
+	                photos.remove(i);
+	                break;
+	            }
+	        }
+	        photos.add(curr_photo);
+	        return photos;
+	    }
+	
 	/**
 	 * Enables the behavior to go back to the previous screen.
 	 * @param e
@@ -188,6 +199,7 @@ public class PhotoController {
 	 * @throws ClassNotFoundException
 	 */
 	public void backScreen(ActionEvent e) throws FileNotFoundException, ClassNotFoundException, IOException {
+		Serialization.storeCurrentAlbum(curr_album);
 		Serialization.storeUserList(UserController.userList);
 		FXMLLoader loader = new FXMLLoader();
 		loader.setLocation(getClass().getResource("Album_Display.fxml"));
@@ -297,6 +309,7 @@ public class PhotoController {
 				if (proceed2) { //create new tag
 					Tag newTag = new Tag(tagtype, value);
 					curr_photo.tags.add(newTag);
+					curr_album.photos = updatePhoto(curr_photo, photos);
 					proceed = true;
 				}
 				else {
@@ -346,7 +359,6 @@ public class PhotoController {
 	public boolean checkValidTag(String tagValue) {
 		boolean multiplicity = false;
 		value = tagValue;
-		//we have type, the String equivalent of the tag types present in the arraylist...
 		for(TagType t : curr_user.tagTypes) { //get multiplicity from user's tagtype arraylist
 			if (t.toString().equals(type)) {
 				multiplicity = t.multiplicity;
@@ -420,6 +432,7 @@ public class PhotoController {
 			for (Tag t : curr_photo.tags) {
 				if (t.toString().equals(tagRemove)) {
 					curr_photo.tags.remove(t);
+					curr_album.photos = updatePhoto(curr_photo, photos);
 					break;
 				}
 			}
