@@ -52,6 +52,10 @@ public class Tag implements Serializable {
 		return tagName;
 	}
 	
+	public String getTagNameString() {
+		return tagName.name;
+	}
+	
 	/**
 	 * getTagValue gets the value of the tag.
 	 * @return String

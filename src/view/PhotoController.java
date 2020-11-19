@@ -319,11 +319,11 @@ public class PhotoController {
 		} catch (ClassNotFoundException | IOException ee) {
 			// TODO Auto-generated catch block
 			ee.printStackTrace();
+		}
         Scene scene = new Scene(root,700,600);
         mainStage.setScene(scene);
         mainStage.setTitle("Photo View");
         mainStage.show();
-		}
 	}
 	
 	public boolean checkValidTag(String tagValue) {
@@ -339,7 +339,7 @@ public class PhotoController {
 		}
 		if(!multiplicity) { //single multiplicity
 			for(Tag t : curr_photo.tags) {
-				if (t.getTagName().equals(type)) {
+				if (t.getTagNameString().equals(type)) {
 					Alert a = new Alert(AlertType.INFORMATION);
 					a.setTitle("Invalid tag");
 					a.setHeaderText("Only one tag of this type allowed.");
