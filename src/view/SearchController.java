@@ -349,7 +349,18 @@ public class SearchController implements Serializable {
 			}
 		}
 		
+		
+		
 		System.out.println(curr_user);
+		
+		stage.setOnCloseRequest(event -> {
+			try {
+				Serialization.storeUserList(UserController.userList);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
 	}
 	
 	

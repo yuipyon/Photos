@@ -186,7 +186,14 @@ public class AdminController {
 	 */
 	public void start(Stage primaryStage){
 		this.stage = primaryStage;
-		
+		primaryStage.setOnCloseRequest(event -> {
+			try {
+				Serialization.storeUserList(users);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
 
 	}
 		

@@ -419,6 +419,15 @@ public class UserController implements Serializable {
 						}
 	            }
 	        });
+		
+		primaryStage.setOnCloseRequest(event -> {
+			try {
+				Serialization.storeUserList(userList);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
 
 	}
 

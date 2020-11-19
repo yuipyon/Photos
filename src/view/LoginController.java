@@ -242,7 +242,15 @@ public class LoginController extends ActionEvent implements Serializable {
 		} else {
 			userList = serialController.readUserList();
 		}
-
+		
+		primaryStage.setOnCloseRequest(event -> {
+			try {
+				Serialization.storeUserList(userList);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
 		//System.out.println(userList);
 
 	}
