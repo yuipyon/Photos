@@ -47,7 +47,7 @@ import model.Serialization;
 public class SearchController implements Serializable {
 	
 	/**
-	 * Stores two options: and or or.
+	 * Stores two options: and + or.
 	 */
 	@FXML ComboBox andOr;
 	
@@ -127,9 +127,9 @@ public class SearchController implements Serializable {
 	ArrayList<String> choices = new ArrayList<String>();
 	
 	/**
-	 * Stores the value that is choosen from the combo box.
+	 * Stores the value that is chosen from the combo box.
 	 */
-	String item = null;
+	String operator = null;
 	
 	/**
 	 * Stores the starting date.
@@ -160,6 +160,11 @@ public class SearchController implements Serializable {
 	 * Stores the search result.
 	 */
 	ArrayList<Photo> photoList = new ArrayList<Photo>();
+	
+	/**
+	 * Stores all photos that the user has.
+	 */
+	ArrayList<Photo> allPhotos = new ArrayList<Photo>();
 	
 	
 	/**
@@ -231,7 +236,6 @@ public class SearchController implements Serializable {
 			Album newAlbum = new Album(albumName);
 			boolean albumExists = UserController.albumExist(newAlbum, curr_user.albums);
 			newAlbum.photos = photoList;
-			//System.out.println(albumExists);
 
 			if (albumExists == true) {
 				Alert alert = new Alert(AlertType.INFORMATION);
@@ -262,11 +266,9 @@ public class SearchController implements Serializable {
 	 * @param e
 	 */
 	public void search(ActionEvent e) {
-		//System.out.println(to.format(dateFormatter) + " - " + from.format(dateFormatter));
-		if(to != null && from != null) {
+		if(to != null && from != null) { //search by date
 			for(int i = 0; i<=curr_user.albums.size() - 1; i++) {
 				if(curr_user.albums.get(i).getDateRange().equals(from.format(dateFormatter) + " - " + to.format(dateFormatter))) {
-					//System.out.println("match");
 					photoList = curr_user.albums.get(i).photos;
 				}
 			}
@@ -291,7 +293,87 @@ public class SearchController implements Serializable {
 	                }
 	            }
 	        });
-			
+		}
+		else if (tag1 != null && tag2 != null) {
+			if (operator.equals("and")) {
+				for (Photo p : allPhotos) {
+					for (Tag t : p.tags) {
+						if (t.toString().equals(tag1)) {
+							for (Tag u : p.tags) {
+								if (u.toString().equals(tag2)) {
+									photoList.add(p);
+								}
+							}
+						}
+					}
+				}
+			}
+			else if (operator.equals("or")) {
+				for (Photo p : allPhotos) {
+					for (Tag t : p.tags) {
+						if (t.toString().equals(tag1) || t.toString().equals(tag2)) {
+							photoList.add(p);
+						}
+					}
+				}
+			}
+			else {
+				Alert a = new Alert(AlertType.INFORMATION);
+				a.setTitle("Invalid input");
+				a.setHeaderText("Invalid combinations inputted");
+				a.setContentText("Please choose an operator from the dropdown list.");
+				a.showAndWait();
+			}
+		}
+		else if (tag1 != null) {
+			for (Photo p: allPhotos) {
+				for (Tag t : p.tags) {
+					if (t.toString().equals(tag1)) {
+						photoList.add(p);
+					}
+				}
+			}
+		}
+		else if (tag2 != null) {
+			for (Photo p: allPhotos) {
+				for (Tag t : p.tags) {
+					if (t.toString().equals(tag2)) {
+						photoList.add(p);
+					}
+				}
+			}
+		}
+		
+		//From here on is the listview display of searched photos
+		if (photos == null) {
+			Alert a = new Alert(AlertType.INFORMATION);
+			a.setTitle("No matching results");
+			a.setHeaderText("No matching results were found.");
+			a.setContentText("Please try a different search.");
+			a.showAndWait();
+		}
+		else {
+			photos = FXCollections.observableList(photoList);
+			searchResults.setItems(photos);
+			searchResults.setCellFactory(param -> new ListCell<Photo>() {
+	            private ImageView imageView = new ImageView();
+	            @Override
+	            public void updateItem(Photo name, boolean empty) {
+	                super.updateItem(name, empty);
+	                if (empty) {
+	                    setText(null);
+	                    setGraphic(null);
+	                } else {
+	                    for (Photo photo:photoList) {
+	                    	imageView.setImage(new Image(name.filepath));
+		                    imageView.setFitWidth(100);
+		            	    imageView.setFitHeight(100);
+	                    }
+	                    setText(name.photoName);
+	                    setGraphic(imageView);
+	                }
+	            }
+	        });
 		}
 	}
 	
@@ -335,13 +417,19 @@ public class SearchController implements Serializable {
 		andOr.valueProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
-				item = arg0.getValue();
+				operator = arg0.getValue();
 			}
 	    });
 		
 		for(int i = 0; i <= UserController.userList.size() - 1; i++) {
 			if(UserController.userList.get(i).equals(curr_user)) {
 				curr_user = UserController.userList.get(i);
+			}
+		}
+		//stores all photos
+		for (Album a : curr_user.albums) {
+			for (Photo p : a.photos) {
+				allPhotos.add(p);
 			}
 		}
 		

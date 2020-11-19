@@ -410,12 +410,9 @@ public class UserController implements Serializable {
 	                public void changed(ObservableValue<? extends Album> observedValue, 
 	                		Album prevSelected, Album selected) {
 						if (selected != null) {
-//							try {
 								albumName.setText(selected.getName());
 								numPhotos.setText(Integer.toString(selected.getPhotoCount()));
 								dateRange.setText(selected.getDateRange());
-//							}
-//							catch(NullPointerException e) {}
 						}
 	            }
 	        });
