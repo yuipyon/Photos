@@ -183,39 +183,89 @@ public class AlbumController implements Serializable {
         	Photo newPhoto = new Photo();
         	newPhoto.filepath = "file:" + file.getAbsolutePath();
         	newPhoto.photoName = file.getName();
-        	newPhoto.date = newPhoto.setDate(file); 
-        	photoList.add(newPhoto);
-        	photos = FXCollections.observableList(photoList);
-			albumsView.setItems(photos);
-			albumsView.setCellFactory(param -> new ListCell<Photo>() {
-	            private ImageView imageView = new ImageView();
-	            @Override
-	            public void updateItem(Photo name, boolean empty) {
-	                super.updateItem(name, empty);
-	                if (empty) {
-	                    setText(null);
-	                    setGraphic(null);
-	                } else {
-	                    for (Photo photo:photoList) {
-	                    	imageView.setImage(new Image(name.filepath));
-		                    imageView.setFitWidth(100);
-		            	    imageView.setFitHeight(100);
-	                    }
-	                    setText(name.photoName);
-	                    setGraphic(imageView);
-	                }
-	            }
-	        });
-			Album curr_album = Serialization.readCurrentAlbum();
-			curr_album.photos = photoList;
-			curr_album.getStartingDateRange();
-			curr_album.getEndingDateRange();
-			curr_user.albums = updateAlbumPt1(curr_album, curr_user.albums);
-			UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
-			Serialization.storeUserList(UserController.userList);
-			
-			photos = FXCollections.observableList(photoList);
-			albumsView.setItems(photos);
+        	newPhoto.date = newPhoto.setDate(file);
+        	
+        	boolean exists = false;
+        	for(int i = 0; i<= photoList.size() - 1; i++) {
+        		if(photoList.get(i).filepath.equals(newPhoto.filepath)) {
+        			exists = true;
+        			break;
+        		}
+        	}
+        	
+        	if(exists == true) {
+        		Alert alert = new Alert(AlertType.INFORMATION);
+    			alert.setTitle("Photo already exists");
+    			alert.setHeaderText("This photo already exists in this album");
+    			alert.setContentText("Please choose another photo.");
+    			alert.showAndWait();
+        		photos = FXCollections.observableList(photoList);
+    			albumsView.setItems(photos);
+    			albumsView.setCellFactory(param -> new ListCell<Photo>() {
+    	            private ImageView imageView = new ImageView();
+    	            @Override
+    	            public void updateItem(Photo name, boolean empty) {
+    	                super.updateItem(name, empty);
+    	                if (empty) {
+    	                    setText(null);
+    	                    setGraphic(null);
+    	                } else {
+    	                    for (Photo photo:photoList) {
+    	                    	imageView.setImage(new Image(name.filepath));
+    		                    imageView.setFitWidth(100);
+    		            	    imageView.setFitHeight(100);
+    	                    }
+    	                    setText(name.photoName);
+    	                    setGraphic(imageView);
+    	                }
+    	            }
+    	        });
+    			Album curr_album = Serialization.readCurrentAlbum();
+    			curr_album.photos = photoList;
+    			curr_album.getStartingDateRange();
+    			curr_album.getEndingDateRange();
+    			curr_user.albums = updateAlbumPt1(curr_album, curr_user.albums);
+    			UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
+    			Serialization.storeUserList(UserController.userList);
+    			
+    			photos = FXCollections.observableList(photoList);
+    			albumsView.setItems(photos);
+        	} else {
+        		photoList.add(newPhoto);
+            	photos = FXCollections.observableList(photoList);
+    			albumsView.setItems(photos);
+    			albumsView.setCellFactory(param -> new ListCell<Photo>() {
+    	            private ImageView imageView = new ImageView();
+    	            @Override
+    	            public void updateItem(Photo name, boolean empty) {
+    	                super.updateItem(name, empty);
+    	                if (empty) {
+    	                    setText(null);
+    	                    setGraphic(null);
+    	                } else {
+    	                    for (Photo photo:photoList) {
+    	                    	imageView.setImage(new Image(name.filepath));
+    		                    imageView.setFitWidth(100);
+    		            	    imageView.setFitHeight(100);
+    	                    }
+    	                    setText(name.photoName);
+    	                    setGraphic(imageView);
+    	                }
+    	            }
+    	        });
+    			Album curr_album = Serialization.readCurrentAlbum();
+    			curr_album.photos = photoList;
+    			curr_album.getStartingDateRange();
+    			curr_album.getEndingDateRange();
+    			curr_user.albums = updateAlbumPt1(curr_album, curr_user.albums);
+    			UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
+    			Serialization.storeUserList(UserController.userList);
+    			
+    			photos = FXCollections.observableList(photoList);
+    			albumsView.setItems(photos);
+        	}
+        	
+        	
         }
 	}
 
@@ -440,7 +490,7 @@ public class AlbumController implements Serializable {
 			}
 		}
 
-		if(curr_user.getUserName().equals("stock")) {
+		/*if(curr_user.getUserName().equals("stock")) {
 			photoList = curr_user.albums.get(0).photos;
 			photos = FXCollections.observableList(photoList);
 			albumsView.setItems(photos);
@@ -464,34 +514,35 @@ public class AlbumController implements Serializable {
 	            }
 	        });
 		} else {
-			if (curr_album.photos == null) {
-				photos = FXCollections.observableList(photoList);
-				albumsView.setItems(photos);
-			} else {
-				photoList = curr_album.photos;
-				photos = FXCollections.observableList(photoList);
-				albumsView.setItems(photos);
-				albumsView.setCellFactory(param -> new ListCell<Photo>() {
-		            private ImageView imageView = new ImageView();
-		            @Override
-		            public void updateItem(Photo name, boolean empty) {
-		            	super.updateItem(name, empty);
-		                if (empty) {
-		                    setText(null);
-		                    setGraphic(null);
-		                } else {
-		                	for (Photo photo:photoList) {
-		                    	imageView.setImage(new Image(name.filepath));
-			                    imageView.setFitWidth(100);
-			            	    imageView.setFitHeight(100);
-		                    }
-		                    setText(name.photoName + "\n" + "Caption: " + name.caption);
-		                    setGraphic(imageView);
-		                }
-		            }
-		        });
-			}
-		} 
+			
+		} */
+		if (curr_album.photos == null) {
+			photos = FXCollections.observableList(photoList);
+			albumsView.setItems(photos);
+		} else {
+			photoList = curr_album.photos;
+			photos = FXCollections.observableList(photoList);
+			albumsView.setItems(photos);
+			albumsView.setCellFactory(param -> new ListCell<Photo>() {
+	            private ImageView imageView = new ImageView();
+	            @Override
+	            public void updateItem(Photo name, boolean empty) {
+	            	super.updateItem(name, empty);
+	                if (empty) {
+	                    setText(null);
+	                    setGraphic(null);
+	                } else {
+	                	for (Photo photo:photoList) {
+	                    	imageView.setImage(new Image(name.filepath));
+		                    imageView.setFitWidth(100);
+		            	    imageView.setFitHeight(100);
+	                    }
+	                    setText(name.photoName + "\n" + "Caption: " + name.caption);
+	                    setGraphic(imageView);
+	                }
+	            }
+	        });
+		}
 		albumsView.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 		    @Override

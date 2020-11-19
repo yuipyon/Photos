@@ -39,28 +39,112 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.Serialization;
 
+/**
+ * @author Karun Kanda
+ * @author Yulin Ni
+ *
+ */
+
+/**
+ * PhotoController class controls all the behaviors of the screen and button in the photo view screen
+ */
 public class PhotoController {
 	
+	/**
+	 * Displays the image.
+	 */
 	@FXML ImageView PhotoView;
+	
+	/**
+	 * Enables the user to go back when they are viewing the images.
+	 */
 	@FXML Button backButton;
+	
+	/**
+	 * Enables the user to go forward when they are viewing the images.
+	 */
 	@FXML Button forwardButton;
+	
+	/**
+	 * Enables the user to go back to the previous screen.
+	 */
 	@FXML Button GoBack;
+	
+	/**
+	 * Allows the user to view the caption on this photo.
+	 */
 	@FXML Text caption;
+	
+	/**
+	 * Allows the user to view the date modified.
+	 */
 	@FXML Text date;
+
 	@FXML Text tags;
 	
+	/**
+	 * Stores the current stage.
+	 */
 	Stage mainStage;
+	
+	/**
+	 * Stores the current user.
+	 */
 	User curr_user;
+	
+	/**
+	 * Stores the current album.
+	 */
 	Album curr_album;
+	
+	/**
+	 * Stores the current photo.
+	 */
 	Photo curr_photo;
+	
+	/**
+	 * Creates a serialization instance.
+	 */
 	Serialization serialController = new Serialization();
+	
+	/**
+	 * Stores the photos from the search result.
+	 */
 	ArrayList<Photo> photos = new ArrayList<Photo>();
+	
+	/**
+	 * Used when going back and forward when viewing the photos.
+	 */
 	int counter;
 	int ind;
-	String type, value, multiplicity;
+	String multiplicity;
 	TagType tagtype; 
+	
+	/**
+	 * Stores the tag type.
+	 */
+	String type;
+	
+	/**
+	 * Stores the tag value.
+	 */
+	String value;
+	
+	/**
+	 * Stores the default tag types.
+	 */
+	ArrayList<TagType> rawTypes;
+	
+	/**
+	 * Stores the types in an observable list.
+	 */
+
 	ObservableList<String> types = FXCollections.observableArrayList();
 	
+	/**
+	 * Enables the behavior to view a previous photo.
+	 * @param e
+	 */
 	public void goBack(ActionEvent e) {
 		counter--; 
 		if (counter >= 0) {
@@ -70,6 +154,10 @@ public class PhotoController {
 			counter++; 
 	}
 	
+	/**
+	 * Enables the behavior to view a preceding photo.
+	 * @param e
+	 */
 	public void goForward(ActionEvent e) {
 		counter++;
 		if (counter < photos.size()) {
@@ -79,6 +167,13 @@ public class PhotoController {
 			counter--;
 	}
 	
+	/**
+	 * Enables the behavior to go back to the previous screen.
+	 * @param e
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 * @throws ClassNotFoundException
+	 */
 	public void backScreen(ActionEvent e) throws FileNotFoundException, ClassNotFoundException, IOException {
 		Serialization.storeUserList(UserController.userList);
 		FXMLLoader loader = new FXMLLoader();
@@ -91,6 +186,10 @@ public class PhotoController {
 		mainStage.show();
 	}
 	
+	/**
+	 * Recieves the tag types.
+	 * @param temp
+	 */
 	public void getTagTypeStrings(ArrayList<TagType> temp) {
 		for (TagType t : temp) {
 			types.add(t.toString());

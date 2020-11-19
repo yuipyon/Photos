@@ -15,6 +15,7 @@ import java.util.ResourceBundle;
 import app.Album;
 import app.Photo;
 import app.Tag;
+import app.TagType;
 import app.User;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -193,7 +194,7 @@ public class SearchController implements Serializable {
 	public void addTag(ActionEvent e) {
 		String type = tType.getText();
 		String value = tValue.getText();
-		Tag newTag = new Tag(type, value);
+		Tag newTag = new Tag(new TagType(type, false), value);
 		if (tag1.getText().isBlank()) {
 			tag1.setText(newTag.toString());
 		}
@@ -251,6 +252,8 @@ public class SearchController implements Serializable {
 					alert.setContentText("Please include a valid album name");
 					alert.showAndWait();
 				} else {
+					newAlbum.startingDateRange = LocalDate.now();
+					newAlbum.endingDateRange = LocalDate.now();
 					curr_user.albums.add(newAlbum);
 					UserController.userList = UserController.updateAlbum(curr_user, UserController.userList);
 					serialController.storeUserList(UserController.userList);
@@ -265,9 +268,10 @@ public class SearchController implements Serializable {
 	 */
 	public void search(ActionEvent e) {
 		//System.out.println(to.format(dateFormatter) + " - " + from.format(dateFormatter));
-		if(dateFrom.getValue() != null && dateTo.getValue() != null) {
+		if(to != null && from != null) {
 			for(int i = 0; i<=curr_user.albums.size() - 1; i++) {
-				if(curr_user.albums.get(i).getDateRange().equals(to.format(dateFormatter) + " - " + from.format(dateFormatter))) {
+				if(curr_user.albums.get(i).getDateRange().equals(from.format(dateFormatter) + " - " + to.format(dateFormatter))) {
+					//System.out.println("match");
 					photoList = curr_user.albums.get(i).photos;
 				}
 			}
@@ -292,8 +296,7 @@ public class SearchController implements Serializable {
 	                }
 	            }
 	        });
-			dateFrom.getEditor().clear();
-			dateTo.getEditor().clear();
+			
 		}
 	}
 	
@@ -304,7 +307,7 @@ public class SearchController implements Serializable {
 	public void dateFromAction(ActionEvent e) {
 		if(dateFrom.getValue() != null) {
 			from = dateFrom.getValue();
-			System.out.println(from);
+			//System.out.println(from);
 		}
 	}
 	
@@ -315,7 +318,7 @@ public class SearchController implements Serializable {
 	public void ToDateAction(ActionEvent e) {
 		if(dateTo.getValue() != null)
 			to = dateTo.getValue();
-			System.out.println(to);
+			//System.out.println(to);
 	}	
 	
 	/**
@@ -348,7 +351,18 @@ public class SearchController implements Serializable {
 			}
 		}
 		
-		System.out.println(curr_user);
+		
+		
+		//System.out.println(curr_user);
+		
+		stage.setOnCloseRequest(event -> {
+			try {
+				Serialization.storeUserList(UserController.userList);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
 	}
 	
 	

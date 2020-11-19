@@ -171,7 +171,7 @@ public class AdminController {
 		int selectedIndex = UserList.getSelectionModel().getSelectedIndex();
 		if(selectedIndex != -1) {
 			User userToRemove = (User) UserList.getSelectionModel().getSelectedItem();
-			System.out.println(userToRemove);
+			//System.out.println(userToRemove);
 			int newSelectedIndex = (selectedIndex == UserList.getItems().size() - 1) ? selectedIndex - 1 : selectedIndex;
 			users.remove(selectedIndex);
 			usernameList = FXCollections.observableList(users);
@@ -186,7 +186,14 @@ public class AdminController {
 	 */
 	public void start(Stage primaryStage){
 		this.stage = primaryStage;
-		
+		primaryStage.setOnCloseRequest(event -> {
+			try {
+				Serialization.storeUserList(users);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
 
 	}
 		
