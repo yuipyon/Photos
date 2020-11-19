@@ -4,10 +4,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import app.Album;
 import app.Photo;
+import app.Tag;
+import app.TagType;
 import app.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -160,26 +163,41 @@ public class LoginController extends ActionEvent implements Serializable {
 				one.photo = new Image("file:data/soccerball.jpg");
 				one.filepath = "data/soccerball.jpg";
 				one.photoName = "Soccer Ball";
+				one.caption = "sports";
+				one.tags.add(new Tag(new TagType("", false), ""));
+				one.date = LocalDate.now();
+				System.out.println(one.date);
 				
 				Photo two = new Photo();
 				two.photo = new Image("file:data/basketball.png");
 				two.filepath = "data/basketball.png";
 				two.photoName = "Basketball";
+				two.caption = "basketball sports";
+				two.tags.add(new Tag(new TagType("", false), ""));
+				two.date = LocalDate.now();
 				
 				Photo three = new Photo();
 				three.photo = new Image("file:data/tennisball.jpeg");
 				three.filepath = "data/tennisball.jpeg";
 				three.photoName = "Tennis Ball";
+				three.caption = "sports - tennis";
+				two.date = LocalDate.now();
 				
 				Photo four = new Photo();
 				four.photo = new Image("file:data/cricketball.jpg");
 				four.filepath = "data/cricketball.jpg";
 				four.photoName = "Cricketball";
+				four.caption = "india sports";
+				four.tags.add(new Tag(new TagType("", false), ""));
+				two.date = LocalDate.now(); 
 				
 				Photo five = new Photo();
 				five.photo = new Image("file:data/ship.jpg");
 				five.filepath = "data/ship.jpg";
 				five.photoName = "Rocketship";
+				five.caption = "non sports";
+				five.tags.add(new Tag(new TagType("", false), ""));
+				five.date = LocalDate.now(); 
 				
 				photos.add(one);
 				photos.add(two);
@@ -190,6 +208,8 @@ public class LoginController extends ActionEvent implements Serializable {
 				ArrayList<Album> a = new ArrayList<Album>();
 				Album al = new Album("stock");
 				al.photos = photos;
+				al.startingDateRange = LocalDate.now();
+				al.endingDateRange = LocalDate.now();
 				a.add(al);
 				
 				username.albums = a;

@@ -42,12 +42,12 @@ public class Album implements Serializable{
 	/**
 	 * LocalDate startingDateRange stores the start date of an album.
 	 */
-	LocalDate startingDateRange;
+	public LocalDate startingDateRange;
 	
 	/**
 	 * LocalDate endingDateRange stores the ending date of an album.
 	 */
-	LocalDate endingDateRange;
+	public LocalDate endingDateRange;
 	
 	/**
 	 * DateTimeFormatter dateFormatter formats the date ranges from LocalDate format to MM/dd/yyyy format.
