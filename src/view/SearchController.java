@@ -4,14 +4,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Optional;
-import java.util.ResourceBundle;
-
 import app.Album;
 import app.Photo;
 import app.Tag;
@@ -344,16 +339,11 @@ public class SearchController implements Serializable {
 			}
 	    });
 		
-		
 		for(int i = 0; i <= UserController.userList.size() - 1; i++) {
 			if(UserController.userList.get(i).equals(curr_user)) {
 				curr_user = UserController.userList.get(i);
 			}
 		}
-		
-		
-		
-		//System.out.println(curr_user);
 		
 		stage.setOnCloseRequest(event -> {
 			try {

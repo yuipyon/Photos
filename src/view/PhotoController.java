@@ -266,7 +266,6 @@ public class PhotoController {
 			if(result.get() == ButtonType.OK) {
 				boolean proceed2 = false;
 				if (type != null && !tagValue.getText().isBlank()) { // existing tag type
-					System.out.println(tagValue.getText());
 					proceed2 = checkValidTag(tagValue.getText());
 				}
 				else if (!customType.getText().isBlank() && !tagValue.getText().isBlank() && multiplicity != null) { //new tag type
