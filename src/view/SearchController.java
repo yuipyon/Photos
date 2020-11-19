@@ -267,10 +267,11 @@ public class SearchController implements Serializable {
 	 * @param e
 	 */
 	public void search(ActionEvent e) {
-		//System.out.println(to.format(dateFormatter) + " - " + from.format(dateFormatter));
-		if(dateFrom.getValue() != null && dateTo.getValue() != null) {
+		System.out.println(to.format(dateFormatter) + " - " + from.format(dateFormatter));
+		if(to != null && from != null) {
 			for(int i = 0; i<=curr_user.albums.size() - 1; i++) {
-				if(curr_user.albums.get(i).getDateRange().equals(to.format(dateFormatter) + " - " + from.format(dateFormatter))) {
+				if(curr_user.albums.get(i).getDateRange().equals(from.format(dateFormatter) + " - " + to.format(dateFormatter))) {
+					System.out.println("match");
 					photoList = curr_user.albums.get(i).photos;
 				}
 			}
@@ -295,8 +296,7 @@ public class SearchController implements Serializable {
 	                }
 	            }
 	        });
-			dateFrom.getEditor().clear();
-			dateTo.getEditor().clear();
+			
 		}
 	}
 	
