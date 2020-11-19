@@ -166,7 +166,7 @@ public class LoginController extends ActionEvent implements Serializable {
 				one.caption = "sports";
 				one.tags.add(new Tag(new TagType("", false), ""));
 				one.date = LocalDate.now();
-				System.out.println(one.date);
+				//System.out.println(one.date);
 				
 				Photo two = new Photo();
 				two.photo = new Image("file:data/basketball.png");
