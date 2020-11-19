@@ -490,7 +490,7 @@ public class AlbumController implements Serializable {
 			}
 		}
 
-		if(curr_user.getUserName().equals("stock")) {
+		/*if(curr_user.getUserName().equals("stock")) {
 			photoList = curr_user.albums.get(0).photos;
 			photos = FXCollections.observableList(photoList);
 			albumsView.setItems(photos);
@@ -514,34 +514,35 @@ public class AlbumController implements Serializable {
 	            }
 	        });
 		} else {
-			if (curr_album.photos == null) {
-				photos = FXCollections.observableList(photoList);
-				albumsView.setItems(photos);
-			} else {
-				photoList = curr_album.photos;
-				photos = FXCollections.observableList(photoList);
-				albumsView.setItems(photos);
-				albumsView.setCellFactory(param -> new ListCell<Photo>() {
-		            private ImageView imageView = new ImageView();
-		            @Override
-		            public void updateItem(Photo name, boolean empty) {
-		            	super.updateItem(name, empty);
-		                if (empty) {
-		                    setText(null);
-		                    setGraphic(null);
-		                } else {
-		                	for (Photo photo:photoList) {
-		                    	imageView.setImage(new Image(name.filepath));
-			                    imageView.setFitWidth(100);
-			            	    imageView.setFitHeight(100);
-		                    }
-		                    setText(name.photoName + "\n" + "Caption: " + name.caption);
-		                    setGraphic(imageView);
-		                }
-		            }
-		        });
-			}
-		} 
+			
+		} */
+		if (curr_album.photos == null) {
+			photos = FXCollections.observableList(photoList);
+			albumsView.setItems(photos);
+		} else {
+			photoList = curr_album.photos;
+			photos = FXCollections.observableList(photoList);
+			albumsView.setItems(photos);
+			albumsView.setCellFactory(param -> new ListCell<Photo>() {
+	            private ImageView imageView = new ImageView();
+	            @Override
+	            public void updateItem(Photo name, boolean empty) {
+	            	super.updateItem(name, empty);
+	                if (empty) {
+	                    setText(null);
+	                    setGraphic(null);
+	                } else {
+	                	for (Photo photo:photoList) {
+	                    	imageView.setImage(new Image(name.filepath));
+		                    imageView.setFitWidth(100);
+		            	    imageView.setFitHeight(100);
+	                    }
+	                    setText(name.photoName + "\n" + "Caption: " + name.caption);
+	                    setGraphic(imageView);
+	                }
+	            }
+	        });
+		}
 		albumsView.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
 		    @Override

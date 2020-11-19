@@ -161,7 +161,7 @@ public class LoginController extends ActionEvent implements Serializable {
 				ArrayList<Photo> photos = new ArrayList<Photo>();
 				Photo one = new Photo();
 				one.photo = new Image("file:data/soccerball.jpg");
-				one.filepath = "data/soccerball.jpg";
+				one.filepath = "file:data/soccerball.jpg";
 				one.photoName = "Soccer Ball";
 				one.caption = "sports";
 				one.tags.add(new Tag(new TagType("", false), ""));
@@ -170,7 +170,7 @@ public class LoginController extends ActionEvent implements Serializable {
 				
 				Photo two = new Photo();
 				two.photo = new Image("file:data/basketball.png");
-				two.filepath = "data/basketball.png";
+				two.filepath = "file:data/basketball.png";
 				two.photoName = "Basketball";
 				two.caption = "basketball sports";
 				two.tags.add(new Tag(new TagType("", false), ""));
@@ -178,14 +178,14 @@ public class LoginController extends ActionEvent implements Serializable {
 				
 				Photo three = new Photo();
 				three.photo = new Image("file:data/tennisball.jpeg");
-				three.filepath = "data/tennisball.jpeg";
+				three.filepath = "file:data/tennisball.jpeg";
 				three.photoName = "Tennis Ball";
 				three.caption = "sports - tennis";
 				two.date = LocalDate.now();
 				
 				Photo four = new Photo();
 				four.photo = new Image("file:data/cricketball.jpg");
-				four.filepath = "data/cricketball.jpg";
+				four.filepath = "file:data/cricketball.jpg";
 				four.photoName = "Cricketball";
 				four.caption = "india sports";
 				four.tags.add(new Tag(new TagType("", false), ""));
@@ -193,7 +193,7 @@ public class LoginController extends ActionEvent implements Serializable {
 				
 				Photo five = new Photo();
 				five.photo = new Image("file:data/ship.jpg");
-				five.filepath = "data/ship.jpg";
+				five.filepath = "file:data/ship.jpg";
 				five.photoName = "Rocketship";
 				five.caption = "non sports";
 				five.tags.add(new Tag(new TagType("", false), ""));
