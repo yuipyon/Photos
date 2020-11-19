@@ -3,10 +3,12 @@ package view;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 import app.Album;
 import app.Photo;
+import app.Tag;
 import app.TagType;
 import app.User;
 import javafx.beans.value.ChangeListener;
@@ -30,9 +32,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -47,9 +47,7 @@ public class PhotoController {
 	@FXML Button GoBack;
 	@FXML Text caption;
 	@FXML Text date;
-	
-	BorderPane root = new BorderPane();
-	FlowPane fp = new FlowPane();
+	@FXML Text tags;
 	
 	Stage mainStage;
 	User curr_user;
@@ -58,8 +56,9 @@ public class PhotoController {
 	Serialization serialController = new Serialization();
 	ArrayList<Photo> photos = new ArrayList<Photo>();
 	int counter;
-	String type, value;
-	ArrayList<TagType> rawTypes;
+	int ind;
+	String type, value, multiplicity;
+	TagType tagtype; 
 	ObservableList<String> types = FXCollections.observableArrayList();
 	
 	public void goBack(ActionEvent e) {
@@ -115,15 +114,35 @@ public class PhotoController {
 		grid.getColumnConstraints().setAll(graphicColumn, textColumn);
 		
 		Label l = new Label("Please select a tag type (or create your own custom tag type) and input its matching value.");
-		ComboBox cb = new ComboBox(FXCollections.observableArrayList(curr_user.tagTypes));
+		ComboBox cb = new ComboBox(FXCollections.observableArrayList(types));
 		TextField tagValue = new TextField();
 		tagValue.setPromptText("Enter tag value here.");
+		TextField customType = new TextField();
+		customType.setPromptText("Enter custom tag type.");
+		Text text = new Text("multiplicity (if creating new custom tag type):");
+		
+		ArrayList<String> mult = new ArrayList<String>(Arrays.asList("single", "multiple"));
+		ObservableList<String> m = FXCollections.observableArrayList(mult);
+		ComboBox multChoiceBox = new ComboBox(FXCollections.observableArrayList(m));
+		
 		grid.add(l, 1, 0);
 		GridPane.setMargin(l, new Insets(5, 0, 5, 0));
+		
 		grid.add(cb, 1, 1);
 		GridPane.setMargin(cb, new Insets(5, 0, 5, 0));
+		
 		grid.add(tagValue, 2, 1);
-		GridPane.setMargin(cb, new Insets(5, 0, 5, 0));
+		GridPane.setMargin(tagValue, new Insets(5, 0, 5, 0));
+		
+		grid.add(customType, 2, 2);
+		GridPane.setMargin(customType, new Insets(5, 0, 5, 0));
+		
+		grid.add(multChoiceBox, 2, 3);
+		GridPane.setMargin(multChoiceBox, new Insets(5, 0, 5, 0));
+		
+		grid.add(text, 1, 3);
+		GridPane.setMargin(text, new Insets(5, 0, 5, 0));
+		
 		grid.setAlignment(Pos.CENTER);
 		dialogPane.getButtonTypes().add(ButtonType.CANCEL);
 		
@@ -134,18 +153,119 @@ public class PhotoController {
 			}	   
 	    });
 		
+		multChoiceBox.valueProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> arg0, String arg1, String arg2) {
+				multiplicity = arg0.getValue();
+			}	   
+	    });
 		dialogPane.setHeader(grid);
 		
-		Optional<ButtonType> result = alert.showAndWait();
-		if(result.get() == ButtonType.OK) { 
-			value = tagValue.getText();
+		boolean proceed = false;
+		while(!proceed) {
+			Optional<ButtonType> result = alert.showAndWait();
+			if(result.get() == ButtonType.OK) {
+				boolean proceed2 = false;
+				if (type != null && !tagValue.getText().isBlank()) { // existing tag type
+					System.out.println(tagValue.getText());
+					proceed2 = checkValidTag(tagValue.getText());
+				}
+				else if (!customType.getText().isBlank() && !tagValue.getText().isBlank() && multiplicity != null) { //new tag type
+					value = tagValue.getText(); 
+					boolean trueMultiplicity = false; 
+					//set type multiplicity
+					if(multiplicity.equals("single"))
+						trueMultiplicity = false; 
+					else
+						trueMultiplicity = true;
+					tagtype = new TagType(customType.getText(), trueMultiplicity);
+					curr_user.tagTypes.add(tagtype);
+					proceed2 = true;
+				}
+				
+				if (proceed2) { //create new tag
+					Tag newTag = new Tag(tagtype, value);
+					curr_photo.tags.add(newTag);
+					proceed = true;
+				}
+				else {
+					proceed = false;
+					Alert a = new Alert(AlertType.INFORMATION);
+					a.setTitle("Invalid input");
+					a.setHeaderText("Invalid combinations inputted");
+					a.setContentText("Please try again.");
+					a.showAndWait();
+				}
+			}
+			else if(result.get() == ButtonType.CANCEL) {
+				type = "";
+				value = "";
+				proceed = true; 
+			}
 		}
-		else if(result.get() == ButtonType.CANCEL) {
-			type = "";
-			value = "";
+		
+		FXMLLoader loader = new FXMLLoader();
+		loader.setLocation(getClass().getResource("photo view.fxml"));
+		AnchorPane root = null;
+		try {
+			root = (AnchorPane) loader.load();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		PhotoController pc = loader.getController();
+		try {
+			pc.start(mainStage, ind, curr_photo);
+		} catch (ClassNotFoundException | IOException ee) {
+			// TODO Auto-generated catch block
+			ee.printStackTrace();
+        Scene scene = new Scene(root,700,600);
+        mainStage.setScene(scene);
+        mainStage.setTitle("Photo View");
+        mainStage.show();
 		}
 	}
-
+	
+	public boolean checkValidTag(String tagValue) {
+		boolean multiplicity = false;
+		value = tagValue;
+		//we have type, the String equivalent of the tag types present in the arraylist...
+		for(TagType t : curr_user.tagTypes) { //get multiplicity from user's tagtype arraylist
+			if (t.toString().equals(type)) {
+				multiplicity = t.multiplicity;
+				tagtype = t;
+				break;
+			}
+		}
+		if(!multiplicity) { //single multiplicity
+			for(Tag t : curr_photo.tags) {
+				if (t.getTagName().equals(type)) {
+					Alert a = new Alert(AlertType.INFORMATION);
+					a.setTitle("Invalid tag");
+					a.setHeaderText("Only one tag of this type allowed.");
+					a.setContentText("This photo already has a tag of this type. Please choose a different tag type.");
+					a.showAndWait();
+					return false; 
+				}
+			}
+			return true;
+		}
+		else if (multiplicity) { //multiple multiplicity
+			for(Tag t : curr_photo.tags) {
+				if (t.getTagName().equals(type) && t.getTagValue().equals(value)) {
+					Alert a = new Alert(AlertType.INFORMATION);
+					a.setTitle("Duplicate tag");
+					a.setHeaderText("Duplicate tag");
+					a.setContentText("This photo already has this specific tag. Please choose another one.");
+					a.showAndWait();
+					return false; 
+				}
+			}
+			return true; 
+		}
+		return false;
+	}
 	
 	/**
 	 * start is what will occur upon starting the user dashboard scene.
@@ -160,6 +280,7 @@ public class PhotoController {
 		mainStage = primaryStage;
 		curr_user = serialController.readCurrentUser();
 		counter = selectedIndex;
+		ind = selectedIndex;
 		for (int i = 0; i <= UserController.userList.size() - 1; i++) {
 			if (UserController.userList.get(i).equals(curr_user)) {
 				curr_user = UserController.userList.get(i);
@@ -167,8 +288,7 @@ public class PhotoController {
 			}
 		}
 		
-		rawTypes = curr_user.tagTypes;
-		getTagTypeStrings(rawTypes);
+		getTagTypeStrings(curr_user.tagTypes);
 		
 		curr_album = serialController.readCurrentAlbum();
 		
@@ -182,19 +302,13 @@ public class PhotoController {
 		}
 		photos = curr_album.photos;
 		
-		for(int i = 0; i<= curr_album.photos.size() - 1; i++) {
-			if(curr_album.photos.get(i).equals(curr_photo)) {
-				curr_photo = curr_album.photos.get(i);
-				break;
-			}
-		}
+		curr_photo = p;
 		
 		PhotoView.setImage(new Image(p.filepath));
 		caption.setText(p.caption);
 		date.setText(p.getDate(p.date));
-		fp.setHgap(10);
-		fp.setVgap(15);
-		root.setBottom(fp);
+		tags.setText(p.printTags());
+		
 		
 		primaryStage.setOnCloseRequest(event -> {
 			try {

@@ -391,8 +391,8 @@ public class UserController implements Serializable {
 			}
 		}
 		
-		tagtypes.add(new TagType("person", false));
-		tagtypes.add(new TagType("location", true));
+		tagtypes.add(new TagType("person", true));
+		tagtypes.add(new TagType("location", false));
 		
 		curr_user.tagTypes = tagtypes; 
 		
