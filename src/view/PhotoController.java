@@ -116,9 +116,21 @@ public class PhotoController {
 	 * Used when going back and forward when viewing the photos.
 	 */
 	int counter;
+	/** 
+	 * Stores the index of the current photo in its album.
+	 */
 	int ind;
+	/**
+	 * Used in addTag method; stores the multiplicity (single or multiple) of the tag in question
+	 */
 	String multiplicity;
+	/**
+	 * Used in addTag method; this is where the new user-created tag types will be temporarily stored.
+	 */
 	TagType tagtype;
+	/**
+	 * Used in removeTag method; removes the selected tag from the photo.
+	 */
 	String tagRemove = null;
 	
 	/**
@@ -188,7 +200,7 @@ public class PhotoController {
 	}
 	
 	/**
-	 * Recieves the tag types.
+	 * Receives the tag types.
 	 * @param temp
 	 */
 	public void getTagTypeStrings(ArrayList<TagType> temp) {
@@ -325,7 +337,12 @@ public class PhotoController {
         mainStage.setTitle("Photo View");
         mainStage.show();
 	}
-	
+	/**
+	 * checkValidTag executes in the case that user chooses a pre-existing tag while adding a tag. 
+	 * Checks whether said tag combination is valid or not. Returns false if it's an invalid combo
+	 * @param tagValue
+	 * @return boolean
+	 */
 	public boolean checkValidTag(String tagValue) {
 		boolean multiplicity = false;
 		value = tagValue;
@@ -365,7 +382,10 @@ public class PhotoController {
 		}
 		return false;
 	}
-	
+	/**
+	 * Method for removing a tag from a photo.
+	 * @param e
+	 */
 	public void removeTag(ActionEvent e) {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Remove a tag");
@@ -379,7 +399,7 @@ public class PhotoController {
 		ColumnConstraints textColumn = new ColumnConstraints();
 		grid.getColumnConstraints().setAll(graphicColumn, textColumn);
 		
-		Label l = new Label("Please select a tag type (or create your own custom tag type) and input its matching value.");
+		Label l = new Label("Please select the tag that you'd like to remove.");
 		ComboBox cb = new ComboBox(FXCollections.observableArrayList(curr_photo.printTagsString()));
 		
 		grid.add(l, 1, 0);
@@ -399,14 +419,11 @@ public class PhotoController {
 		if(result.get() == ButtonType.OK) {
 			for (Tag t : curr_photo.tags) {
 				if (t.toString().equals(tagRemove)) {
-					
+					curr_photo.tags.remove(t);
+					break;
 				}
 			}
 		} 
-		
-		if(result.get() == ButtonType.CANCEL) {
-			
-		}
 	}
 	
 	/**

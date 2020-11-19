@@ -490,32 +490,6 @@ public class AlbumController implements Serializable {
 			}
 		}
 
-		/*if(curr_user.getUserName().equals("stock")) {
-			photoList = curr_user.albums.get(0).photos;
-			photos = FXCollections.observableList(photoList);
-			albumsView.setItems(photos);
-			albumsView.setCellFactory(param -> new ListCell<Photo>() {
-	            private ImageView imageView = new ImageView();
-	            @Override
-	            public void updateItem(Photo name, boolean empty) {
-	                super.updateItem(name, empty);
-	                if (empty) {
-	                    setText(null);
-	                    setGraphic(null);
-	                } else {
-	                	for (Photo photo:photoList) {
-	                    	imageView.setImage(new Image("file:"+name.filepath));
-		                    imageView.setFitWidth(100);
-		            	    imageView.setFitHeight(100);
-	                    }
-	                    setText(name.photoName);
-	                    setGraphic(imageView);
-	                }
-	            }
-	        });
-		} else {
-			
-		} */
 		if (curr_album.photos == null) {
 			photos = FXCollections.observableList(photoList);
 			albumsView.setItems(photos);
