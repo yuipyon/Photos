@@ -266,7 +266,7 @@ public class SearchController implements Serializable {
 	 * @param e
 	 */
 	public void search(ActionEvent e) {
-		if(to != null && from != null) { //search by date
+		if(to != null && from != null) {
 			for(int i = 0; i<=curr_user.albums.size() - 1; i++) {
 				if(curr_user.albums.get(i).getDateRange().equals(from.format(dateFormatter) + " - " + to.format(dateFormatter))) {
 					photoList = curr_user.albums.get(i).photos;
@@ -294,13 +294,13 @@ public class SearchController implements Serializable {
 	            }
 	        });
 		}
-		else if (tag1 != null && tag2 != null) {
+		else if (!tag1.getText().isBlank() && !tag2.getText().isBlank()) {
 			if (operator.equals("and")) {
 				for (Photo p : allPhotos) {
 					for (Tag t : p.tags) {
-						if (t.toString().equals(tag1)) {
+						if (t.toString().equals(tag1.getText())) {
 							for (Tag u : p.tags) {
-								if (u.toString().equals(tag2)) {
+								if (u.toString().equals(tag2.getText())) {
 									photoList.add(p);
 								}
 							}
@@ -311,7 +311,7 @@ public class SearchController implements Serializable {
 			else if (operator.equals("or")) {
 				for (Photo p : allPhotos) {
 					for (Tag t : p.tags) {
-						if (t.toString().equals(tag1) || t.toString().equals(tag2)) {
+						if (t.toString().equals(tag1.getText()) || t.toString().equals(tag2.getText())) {
 							photoList.add(p);
 						}
 					}
@@ -325,27 +325,26 @@ public class SearchController implements Serializable {
 				a.showAndWait();
 			}
 		}
-		else if (tag1 != null) {
+		else if (!tag1.getText().isBlank()) {
 			for (Photo p: allPhotos) {
 				for (Tag t : p.tags) {
-					if (t.toString().equals(tag1)) {
+					if (t.toString().equals(tag1.getText())) {
 						photoList.add(p);
 					}
 				}
 			}
 		}
-		else if (tag2 != null) {
+		else if (!tag2.getText().isBlank()) {
 			for (Photo p: allPhotos) {
 				for (Tag t : p.tags) {
-					if (t.toString().equals(tag2)) {
+					if (t.toString().equals(tag2.getText())) {
 						photoList.add(p);
 					}
 				}
 			}
 		}
 		
-		//From here on is the listview display of searched photos
-		if (photos == null) {
+		if (photoList == null) {
 			Alert a = new Alert(AlertType.INFORMATION);
 			a.setTitle("No matching results");
 			a.setHeaderText("No matching results were found.");
@@ -364,7 +363,7 @@ public class SearchController implements Serializable {
 	                    setText(null);
 	                    setGraphic(null);
 	                } else {
-	                    for (Photo photo:photoList) {
+	                    for (Photo photo : photoList) {
 	                    	imageView.setImage(new Image(name.filepath));
 		                    imageView.setFitWidth(100);
 		            	    imageView.setFitHeight(100);
@@ -384,7 +383,6 @@ public class SearchController implements Serializable {
 	public void dateFromAction(ActionEvent e) {
 		if(dateFrom.getValue() != null) {
 			from = dateFrom.getValue();
-			//System.out.println(from);
 		}
 	}
 	
@@ -395,7 +393,6 @@ public class SearchController implements Serializable {
 	public void ToDateAction(ActionEvent e) {
 		if(dateTo.getValue() != null)
 			to = dateTo.getValue();
-			//System.out.println(to);
 	}	
 	
 	/**

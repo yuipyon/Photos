@@ -1,0 +1,6 @@
+Yulin Ni, Karun Kanda
+Notes on the changes between our storyboard and final implementation
+
+1. We removed the details fields on top of the Album View window, since we realized later that, with our method of implementing the photos ListView, we'd be better off displaying that info in there instead. 
+2. In Photo View, we had to make the Add Tag and Remove Tag buttons separate from the tags themselves, as we realized later that it's pretty difficult to implement it the way I'd designed it in our storyboard. The tags themselves are listed out plainly in their tag name:tag value pairs, separated by commas.
+3. In Search Photos, we added a separate ListView box for showing the results of the search. I'd originally mistaken the big box in the center of our design in the storyboard as where the search results would go, but once we realized we needed two separate containers to hold the tags and the search results, we had to modify it accordingly.

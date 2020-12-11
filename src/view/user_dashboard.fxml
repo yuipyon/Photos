@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -18,7 +19,7 @@ Yulin Ni
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="581.0" prefWidth="798.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.UserController">
    <children>
-      <Label layoutX="18.0" layoutY="11.0" text="User Dashboard">
+      <Label layoutX="257.0" layoutY="20.0" text="User Dashboard">
          <font>
             <Font size="30.0" />
          </font>
@@ -28,23 +29,41 @@ Yulin Ni
             <DropShadow color="#807e7e" offsetX="1.0" offsetY="3.0" />
          </effect>
       </Rectangle>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eaf5ff" height="179.0" layoutX="73.0" layoutY="146.0" stroke="BLACK" strokeType="INSIDE" width="240.0" />
-      <Label layoutX="161.0" layoutY="117.0" text="Album Info">
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#eaf5ff" height="179.0" layoutX="73.0" layoutY="146.0" stroke="#ababab" strokeType="INSIDE" width="240.0" />
+      <Label layoutX="158.0" layoutY="117.0" text="Album Info">
          <font>
-            <Font name="System Bold Italic" size="12.0" />
+            <Font name="System Bold Italic" size="14.0" />
          </font></Label>
-      <Text layoutX="89.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:" />
-      <Text layoutX="85.0" layoutY="243.0" strokeType="OUTSIDE" strokeWidth="0.0" text="# photos:" />
-      <Text layoutX="86.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date range:" />
-      <Button fx:id="searchButton" layoutX="265.0" layoutY="373.0" mnemonicParsing="false" onAction="#search" prefHeight="32.0" prefWidth="107.0" text="Search Photos" />
-      <Button fx:id="deleteButton" layoutX="21.0" layoutY="421.0" mnemonicParsing="false" onAction="#delete" prefWidth="103.0" text="Delete Album" />
-      <Button fx:id="createButton" layoutX="21.0" layoutY="373.0" mnemonicParsing="false" onAction="#create" prefHeight="32.0" prefWidth="104.0" text="Create Album" />
-      <Button fx:id="openButton" layoutX="141.0" layoutY="421.0" mnemonicParsing="false" onAction="#open" prefHeight="32.0" prefWidth="104.0" text="Open Album" />
-      <Button fx:id="renameButton" layoutX="141.0" layoutY="373.0" mnemonicParsing="false" onAction="#rename" text="Rename Album" />
+      <Text layoutX="89.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Name:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Text>
+      <Text layoutX="85.0" layoutY="241.0" strokeType="OUTSIDE" strokeWidth="0.0" text="# photos:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Text>
+      <Text layoutX="86.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date range:">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font></Text>
+      <Button fx:id="searchButton" layoutX="263.0" layoutY="373.0" mnemonicParsing="false" onAction="#search" prefHeight="33.0" prefWidth="100.0" text="Search Photos" />
+      <Button fx:id="deleteButton" layoutX="21.0" layoutY="420.0" mnemonicParsing="false" onAction="#delete" prefWidth="100.0" text="Delete Album">
+         <padding>
+            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+         </padding></Button>
+      <Button fx:id="createButton" layoutX="21.0" layoutY="373.0" mnemonicParsing="false" onAction="#create" prefHeight="32.0" prefWidth="100.0" text="Create Album" />
+      <Button fx:id="openButton" layoutX="143.0" layoutY="421.0" mnemonicParsing="false" onAction="#open" prefHeight="32.0" prefWidth="100.0" text="Open Album" />
+      <Button fx:id="renameButton" layoutX="143.0" layoutY="373.0" mnemonicParsing="false" onAction="#rename" prefWidth="100.0" text="Rename Album">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+         </padding></Button>
       <Button fx:id="logoutButton" layoutX="715.0" layoutY="17.0" mnemonicParsing="false" onAction="#logout" style="-fx-background-color: c4cacf;" text="Logout" textFill="WHITE" />
       <ListView fx:id="albumList" layoutX="429.0" layoutY="96.0" prefHeight="443.0" prefWidth="324.0" />
-      <Text fx:id="albumName" layoutX="163.0" layoutY="194.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-      <Text fx:id="numPhotos" layoutX="163.0" layoutY="240.0" strokeType="OUTSIDE" strokeWidth="0.0" />
-      <Text fx:id="dateRange" layoutX="163.0" layoutY="290.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text fx:id="albumName" layoutX="163.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text fx:id="numPhotos" layoutX="164.0" layoutY="241.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text fx:id="dateRange" layoutX="165.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" />
    </children>
 </AnchorPane>
