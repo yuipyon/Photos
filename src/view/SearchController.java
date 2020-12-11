@@ -302,6 +302,7 @@ public class SearchController implements Serializable {
 							for (Tag u : p.tags) {
 								if (u.toString().equals(tag2.getText())) {
 									photoList.add(p);
+									break;
 								}
 							}
 						}
@@ -313,6 +314,7 @@ public class SearchController implements Serializable {
 					for (Tag t : p.tags) {
 						if (t.toString().equals(tag1.getText()) || t.toString().equals(tag2.getText())) {
 							photoList.add(p);
+							break;
 						}
 					}
 				}
@@ -330,6 +332,7 @@ public class SearchController implements Serializable {
 				for (Tag t : p.tags) {
 					if (t.toString().equals(tag1.getText())) {
 						photoList.add(p);
+						break;
 					}
 				}
 			}
@@ -339,6 +342,7 @@ public class SearchController implements Serializable {
 				for (Tag t : p.tags) {
 					if (t.toString().equals(tag2.getText())) {
 						photoList.add(p);
+						break;
 					}
 				}
 			}
